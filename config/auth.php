@@ -94,6 +94,10 @@ return [
             'throttle' => 60,
         ],
     ],
+    'verification' => [
+        'expire' => 60, // Specify the expiration time in minutes (e.g., 60 minutes)
+    ],
+
 
     /*
     |--------------------------------------------------------------------------

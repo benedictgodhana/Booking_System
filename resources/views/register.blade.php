@@ -70,17 +70,19 @@
     </style>
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background-color:#FAF9F6;">
     <div class="login-box">
+        
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
+            
             <div class="card-header text-center">
                 <div class="login-logo">
-                    <img src="logo/LOGO_2png" alt="Logo">
+                    <img src="logo/LOGO_2.png" alt="Logo">
                 </div>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Register to start your session</p>
 
                 <form action="{{ route('register') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
@@ -123,6 +125,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="input-group mb-3">
+                        <select id="department" name="department" class="form-control">
+                            <option value="eHealth">eHealth</option>
+                            <option value="IT Outsourcing & BITCU">IT Outsourcing & BITCU</option>
+                            <option value="Digital Learning">Digital Learning</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="IoT">IoT</option>
+                            <option value="IT Security">IT Security</option>
+                            <option value="iBizAfrica">iBizAfrica</option>
+                            <option value="IR &EE">IR &EE</option>
+                            <option value="PR">PR</option>
+                            <option value="ADM">@iLab Admin</option>
+                            <option value="Others">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3" id="otherDepartmentField" style="display:none;">
+                        <input id="otherDepartment" type="text" name="other_department" class="form-control" placeholder="Enter your department" style="width:500px">
+                    </div>
+
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
@@ -141,17 +162,9 @@
                     </div>
                 </form>
 
-                <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                </div>
                 <!-- /.social-auth-links -->
 
-               
+
                 <p class="mb-0">
                     <a href="/login" class="text-center">Already a member</a>
                 </p>
@@ -194,9 +207,33 @@
             }
 
             showAlert('Success', 'Registration successful!', 'success');
+
         }
     </script>
+    <script>
+        // Function to toggle the "other department" field
+        function toggleOtherDepartmentField() {
+            var departmentSelect = document.getElementById('department');
+            var otherDepartmentField = document.getElementById('otherDepartmentField');
+            var otherDepartmentInput = document.getElementById('otherDepartment');
 
+            if (departmentSelect.value === 'Others') {
+                otherDepartmentField.style.display = 'block';
+                otherDepartmentInput.style.display = 'block'; // Add this line to make the input field visible
+                otherDepartmentInput.required = true;
+            } else {
+                otherDepartmentField.style.display = 'none';
+                otherDepartmentInput.style.display = 'none'; // Add this line to hide the input field
+                otherDepartmentInput.required = false;
+            }
+        }
+
+        // Add an event listener to the department select
+        document.getElementById('department').addEventListener('change', toggleOtherDepartmentField);
+
+        // Call the function initially to set the initial state
+        toggleOtherDepartmentField();
+    </script>
 </body>
 
 </html>

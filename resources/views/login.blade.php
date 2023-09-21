@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
+    <title>login</title>
+    <link style="max-width:20px" rel="icon" type="image/x-icon" href="/logo/LOGO_2.png">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -39,6 +40,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: -500px;
         }
 
         .card-body {
@@ -67,20 +69,32 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
+
+        .password-reset-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* Align content to the right */
+            margin-top: -580px;
+            /* Adjust the top margin as needed */
+            margin-left: 1100px;
+            /* Adjust the right margin as needed */
+        }
     </style>
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background-color:darkblue;">
+
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <div class="login-logo">
-                    <img src="logo/LOGO_2png" alt="Logo">
+                    <img src="logo/LOGO_2.png" alt="Logo">
                 </div>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Register to start your session</p>
 
                 <form action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
@@ -117,8 +131,10 @@
                             </div>
                         </div>
                         <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" value="Submit" class="btn btn-primary btn-block">Sign In</button>
+                        <div class="col-4" style="margin-right:10px; margin-left: 198px">
+                            <button type="submit" value="Submit" class="btn btn-success btn-block">
+                                <i class="fas fa-sign-in-alt"></i> Log in
+                            </button>
                             @include('sweet::alert')
                         </div>
                         <!-- /.col -->
@@ -126,27 +142,51 @@
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                    <a href="{{ url('/login/google') }}" class="btn btn-block btn-success" name="login" value="google">
+                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google
                     </a>
                 </div>
-                <!-- /.social-auth-links -->
 
-                <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="/register" class="text-center">Register a new membership</a>
-                </p>
+
+
+
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
+
+    <!-- Footer -->
+    <footer style="color:white;font-size:17px;font-weight:800" class="text-center mt-4">
+        Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
+    </footer>
     <!-- /.login-box -->
+    <!-- Card for password reset link (placed on the right side) -->
+    <div class="password-reset-card">
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <p class="mb-0"><i class="fas fa-key mr-2"></i> Forgot your password?</p>
+                            <a href="{{ route('password.request') }}" class="text-info"><i class="fas fa-unlock-alt mr-1"></i> Reset Password</a>
+                        </div>
+                        <hr>
+                        <p class="mb-2">
+                            <i class="fas fa-user-plus mr-2"></i> <a href="{{ route('account.activate') }}" class="text-info">New user?</a>
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            <i class="fas fa-home mr-2"></i> <a href="/" class="text-info">Home</a>
+                        </p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 
     <!-- jQuery -->
     <script src="../../plugins/jquery/jquery.min.js"></script>

@@ -2,28 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationConfirmationEmail extends Mailable
+class ReservationCreated extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $reservation;
-    public $user;
-
+    public $superAdminName;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($reservation)
+    public function __construct(Reservation $reservation, $superAdminName)
     {
         $this->reservation = $reservation;
-        $this->user = $reservation->user; // Get the user associated with the reservation
+        $this->superAdminName = $superAdminName;
     }
+
     /**
      * Build the message.
      *
@@ -31,7 +31,8 @@ class ReservationConfirmationEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Room Reservation Confirmation')
-        ->view('emails.reservation-confirmation');
+        return $this->view('emails.reservation_created')
+            ->subject('New Reservation Created')
+            ->from('booking@ilab.com', 'iLab Booking System');
     }
 }

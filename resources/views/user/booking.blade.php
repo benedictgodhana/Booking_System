@@ -1,173 +1,355 @@
-@extends('layout/layout')
+    @extends('layout/layout')
 
-@section('space-work')
+    @section('space-work')
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    h2 {
-        color: #333;
-    }
+    <!-- Include SweetAlert CSS -->
+    <link rel="stylesheet" href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}">
 
-    form {
-        width: 80%;
-        /* Set the form width to 80% of the container */
-        margin: 0 auto;
-        display: flex;
-        flex-wrap: wrap;
-    }
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h3 style="text-align: center;" class="word">Reservation Form</h3>
+            </div>
+            <div class="card-body">
+                @if(session('success'))
+                <div class="alert alert-info" id="success-alert">
+                    {{ session('success') }}
+                </div>
 
-    label {
-        flex-basis: 100%;
-        /* Ensure labels take up the full width of their container */
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #555;
-    }
+                <script>
+                    // Automatically hide the alert after 3 seconds (adjust the duration as needed)
+                    setTimeout(function() {
+                        document.getElementById("success-alert").style.display = "none";
+                    }, 3000);
+                </script>
+                @endif
 
-    input[type="text"],
-    input[type="date"],
-    input[type="time"],
+                <form action="{{ route('submit.reservation') }}" method="post" onsubmit="return validateForm()">
+                    @csrf
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="capacity" class="form-label">Capacity Required:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-users"></i>
+                                    </span>
+                                </div>
+                                <input type="number" id="capacity" name="capacity" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="selectRoom" class="form-label">Select Room:</label>
+                            <!-- Add a hidden input field to store room capacity -->
+                            <input type="hidden" id="roomCapacity" value="">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-door-open"></i>
+                                    </span>
+                                </div>
+                                <select id="selectRoom" name="selectRoom" class="form-control">
+                                    <option value="">Select Room....</option>
+                                    @foreach($rooms as $room)
+                                    <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-    select {
-        flex-basis: 54%;
-        /* Set the width of input/select elements to 48% of their container */
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="reservationDate" class="form-label">Date of Reservation:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="date" id="booking_date" name="reservationDate" class="form-control" placeholder="Enter Your Reservation Date">
+                            </div>
+                        </div>
 
-    select {
-        height: 36px;
-    }
+                        <div class="col-md-6">
+                            <label for="reservationTime" class="form-label">Reservation Time:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                </div>
+                                <input type="time" id="booking_time" name="reservationTime" class="form-control">
+                            </div>
+                        </div>
+                    </div>
 
-    input[type="submit"] {
-        flex-basis: 54%;
-        /* Ensure the submit button takes up the full width of its container */
-        background-color: #3498db;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="duration" class="form-label">Duration (in hours):</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                </div>
+                                <input type="number" id="duration" name="duration" class="form-control">
+                            </div>
+                        </div>
 
-    input[type="submit"]:hover {
-        background-color: #2980b9;
-    }
+                        <div class="col-md-6">
+                            <label for="event" class="form-label">Event:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </span>
+                                </div>
+                                <input type="text" id="event" name="event" class="form-control" placeholder="Enter Event Details">
+                            </div>
+                        </div>
+                    </div>
 
-    /* Style for the multiple-select element */
-    .styled-select {
-        width: 50%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        /* Add a white background color */
-        height: auto;
-        /* Allow the select to grow with content */
-        min-height: 36px;
-        /* Set a minimum height for the select */
-    }
 
-    /* Style for the options in the select */
-    .styled-select option {
-        padding: 5px;
-    }
-</style>
+                    <!-- Checkbox for Requirements -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Requirements:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="itServices">
+                                <label class="form-check-label" for="itServices">IT Services</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="setupAssistance">
+                                <label class="form-check-label" for="setupAssistance">Setup Assistance</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="requestItems">
+                                <label class="form-check-label" for="requestItems">Request Items</label>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- Include SweetAlert CSS -->
-<link rel="stylesheet" href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}">
+                    <div class="row mb-3" id="itemRequestField" style="display: none;">
+                        <div class="col-md-12">
+                            <label for="itemRequests" class="form-label">Requested Items:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
 
-<h2>Reservation Form</h2>
+                                </div>
+                                <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                                    @foreach($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-<form action="{{ route('submit.reservation') }}" method="post" onsubmit="return validateForm()">
-    @csrf
-    <div class="form-group" style="width:54%;height:60px">
-        <label for="items">Select Items (maximum 5):</label>
-        <select id="items" name="items[]" multiple size="5" class="styled-select">
-            @foreach($items as $item)
-            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->asset_tag }})</option>
-            @endforeach
-        </select>
 
+
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+
+                @include('sweet::alert')
+            </div>
+        </div>
     </div>
 
-
-    <label for="reservationDate">Date of Reservation:</label>
-    <input type="date" id="reservationDate" name="reservationDate" placeholder="Enter Your Reservation Date">
-
-    <label for="reservationTime">Reservation Time:</label>
-    <input type="time" id="reservationTime" name="reservationTime">
-
-    <label for="selectRoom">Select Room:</label>
-    <select id="selectRoom" name="selectRoom">
-        <option value="">Select Room....</option>
-        @foreach($rooms as $room)
-        <option value="{{ $room->id }}">{{ $room->name }}</option>
-        @endforeach
-    </select>
-
-    <label for="timeLimit">Time Limit:</label>
-    <input type="time" id="timeLimit" name="timeLimit">
-    <label for="event">Event (Optional):</label>
-    <input type="text" id="event" name="event" placeholder="Enter Event Details">
-
-
-    <input type="submit" value="Submit" onclick="showAlert('Success', 'Booking made successfully! Wait for Confirmation', 'success')">
-    @include('sweet::alert')
-</form>
-
-<script>
-    // Initialize date picker
-    $(function() {
-        $("#reservationDate").datepicker();
-    });
-</script>
-<!-- Include SweetAlert JS -->
-<script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
-
-<script>
-    function validateForm() {
-        // Perform form validation here
-        var items = document.getElementById('items');
-        var reservationDate = document.getElementById('reservationDate');
-        var reservationTime = document.getElementById('reservationTime');
-        var selectRoom = document.getElementById('selectRoom');
-        var timeLimit = document.getElementById('timeLimit');
-
-        if (items.value === '' || reservationDate.value === '' || reservationTime.value === '' || selectRoom.value === '' || timeLimit.value === '') {
-            // Show a SweetAlert error notification for incomplete fields
-            showAlert('Error', 'Please fill in all fields', 'error');
-            return false; // Prevent form submission
-        }
-
-        // Check if the selected date has passed
-        var selectedDate = new Date(reservationDate.value);
-        var currentDate = new Date();
-        if (selectedDate < currentDate) {
-            // Show a SweetAlert error for past dates
-            showAlert('Error', 'You cannot book for a past date', 'error');
-            return false; // Prevent form submission
-        }
-
-        return true; // Allow form submission
-    }
-
-    // Function to display SweetAlert
-    function showAlert(title, message, icon) {
-        Swal.fire({
-            title: title,
-            text: message,
-            icon: icon,
-            timer: 5000, // Adjust the time you want the alert to be visible (in milliseconds)
-            showConfirmButton: false // Hide the "OK" button
+    <script>
+        // Initialize date picker
+        $(function() {
+            $("#reservationDate").datepicker();
         });
-    }
-</script>
+    </script>
+    <!-- Include SweetAlert JS -->
+    <script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
 
-@endsection
+    <script>
+        function validateForm() {
+            // Perform form validation here
+            var items = document.getElementById('items');
+            var reservationDate = document.getElementById('reservationDate');
+            var reservationTime = document.getElementById('reservationTime');
+            var selectRoom = document.getElementById('selectRoom');
+            var timeLimit = document.getElementById('timeLimit');
+
+            if (items.value === '' || reservationDate.value === '' || reservationTime.value === '' || selectRoom.value === '' || timeLimit.value === '') {
+                // Show a SweetAlert error notification for incomplete fields
+                showAlert('Error', 'Please fill in all fields', 'error');
+                return false; // Prevent form submission
+            }
+
+            // Check if the selected date has passed
+            var selectedDate = new Date(reservationDate.value);
+            var currentDate = new Date();
+            if (selectedDate < currentDate) {
+                // Show a SweetAlert error for past dates
+                showAlert('Error', 'You cannot book for a past date', 'error');
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission
+        }
+
+        // Function to display SweetAlert
+        function showAlert(title, message, icon) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: icon,
+                timer: 5000, // Adjust the time you want the alert to be visible (in milliseconds)
+                showConfirmButton: false // Hide the "OK" button
+            });
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var bookingDateInput = document.getElementById('booking_date');
+
+            // Get the current date in the format 'YYYY-MM-DD'
+            var currentDate = new Date().toISOString().split('T')[0];
+
+            // Set the minimum date of the booking_date input to the current date
+            bookingDateInput.min = currentDate;
+        });
+    </script>
+    <script>
+        // JavaScript validation
+        function validateForm() {
+            var selectRoom = document.getElementById('selectRoom');
+            var roomCapacity = parseInt(selectRoom.options[selectRoom.selectedIndex].getAttribute('data-capacity'));
+            var enteredCapacity = parseInt(document.getElementById('capacity').value);
+
+            if (enteredCapacity > roomCapacity) {
+                showAlert('Error', 'Entered capacity of ' + enteredCapacity + ' exceeds room capacity of ' + roomCapacity + '. Please select another room or reduce the capacity.', 'error');
+                return false;
+            }
+
+            // Continue with other form validations
+            var items = document.getElementById('itemRequests');
+            var reservationDate = document.getElementById('booking_date');
+            var reservationTime = document.getElementById('booking_time');
+            var timeLimit = document.getElementById('timeLimit');
+            var event = document.getElementById('event');
+
+            // Check other fields for validation (e.g., if they are empty or meet specific criteria)
+
+            // If all validations pass, the form submission will proceed
+            return true;
+        }
+
+        // Display SweetAlert
+        function showAlert(title, message, icon) {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: icon,
+                timer: 5000,
+                showConfirmButton: false
+            });
+        }
+    </script>
+
+    <script>
+        // Function to toggle the visibility of the item request field
+        function toggleItemRequestField() {
+            var itemRequestField = document.getElementById('itemRequestField');
+            var requestItemsCheckbox = document.getElementById('requestItems');
+
+            if (requestItemsCheckbox.checked) {
+                itemRequestField.style.display = 'block'; // Show the field
+            } else {
+                itemRequestField.style.display = 'none'; // Hide the field
+            }
+        }
+
+        // Attach an event listener to the "Request Items" checkbox
+        document.getElementById('requestItems').addEventListener('change', toggleItemRequestField);
+    </script>
+
+    <script>
+        function limitItemSelection() {
+            // Get the select element and the selected options
+            var itemSelect = document.getElementById('itemRequests');
+            var selectedOptions = itemSelect.selectedOptions;
+
+            // Check if the number of selected options exceeds the limit (5)
+            if (selectedOptions.length > 5) {
+                // Display an alert message or take any other action
+                alert('You can select a maximum of 5 items.');
+
+                // Deselect the last selected item
+                selectedOptions[selectedOptions.length - 1].selected = false;
+            }
+        }
+
+        // Attach the function to the change event of the select element
+        document.getElementById('itemRequests').addEventListener('change', limitItemSelection);
+    </script>
+    <script>
+        // Get references to the elements
+        var reservationTimeInput = document.getElementById('reservationTime');
+        var durationInput = document.getElementById('duration');
+        var timeLimitInput = document.getElementById('timeLimit');
+
+        // Add an event listener to the duration input
+        durationInput.addEventListener('input', function() {
+            // Get the selected reservation time
+            var reservationTime = reservationTimeInput.value;
+
+            // Get the entered duration
+            var duration = parseInt(durationInput.value);
+
+            // Calculate the end of reservation
+            if (reservationTime && !isNaN(duration)) {
+                var startTime = new Date('2000-01-01T' + reservationTime);
+                startTime.setHours(startTime.getHours() + duration);
+
+                // Format the end time as 'hh:mm'
+                var endTime = startTime.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // Update the timeLimit input with the calculated end time
+                timeLimitInput.value = endTime;
+            }
+        });
+    </script>
+    <script>
+        // Attach an event listener to the "Request Items" checkbox
+        document.getElementById('requestItems').addEventListener('change', function() {
+            if (this.checked) {
+                // Get the user's name from the form
+                var userName = document.getElementById('userName').value; // Replace 'userName' with the actual input field ID
+
+                // Send an AJAX request to send an email
+                $.ajax({
+                    type: 'POST',
+                    url: '/send-reservation-email', // Replace with the actual route for sending the email
+                    data: {
+                        userName: userName
+                    },
+                    success: function(response) {
+                        // Handle the response (e.g., show a success message)
+                    },
+                    error: function(error) {
+                        // Handle errors if the email sending fails
+                    }
+                });
+            }
+        });
+    </script>
+
+
+    @endsection
