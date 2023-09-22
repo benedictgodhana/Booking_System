@@ -45,11 +45,11 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Room Requested</th>
                 <th>Reservation Date</th>
                 <th>Reservation Time</th>
                 <th>End of Reservation</th>
                 <th>Event</th>
-                <th>Room Assign</th>
                 <td>Item Requested(optional)</td>
                 <th>Status</th>
                 <th>Remarks</th>
@@ -58,11 +58,11 @@
         <tbody>
             @foreach($reservations as $reservation)
             <tr>
+                 <td>{{ $reservation->room->name }}</td>
                 <td>{{ $reservation->reservationDate }}</td>
                 <td>{{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
                 <td>{{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                 <td>{{ $reservation->event }}</td>
-                <td>{{ $reservation->room->name }}</td>
                 <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                 <td>{{ $reservation->status }}</td>
                 <td>{{ $reservation->remarks }}</td>

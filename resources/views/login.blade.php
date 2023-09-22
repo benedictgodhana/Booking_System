@@ -40,7 +40,9 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-top: -500px;
+            margin-top: -300px;
+            margin-right: 50px;
+
         }
 
         .card-body {
@@ -75,9 +77,9 @@
             flex-direction: column;
             align-items: flex-end;
             /* Align content to the right */
-            margin-top: -580px;
+            margin-top: -530px;
             /* Adjust the top margin as needed */
-            margin-left: 1100px;
+            margin-left: 1000px;
             /* Adjust the right margin as needed */
         }
     </style>
@@ -87,14 +89,14 @@
 
     <div class="login-box">
         <!-- /.login-logo -->
-        <div class="card card-outline card-primary">
+        <div class="card card-outline card-neutral">
             <div class="card-header text-center">
                 <div class="login-logo">
                     <img src="logo/LOGO_2.png" alt="Logo">
                 </div>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Register to start your session</p>
+                <p class="login-box-msg">Login to start your session</p>
 
                 <form action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
@@ -121,15 +123,7 @@
                     @error('password')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
+                    
                         <!-- /.col -->
                         <div class="col-4" style="margin-right:10px; margin-left: 198px">
                             <button type="submit" value="Submit" class="btn btn-success btn-block">
@@ -141,12 +135,7 @@
                     </div>
                 </form>
 
-                <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="{{ url('/login/google') }}" class="btn btn-block btn-success" name="login" value="google">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google
-                    </a>
-                </div>
-
+              
 
 
 

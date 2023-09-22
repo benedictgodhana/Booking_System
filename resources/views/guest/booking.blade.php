@@ -234,12 +234,12 @@
                         <button class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 </div>
-
+                <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
+                    Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
+                </footer>
             </form><br>
         </div>
-        <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
-            Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
-        </footer>
+
 
         <!-- Include your JavaScript scripts or links here -->
         <!-- Include your JavaScript scripts or links here -->

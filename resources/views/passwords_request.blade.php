@@ -77,7 +77,7 @@
 
 <body class="hold-transition login-page" style="background-color:darkblue;">
     <div class="login-box">
-        <div class="card card-outline card-primary">
+        <div class="card card-outline card-neutral">
             <div class="card-header text-center">
                 <div class="login-logo">
                     <img src="/logo/LOGO_2.png" alt="">

@@ -11,7 +11,6 @@ use App\Mail\AdmReservationCreated;
 use App\Mail\MiniAdminReservationCreated;
 use App\Mail\ReservationConfirmationMail;
 use App\Mail\ReservationCreated;
-use App\Mail\ReservationRequest;
 use App\Mail\SubReservationCreated;
 use App\Models\Activity;
 use Illuminate\Support\Facades\DB; // Import DB facade
@@ -74,27 +73,13 @@ class ReservationController extends Controller
         $reservation->save();
 
         // If items were requested, attach them to the reservation
-        // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
+            // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
 
         Activity::create([
             'user_id' => auth()->user()->id, // The ID of the authenticated user
             'action' => 'Reservation Created', // Log the action
             'description' => 'New reservation created by ' . auth()->user()->name, // Include relevant information
         ]);
-
-        $userName = $reservation->user->name;
-        // Retrieve the reservation details and assign them to variables
-        $selectedRoom = $reservation->room->name;
-        $reservationDate = $reservation->reservationDate;
-        $reservationTime = Carbon::parse($reservation->reservationTime)->format('h:i A'); // Format time as "h:i A"
-        $duration = Carbon::parse($reservation->timelimit)->format('h:i A'); // Format time as "h:i A"
-        $event = $reservation->event;
-        $itServicesRequested = $reservation->itServicesRequested;
-        $setupAssistanceRequested = $reservation->setupAssistanceRequested;
-        $itemRequests = $reservation->itemRequests;
-
-        // Send the email with the reservation details
-        Mail::to('ilabsupport@strathmore.edu')->send(new ReservationRequest($userName, $selectedRoom, $reservationDate, $reservationTime, $duration, $event, $itServicesRequested, $setupAssistanceRequested, $itemRequests));
 
         // Send an email notification to user upon reservation
         $roomName = $reservation->room->name;
@@ -179,8 +164,6 @@ class ReservationController extends Controller
             }
         }
     }
-
-
 
     public function updateReservationStatus(Request $request, $id)
     {
