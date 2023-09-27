@@ -22,6 +22,9 @@
     <!-- Thank You Message -->
     <p>Thank you for using our reservation system.</p>
 
+    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
+
+
     <!-- Email Footer -->
     <p>© 2023 Strathmore. All rights reserved.</p>
 </body>

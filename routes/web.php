@@ -91,6 +91,8 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::get('/activities', [SuperAdminController::class, 'showActivities'])->name('superadminactivities');
     Route::get('/profile', [SuperAdminController::class, 'showProfile'])->name('superadmin.profile.show');
     Route::post('/profile/update-password', [SuperAdminController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::get('/search-reservations', [SuperAdminController::class,'searchReservations'])->name('superadmin.searchReservations');
+
 
 
 
@@ -107,6 +109,9 @@ Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], f
     Route::get('/resevation', [SubAdminController::class, 'reservation'])->name('subadminreservation');
     Route::put('/subadmin/reservation/update/{id}', [SubAdminController::class, 'updateReservationStatus'])->name('subadmin.update');
     Route::get('/profile', [SubAdminController::class, 'showProfile'])->name('subadmin.profile.show');
+    Route::get('/search-reservations', [SubAdminController::class,'searchReservations'])->name('subadmin.searchReservations');
+    Route::post('/subadmin/create-reservation', [SubAdminController::class, 'createReservation'])->name('subadmin.createReservation'); // You can name the route as you prefer
+
 });
 
 // ********** Admin Routes *********
@@ -115,6 +120,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
     Route::get('/reservation', [AdminController::class, 'reservation'])->name('adminreservation');
     Route::put('/admin/reservation/update/{id}', [AdminController::class, 'updateReservationStatus'])->name('admin.update');
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
+    Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
+
 });
 Route::middleware(['auth', 'miniadmin'])->group(function () {
     Route::get('/miniadmin/dashboard', [MiniAdminController::class, 'dashboard'])->name('minidashboard');
@@ -122,6 +129,8 @@ Route::middleware(['auth', 'miniadmin'])->group(function () {
     Route::put('/miniadmin/reservation/update/{id}', [MiniAdminController::class, 'updateReservationStatus'])->name('miniadmin.update');
     Route::get('/miniadmin/profile', [MiniAdminController::class, 'showProfile'])->name('miniadmin.profile.show');
     Route::post('/miniadmin/profile/update-password', [MiniAdminController::class, 'updatePassword'])->name('Edit.Password');
+    Route::get('/search-reservations', [MiniAdminController::class,'searchReservations'])->name('miniadmin.searchReservations');
+
 
 
 
@@ -190,7 +199,11 @@ Route::post('/change-password', [AuthController::class, 'changePassword'])->name
 Route::get('/activate/{user}/{token}', [AuthController::class, 'activateAccount'])->name('activate');
 
 Route::post('/send-reservation-email', [ReservationController::class, 'sendEmail']);
+Route::post('/filter-reservations', [ReservationController::class,'filterReservations'])->name('filter');
+
 
 
 Route::post('/account/check-activation', [UserController::class, 'checkActivation'])->name('account.check-activation');
 Route::get('/password/change', [UserController::class, 'changePassword'])->name('password.change'); // Implement this method in UserController
+Route::get('/filter/pending-reservations', [ReservationController::class,'filter'])->name('filter.pendingReservations');
+

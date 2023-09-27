@@ -206,4 +206,8 @@ class AuthController extends Controller
             return back();
         }
     }
+
+    public function ShowActivationpage(){
+        return view('activate');
+    }
 }

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Item;
 use App\Models\Reservation;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\BookingAcceptedNotification;
 use App\Notifications\BookingDeclinedNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SubAdminController extends Controller
@@ -19,14 +24,16 @@ class SubAdminController extends Controller
     {
         $events = [];
         $reservations = Reservation::where('status', 'accepted')->get();
-
+        $roomID=[1];
         // Filter reservations for accepted rooms only
         $subadminRoomIDs = [1, 2, 3, 4, 5, 6, 7, 8]; // Replace with the IDs of rooms accepted by the admin
         $acceptedReservations = $reservations->filter(function ($reservation) use ($subadminRoomIDs) {
             return in_array($reservation->room_id, $subadminRoomIDs);
         });
         $totalUsersCount = User::count();
-
+        $users=User::All();
+        $rooms=Room::whereIn('id',$roomID)->get();
+        $items=Item::All();
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
         // Get the count of users who have made reservations on the specified date
@@ -70,7 +77,7 @@ class SubAdminController extends Controller
             ];
         }
 
-        return view('sub-admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors'));
+        return view('sub-admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','users','rooms','items'));
     }
     public function reservation()
     {
@@ -132,5 +139,92 @@ class SubAdminController extends Controller
     public function showProfile()
     {
         return view('sub-admin.profile');
+    }
+    public function searchReservations(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $status = $request->input('status');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $subAdminRoomID = 1;
+
+        $query =Reservation::where('room_id', $subAdminRoomID);
+    
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+    
+        if (!empty($searchQuery)) {
+            $query->where(function ($subquery) use ($searchQuery) {
+                $subquery->whereHas('user', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhereHas('room', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhere('event', 'like', '%' . $searchQuery . '%');
+            });
+        }
+    
+        if (!empty($startDate) && !empty($endDate)) {
+            $query->whereBetween('ReservationDate', [$startDate, $endDate]);
+        }
+    
+        $Results = $query->paginate(10);
+    
+        return view('sub-admin.search-results', compact('Results'));
+    }
+    public function createReservation(Request $request)
+    {
+        // Validate the form data
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'items' => 'nullable|array|max:5', // Assuming you want to allow up to 5 items
+            'items.*' => 'exists:items,id', // Validate each item in the array
+            'duration' => 'required|integer',
+            'reservationDate' => 'required|date',
+            'reservationTime' => 'required',
+            'timelimit' => 'required',
+            'selectRoom' => 'required|exists:rooms,id',
+            'event' => 'nullable|string',
+        ]);
+
+        $startTime = strtotime($validatedData['reservationTime']);
+        $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
+
+        // Check if the room is available at the selected date and time
+        $isRoomAvailable = !DB::table('reservations')
+            ->where('room_id', $validatedData['selectRoom'])
+            ->where('reservationDate', $validatedData['reservationDate'])
+            ->where('reservationTime', $validatedData['reservationTime'])
+            ->exists();
+
+        if (!$isRoomAvailable) {
+            throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
+        }
+        $selectedItems = array_slice($validatedData['items'], 0, 5);
+        $itemIds = implode(',', $selectedItems);
+
+
+        // Create a new reservation instance and populate it with the form data
+        $reservation = new Reservation();
+        $reservation->user_id = $validatedData['user_id'];
+        $reservation->item_id = $itemIds;
+        $reservation->reservationDate = $validatedData['reservationDate'];
+        $reservation->reservationTime = $validatedData['reservationTime'];
+        $reservation->timelimit = $endTime; // Store the calculated end time
+        $reservation->room_id = $validatedData['selectRoom'];
+        $reservation->event = $validatedData['event'];
+        $reservation->status = 'accepted';
+
+
+        // Save the reservation to the database
+        $reservation->save();
+
+        // Attach selected items (if any) to the reservation
+        Session::flash('success', 'Reservation made successfully!');
+
+        // Redirect back with a success message
+        return redirect()->back();
     }
 }

@@ -36,6 +36,7 @@ class activationmail extends Mailable
         ->view('emails.user_activation')
         ->with([
             'userName' => $this->user->name,
+            'userEmail'=>$this->user->email,
             // You can pass more data to the email template if needed
         ]);
     }

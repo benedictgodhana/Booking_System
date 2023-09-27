@@ -15,7 +15,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
     <!-- SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <link rel="styleshxeet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- SweetAlert JavaScript -->
@@ -179,6 +179,7 @@
                         </div>
                     </div>
                 </div><br>
+                    <div id="endOfReservation"></div>
                 <!-- Checkbox for Requirements -->
                 <div class="row mb-3">
                     <div class="col-md-12">

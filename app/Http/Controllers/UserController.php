@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -93,15 +94,13 @@ class UserController extends Controller
 
         // Check if the current password matches the authenticated user's password
         if (!Hash::check($request->current_password, Auth::user()->password)) {
-            Alert::error('Error', 'Incorrect current password')->showConfirmButton('OK', '#3085d6');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Incorrect current password');
         }
 
         // Check if the new password is too obvious (e.g., contains "password" or "123456")
         $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
         if (in_array($request->new_password, $obviousPasswords)) {
-            Alert::error('Error', 'Please choose a stronger password')->showConfirmButton('OK', '#3085d6');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Please choose a stronger password');
         }
 
         // Update the user's password
@@ -109,10 +108,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        // Display a success SweetAlert2 alert
-        Alert::success('Success', 'Password changed successfully')->showConfirmButton('OK', '#3085d6');
-
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
 
     public function reservationEnded($reservationId)
@@ -140,65 +136,7 @@ class UserController extends Controller
         return redirect()->route('welcome')->with('error', 'You are not authorized to provide feedback for this reservation.');
     }
 
-    public function createUser(Request $request)
-    {
-
-        $fields = $request->validate([
-            'id_number' => 'required|numeric',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'phone_number' => 'required|string',
-            'email' => 'required|unique:users,email',
-            'roles' => 'required',
-            'police_force_number' => 'nullable',
-            'password' => 'required|confirmed'
-        ]);
-
-
-        // $token = Str::random(10) . $fields['id_number'];
-        // $activateAccountLink = $request->getSchemeAndHttpHost() . "/api/activateAccount/" . $token;
-
-        $email = $fields['email'];
-        //Above is the mail you'd like to sent info to
-        $data = array('activateAccountLink' => "activateAccountLink", 'name' => 'name data', 'email' => 'email data');
-
-
-        try {
-            Mail::send('mailadmin', $data, function ($message) use (&$email) {
-                $message->to($email, 'Virtual Traffic Court')->subject('Registering Your Account.');
-                $message->from('gradapp@strathmore.edu', 'Virtual Traffic Court');
-            });
-
-
-
-            //$user = Admin::create(['name' => $fields['first_name'], 'first_name' => $fields['first_name'], 'last_name' => $fields['last_name'], 'id_number' => $fields['id_number'], 'phone_number' => $fields['phone_number'], 'email' => $fields['email'], 'police_force_number' => isset($fields['police_force_number']) ? $fields['police_force_number'] : 'null', 'password' => Hash::make($fields['password']), 'remember_token' => $token]);
-
-
-            // if (!is_null($user)) {
-            //     $fields['roles'] = explode(',', $fields['roles']);
-
-            //     $user_assign_role = $user->assignRole($fields['roles']);
-
-            //     $token = $user->createToken('token-name');
-            //     //return $token;
-
-
-            //     return ["success" => "User Created Roles Assigned", "User" => $user_assign_role, "token" => $token->plainTextToken];
-            // } else {
-            //     return response()->json(["error" => "User Not Created"], 422);
-            // }
-        } catch (Exception $e) {
-            return response()->json(
-                [
-                    "error" => " Exception Occured: User Not Created",
-                    "Message" => $e->getMessage(),
-                    "File" => $e->getFile(),
-                    "LineNumber" => $e->getLine()
-                ],
-                422
-            );
-        }
-    }
+    
     public function activateUser(User $user)
     {
         // Check if the user is not already activated
@@ -225,4 +163,52 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'User is already deactivated.');
         }
     }
+    public function checkActivation(Request $request)
+{
+    // Get the user's email from the request
+    $email = $request->input('email');
+
+    // Find the user by their email
+    $user = User::where('email', $email)->first();
+
+    if (!$user) {
+        // User with the provided email not found
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    // Check if the user is activated (assuming 'is_active' is a boolean field in the database)
+    if ($user->activated) {
+
+        // User is already activated
+        return redirect()->back()->with('status', 'Your account is already activated. You can now log in.');
+    }
+
+    $token = Str::random(60);
+
+    // Store the token in the database or an activation table (you can add an 'activation_token' field to the 'users' table)
+    $user->update(['activation_token' => $token]);
+
+    if (!$user) {
+        // Handle invalid or expired activation token (e.g., show an error message)
+        return view('activation_error');
+    }
+
+    // Activate the user's account
+    $user->activated = true;
+    $user->save();
+
+    // Log in the user (optional)
+    auth()->login($user);
+
+    // Send an activation email with the token
+    Mail::to($user->email)->send(new ActivationMail($user, $token));
+
+    // Send an activation link or perform the activation process here
+
+    // After sending the activation link, you can notify the user accordingly
+    return redirect()->back()->with('status','Your Account Has been Activated. Please check your inbox for login credentials.');
+    ;
+}
+
+
 }

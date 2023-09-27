@@ -73,7 +73,7 @@
     </style>
 </head>
 @if(session('status'))
-<div class="alert alert-info" id="success-alert">
+<div class="alert alert-success" id="success-alert">
     {{ session('status') }}
 </div>
 <script>

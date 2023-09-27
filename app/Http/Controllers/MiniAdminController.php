@@ -12,8 +12,11 @@ use App\Notifications\BookingDeclinedNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MiniAdminController extends Controller
@@ -163,15 +166,13 @@ class MiniAdminController extends Controller
 
         // Check if the current password matches the authenticated user's password
         if (!Hash::check($request->current_password, Auth::user()->password)) {
-            Alert::error('Error', 'Incorrect current password')->showConfirmButton('OK', '#3085d6');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Incorrect current password');
         }
 
         // Check if the new password is too obvious (e.g., contains "password" or "123456")
         $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
         if (in_array($request->new_password, $obviousPasswords)) {
-            Alert::error('Error', 'Please choose a stronger password')->showConfirmButton('OK', '#3085d6');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Please choose a stronger password');
         }
 
         // Update the user's password
@@ -179,9 +180,94 @@ class MiniAdminController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        // Display a success SweetAlert2 alert
-        Alert::success('Success', 'Password changed successfully')->showConfirmButton('OK', '#3085d6');
+        return redirect()->back()->with('success', 'Password changed successfully');
+    }
+    public function searchReservations(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $status = $request->input('status');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        
+        $miniadminRoomIDs = [4, 5, 6, 7, 8];
+        $query =Reservation::where('room_id', $miniadminRoomIDs);
+    
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+    
+        if (!empty($searchQuery)) {
+            $query->where(function ($subquery) use ($searchQuery) {
+                $subquery->whereHas('user', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhereHas('room', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhere('event', 'like', '%' . $searchQuery . '%');
+            });
+        }
+    
+        if (!empty($startDate) && !empty($endDate)) {
+            $query->whereBetween('ReservationDate', [$startDate, $endDate]);
+        }
+    
+        $Results = $query->paginate(10);
+    
+        return view('miniadmin.search-results', compact('Results'));
+    }
+    public function createReservation(Request $request)
+    {
+        // Validate the form data
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'items' => 'nullable|array|max:5', // Assuming you want to allow up to 5 items
+            'items.*' => 'exists:items,id', // Validate each item in the array
+            'duration' => 'required|integer',
+            'reservationDate' => 'required|date',
+            'reservationTime' => 'required',
+            'timelimit' => 'required',
+            'selectRoom' => 'required|exists:rooms,id',
+            'event' => 'nullable|string',
+        ]);
 
+        $startTime = strtotime($validatedData['reservationTime']);
+        $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
+
+        // Check if the room is available at the selected date and time
+        $isRoomAvailable = !DB::table('reservations')
+            ->where('room_id', $validatedData['selectRoom'])
+            ->where('reservationDate', $validatedData['reservationDate'])
+            ->where('reservationTime', $validatedData['reservationTime'])
+            ->exists();
+
+        if (!$isRoomAvailable) {
+            throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
+        }
+        $selectedItems = array_slice($validatedData['items'], 0, 5);
+        $itemIds = implode(',', $selectedItems);
+
+
+        // Create a new reservation instance and populate it with the form data
+        $reservation = new Reservation();
+        $reservation->user_id = $validatedData['user_id'];
+        $reservation->item_id = $itemIds;
+        $reservation->reservationDate = $validatedData['reservationDate'];
+        $reservation->reservationTime = $validatedData['reservationTime'];
+        $reservation->timelimit = $endTime; // Store the calculated end time
+        $reservation->room_id = $validatedData['selectRoom'];
+        $reservation->event = $validatedData['event'];
+        $reservation->status = 'accepted';
+
+
+        // Save the reservation to the database
+        $reservation->save();
+
+        // Attach selected items (if any) to the reservation
+        Session::flash('success', 'Reservation made successfully!');
+
+        // Redirect back with a success message
         return redirect()->back();
     }
+
 }

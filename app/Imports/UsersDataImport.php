@@ -28,9 +28,8 @@ class UsersDataImport implements ToCollection
             ];
 
             // Create a new user or update an existing one based on email
-            $user = User::updateOrCreate(['email' => $userData['email']], $userData);
-            $activationUrl = route('activate.account', ['token' => $userData['activation_token']]);
-            Mail::to($user)->send(new ActivationEmail($user, $activationUrl));
+             User::updateOrCreate(['email' => $userData['email']], $userData);
+            
         }
     }
 }

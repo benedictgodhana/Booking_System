@@ -12,11 +12,17 @@
 
     <p>Your account has been successfully activated.</p>
 
-    <p>You can now log in and start using the iLab Room Booking System.</p>
-    <p>To start using the system, Kindly follwo the link below to reset your password</p>
-    <a href="{{ route('password.request') }}">Reset Password</a>
+    <p>You can now log in to the iLab Room Booking System using the following credentials:</p>
 
-    <p>If you have any questions or need further assistance, please don't hesitate to contact our support team.</p>
+    <ul>
+        <li><strong>Email:</strong> {{ $userEmail }}</li>
+        <li><strong>Password:</strong> Kenya@2030</li>
+    </ul>
+
+    <p>Click on the following link to log in:</p>
+    <a href='http://127.0.0.1:8000/login'>Log In</a>
+
+    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
 
     <p>Thank you for choosing iLab Room Booking System.</p>
 

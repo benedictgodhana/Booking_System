@@ -38,7 +38,7 @@ class ReservationController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate the incoming request data
+        // Validate the incoming request data, including the RoomAvailability rule
         $validatedData = $request->validate([
             'capacity' => 'required|integer',
             'selectRoom' => 'required|exists:rooms,id',
@@ -51,12 +51,24 @@ class ReservationController extends Controller
             'requestItems' => 'boolean',
             'itemRequests' => 'array', // Assuming 'itemRequests' is the name of the input field
             'itemRequests.*' => 'exists:items,id', // Assuming 'items' is the table name
+            'selectRoom' => [
+                'required',
+                'exists:rooms,id',
+                // Use the RoomAvailability rule here
+                new RoomAvailability(
+                    $request->input('selectRoom'),
+                    $request->input('reservationDate'),
+                    $request->input('reservationTime')
+                ),
+            ],
         ]);
-
+    
+        // The rest of your code remains the same
+    
         // Calculate the end time based on reservation time and duration
         $startTime = strtotime($validatedData['reservationTime']);
         $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
-
+    
         // Create a new reservation instance
         $reservation = new Reservation();
         $reservation->user_id = auth()->user()->id; // Assuming you're using authentication
@@ -68,10 +80,10 @@ class ReservationController extends Controller
         $reservation->event = $validatedData['event'];
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
-
+    
         // Save the reservation to the database
         $reservation->save();
-
+    
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
 
@@ -214,4 +226,22 @@ class ReservationController extends Controller
 
         return view('events.index', compact('events'));
     }
+
+        public function filterPendingReservations(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        // Perform the filtering query for pending reservations based on the date created
+        $filteredReservations = Reservation::whereBetween('created_at', [$startDate, $endDate])
+            ->where('status', 'Pending') // Adjust this condition as needed
+            ->orderBy('created_at', 'asc') // You can adjust the sorting as needed
+            ->get();
+
+        // Return the filtered reservations as JSON response
+        return response()->json(['reservations' => $filteredReservations]);
+    }
+
 }
+
+

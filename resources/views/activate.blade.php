@@ -70,22 +70,34 @@
     </style>
 
 </head>
+
+<body class="hold-transition login-page" style="background-color:darkblue;">
+
 @if(session('status'))
-<div class="alert alert-success">
+<div class="alert alert-success" id="success-alert">
     {{ session('status') }}
 </div>
+<script>
+    // Automatically hide the alert after 3 seconds (adjust the duration as needed)
+    setTimeout(function() {
+        document.getElementById("success-alert").style.display = "none";
+    }, 4000);
+</script>
 @endif
 
 @if(session('error'))
-<div class="alert alert-danger">
+<div class="alert alert-danger" id="success-alert">
     {{ session('error') }}
 </div>
+<script>
+    // Automatically hide the alert after 3 seconds (adjust the duration as needed)
+    setTimeout(function() {
+        document.getElementById("success-alert").style.display = "none";
+    }, 4000);
+</script>
 @endif
-
-
-<body class="hold-transition login-page" style="background-color:darkblue;">
     <div class="login-box">
-        <div class="card card-outline card-primary">
+        <div class="card card-outline card-neutral">
             <div class="card-header text-center">
                 <div class="login-logo">
                     <img src="/logo/LOGO_2.png" alt="Logo">

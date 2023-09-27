@@ -20,6 +20,8 @@
 
     <p>Thank you for using our application!</p>
 
+    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
+
 
     <p>© 2023 Strathmore. All rights reserved.</p>
 

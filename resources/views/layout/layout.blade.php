@@ -175,10 +175,10 @@
           <a href="{{route('userdashboard')}}"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('booking') }}"><i class="fa fa-building"></i> Booking</a>
+          <a href="{{ route('booking') }}"><i class="fa fa-building"></i> Book</a>
         </li>
         <li>
-          <a href="{{ route('reservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
+          <a href="{{ route('reservation') }}"><i class="fa fa-calendar"></i>My Bookings</a>
         </li>
         <li>
           <a href="{{route('user.profile.show')}}"><i class="fa fa-user"></i> Profile</a>

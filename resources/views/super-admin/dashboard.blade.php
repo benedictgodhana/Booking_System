@@ -74,6 +74,7 @@
 
         body {
             overflow: hidden;
+            
         }
 
 
@@ -99,7 +100,7 @@
         <!-- small card -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>{{ $pendingBookingsCount }}</h3>
+                <h3></h3>
 
                 <p>Number of pending bookings</p>
             </div>
@@ -116,7 +117,7 @@
         <!-- small card -->
         <div class="small-box bg-primary">
             <div class="inner">
-                <h3> {{ $usersCount }}</h3>
+                <h3></h3>
 
                 <p>Total users</p>
             </div>
@@ -132,7 +133,7 @@
         <!-- small card -->
         <div class="small-box bg-success">
             <div class="inner">
-                <h3> {{ $usersCount }}</h3>
+                <h3></h3>
 
                 <p>Total users</p>
             </div>
@@ -149,7 +150,7 @@
         <!-- small card -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3>{{ $roomsCount }}</h3>
+                <h3></h3>
 
                 <p>Total rooms</p>
             </div>
@@ -163,8 +164,8 @@
     </div>
 
     <div class="container">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReservationModal">
-            <i class="fas fa-plus"></i> Create Reservation
+        <button  style="border-radius:8px;border:1px white;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReservationModal">
+            <i class="fas fa-plus"></i><strong style="margin-left:10px">Create Reservation</strong>
         </button>
 
 
@@ -193,7 +194,7 @@
 
     <!-- Modal for creating a new reservation -->
     <div class="modal fade" id="createReservationModal" tabindex="-1" role="dialog" aria-labelledby="createReservationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div style="border-radius:10px 0px 10px 0px"  class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5  class="modal-title" id="createReservationModalLabel">Create Reservation</h5>
@@ -201,7 +202,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div  class="modal-body">
                     <!-- Reservation creation form -->
                     <form method="POST" action="{{ route('superadmin.createReservation') }}" onsubmit="return validateForm()">
                         @csrf
@@ -222,8 +223,9 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="room"><i class="fas fa-bed"></i> Select Room:</label>
-                                    <select class="form-control" id="room" name="selectRoom" required>
+                                    <label for="room"><i class="fas fa-building"></i> Select Room:</label>
+                                    <input type="hidden" id="roomCapacity" value="">
+                                    <select class="form-control" id="selectRoom" name="selectRoom" required>
                                         @foreach($rooms as $room)
                                         <option value="{{ $room->id }}">{{ $room->name }}</option>
                                         @endforeach
@@ -255,16 +257,24 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="reservationTime"><i class="fas fa-clock"></i> Reservation Time:</label>
-                                    <input type="time" class="form-control" id="reservationTime" name="reservationTime" required>
+                                    <input type="time" class="form-control" id="booking_time" name="reservationTime" required>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="duration"><i class="fas fa-clock"></i> Duration (in hours):</label>
+                            <input type="number" class="form-control" id="duration" name="duration" required>
+                        </div>
+                    </div>
+
 
                         <!-- End Time -->
                         <div class="form-group">
-                            <label for="endTime"><i class="fas fa-clock"></i> End Time:</label>
-                            <input type="time" class="form-control" id="timeLimit" name="timelimit" required>
-                        </div>
+                    <label for="endtime"><i class="fas fa-clock"></i> End Time:</label>
+                    <input type="text" class="form-control" id="timeLimit" name="timelimit" required readonly>
+                </div>
+
 
                         <!-- Room selection -->
 
@@ -428,6 +438,61 @@
             bookingDateInput.min = currentDate;
         });
     </script>
+<script>
+    var durationInput = document.getElementById('duration');
+var reservationTimeInput = document.getElementById('booking_time');
+var timeLimitInput = document.getElementById('timeLimit');
 
+durationInput.addEventListener('input', function() {
+    var duration = parseInt(durationInput.value);
+
+    // Ensure the duration does not exceed 8 hours
+    if (duration > 10) {
+        durationInput.value = 10 // Set the duration to the maximum (8 hours)
+        duration = 10;
+    }
+
+    // Get the selected reservation time
+    var reservationTime = reservationTimeInput.value;
+
+    // Calculate the end of reservation
+    if (reservationTime) {
+        var startTime = new Date('2000-01-01T' + reservationTime);
+        startTime.setHours(startTime.getHours() + duration);
+
+        // Format the end time as 'hh:mm'
+        var endTime = startTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Update the timeLimit input with the calculated end time
+        timeLimitInput.value = endTime;
+    }
+});
+
+</script>
+<script>
+    // Get references to the elements
+   // Function to update the capacity tooltip based on the selected room
+function updateCapacityTooltip() {
+    var selectRoom = document.getElementById('selectRoom');
+    var capacityInput = document.getElementById('capacity');
+    
+    // Get the selected room's capacity
+    var selectedRoom = selectRoom.options[selectRoom.selectedIndex];
+    var roomCapacity = selectedRoom.getAttribute('data-capacity');
+    
+    // Set the tooltip (title) to display the room's capacity
+    capacityInput.setAttribute('title', 'Room Capacity: ' + roomCapacity + ' people');
+}
+
+// Attach an event listener to the room selection field
+document.getElementById('selectRoom').addEventListener('change', updateCapacityTooltip);
+
+// Initialize the tooltip when the page loads
+updateCapacityTooltip();
+
+</script>
 
     @endsection

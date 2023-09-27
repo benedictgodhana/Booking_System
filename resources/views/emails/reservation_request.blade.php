@@ -31,6 +31,7 @@
             @endif
         </li>
     </ul>
+    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
 
     <!-- You can include more reservation details here -->
 

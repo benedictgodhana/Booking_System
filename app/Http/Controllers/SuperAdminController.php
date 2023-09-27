@@ -73,7 +73,7 @@ class SuperAdminController extends Controller
 
     public function users()
     {
-        $users = User::with('roles')->where('role', '!=', 1)->paginate(5);
+        $users = User::with('roles')->where('role', '!=', 1)->paginate(7);
         $roles = Role::all();
         return view('super-admin.users', compact('users', 'roles'));
     }
@@ -207,12 +207,16 @@ class SuperAdminController extends Controller
             'user_id' => 'required|exists:users,id',
             'items' => 'nullable|array|max:5', // Assuming you want to allow up to 5 items
             'items.*' => 'exists:items,id', // Validate each item in the array
+            'duration' => 'required|integer',
             'reservationDate' => 'required|date',
             'reservationTime' => 'required',
             'timelimit' => 'required',
             'selectRoom' => 'required|exists:rooms,id',
             'event' => 'nullable|string',
         ]);
+
+        $startTime = strtotime($validatedData['reservationTime']);
+        $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
 
         // Check if the room is available at the selected date and time
         $isRoomAvailable = !DB::table('reservations')
@@ -234,9 +238,11 @@ class SuperAdminController extends Controller
         $reservation->item_id = $itemIds;
         $reservation->reservationDate = $validatedData['reservationDate'];
         $reservation->reservationTime = $validatedData['reservationTime'];
-        $reservation->timelimit = $validatedData['timelimit'];
+        $reservation->timelimit = $endTime; // Store the calculated end time
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->event = $validatedData['event'];
+
+        $reservation->status = 'accepted';
 
         // Save the reservation to the database
         $reservation->save();
@@ -268,15 +274,13 @@ class SuperAdminController extends Controller
 
         // Check if the current password matches the authenticated user's password
         if (!Hash::check($request->current_password, Auth::user()->password)) {
-            session()->flash('error', 'Incorrect current password');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Incorrect current password');
         }
 
         // Check if the new password is too obvious (e.g., contains "password" or "123456")
         $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
         if (in_array($request->new_password, $obviousPasswords)) {
-            session()->flash('error', 'Please choose a stronger password');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Please choose a stronger password');
         }
 
         // Update the user's password
@@ -284,7 +288,44 @@ class SuperAdminController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        session()->flash('success', 'Password changed successfully');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
+    public function searchReservations(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $status = $request->input('status');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+    
+        $query = Reservation::query();
+    
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+    
+        if (!empty($searchQuery)) {
+            $query->where(function ($subquery) use ($searchQuery) {
+                $subquery->whereHas('user', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhereHas('room', function ($query) use ($searchQuery) {
+                    $query->where('name', 'like', '%' . $searchQuery . '%');
+                })
+                ->orWhere('event', 'like', '%' . $searchQuery . '%');
+            });
+        }
+    
+        if (!empty($startDate) && !empty($endDate)) {
+            $query->whereBetween('ReservationDate', [$startDate, $endDate]);
+        }
+    
+        $Results = $query->paginate(10);
+    
+        return view('super-admin.search-results', compact('Results'));
+    }
+    
+    
+
+
+    
 }

@@ -92,7 +92,32 @@
             <button id="showAcceptedButton" class="btn btn-success">
                 <i class="fas fa-check-circle"></i> Show Accepted Reservations
             </button>
+        </div><br>
+
+        <form method="GET" action="{{ route('subadmin.searchReservations') }}">
+    <div class="form-row">
+        <div class="col-md-3">
+            <input type="text" name="search" class="form-control" placeholder="Search...">
         </div>
+        <div class="col-md-2">
+            <select name="status" class="form-control">
+                <option value="">Filter by Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Declined">Declined</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="end_date" class="form-control" placeholder="End Date">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
         <div id="pendingReservations" style="display: block;">
             <h2>Pending Reservations</h2>
             <table>

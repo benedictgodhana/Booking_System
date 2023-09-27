@@ -53,9 +53,8 @@ class ForgotPasswordController extends Controller
 
         if ($status == Password::PASSWORD_RESET) {
             // Show a SweetAlert on success
-            Alert::success('Success', 'Password has been reset successfully. You can now log in with your new password.');
 
-            return redirect()->route('login');
+            return redirect()->back()->with('status', 'Password has been reset successfully. You can now log in with your new password.');
         } else {
             return back()->withErrors(['email' => [__($status)]]);
         }

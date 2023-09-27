@@ -8,13 +8,13 @@ use App\Reservation;
 
 class RoomAvailability implements Rule
 {
-    protected $roomId;
+    protected $selectRoom;
     protected $reservationDate;
     protected $reservationTime;
 
-    public function __construct($roomId, $reservationDate, $reservationTime)
+    public function __construct($selectRoom, $reservationDate, $reservationTime)
     {
-        $this->roomId = $roomId;
+        $this->selectRoom = $selectRoom;
         $this->reservationDate = $reservationDate;
         $this->reservationTime = $reservationTime;
     }
@@ -22,7 +22,7 @@ class RoomAvailability implements Rule
     public function passes($attribute, $value)
     {
         // Check if there is a conflicting reservation for the same room, date, and time
-        return !ModelsReservation::where('room_id', $this->roomId)
+        return !ModelsReservation::where('selectRoom', $this->selectRoom)
             ->where('reservationDate', $this->reservationDate)
             ->where('reservationTime', $this->reservationTime)
             ->exists();

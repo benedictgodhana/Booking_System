@@ -16,7 +16,7 @@
 
     <p>Thank you for choosing our services!</p>
 
-    <p>For any inquiries, please contact us at <a href="mailto:booking@ilab.com">booking@ilab.com</a></p>
+    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
 
     <!-- Email Footer -->
     <p>© 2023 Strathmore. All rights reserved.</p>

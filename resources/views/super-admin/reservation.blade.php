@@ -82,6 +82,8 @@
 
    <!-- Table for pending reservations -->
 
+   
+
    <div class="user-table">
        <div>
            <button id="showPendingButton" class="btn btn-primary">
@@ -90,7 +92,35 @@
            <button id="showAcceptedButton" class="btn btn-success">
                <i class="fas fa-check-circle"></i> Show Accepted Reservations
            </button>
-       </div>
+       </div><br>
+       <!-- Add this code within your Blade view -->
+<form method="GET" action="{{ route('superadmin.searchReservations') }}">
+    <div class="form-row">
+        <div class="col-md-3">
+            <input type="text" name="search" class="form-control" placeholder="Search...">
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-control">
+                <option value="">Filter by Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Declined">Declined</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="end_date" class="form-control" placeholder="End Date">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
+
+       
+
        <div id="pendingReservations" style="display: block;">
            <h2>Pending Reservations</h2>
            <table>
@@ -145,28 +175,30 @@
                    </td>
                </tr>
                @endforeach
+               
            </table>
            <nav aria-label="Page navigation">
-               <ul class="pagination justify-content-center">
-                   <li class="page-item {{ $pendingReservations->currentPage() == 1 ? 'disabled' : '' }}">
-                       <a class="page-link" href="{{ $pendingReservations->previousPageUrl() }}" aria-label="Previous">
-                           <span aria-hidden="true">&laquo;</span>
-                       </a>
-                   </li>
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ $pendingReservations->currentPage() == 1 ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $pendingReservations->previousPageUrl() }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
 
-                   @for ($i = 1; $i <= $pendingReservations->lastPage(); $i++)
-                       <li class="page-item {{ $i == $pendingReservations->currentPage() ? 'active' : '' }}">
-                           <a class="page-link" href="{{ $pendingReservations->url($i) }}">{{ $i }}</a>
-                       </li>
-                       @endfor
+                @for ($i = 1; $i <= $pendingReservations->lastPage(); $i++)
+                    <li class="page-item {{ $i == $pendingReservations->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $pendingReservations->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
 
-                       <li class="page-item {{ $pendingReservations->currentPage() == $pendingReservations->lastPage() ? 'disabled' : '' }}">
-                           <a class="page-link" href="{{ $pendingReservations->nextPageUrl() }}" aria-label="Next">
-                               <span aria-hidden="true">&raquo;</span>
-                           </a>
-                       </li>
-               </ul>
-           </nav>
+                <li class="page-item {{ $pendingReservations->currentPage() == $pendingReservations->lastPage() ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $pendingReservations->nextPageUrl() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
        </div>
 
        <!-- Table for accepted reservations -->
@@ -223,26 +255,27 @@
                @endforeach
            </table>
            <nav aria-label="Page navigation">
-               <ul class="pagination justify-content-center">
-                   <li class="page-item {{ $acceptedReservations->currentPage() == 1 ? 'disabled' : '' }}">
-                       <a class="page-link" href="{{ $acceptedReservations->previousPageUrl() }}" aria-label="Previous">
-                           <span aria-hidden="true">&laquo;</span>
-                       </a>
-                   </li>
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{ $acceptedReservations->currentPage() == 1 ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $acceptedReservations->previousPageUrl() }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
 
-                   @for ($i = 1; $i <= $acceptedReservations->lastPage(); $i++)
-                       <li class="page-item {{ $i == $acceptedReservations->currentPage() ? 'active' : '' }}">
-                           <a class="page-link" href="{{ $acceptedReservations->url($i) }}">{{ $i }}</a>
-                       </li>
-                       @endfor
+            @for ($i = 1; $i <= $acceptedReservations->lastPage(); $i++)
+                <li class="page-item {{ $i == $acceptedReservations->currentPage() ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $acceptedReservations->url($i) }}">{{ $i }}</a>
+                </li>
+            @endfor
 
-                       <li class="page-item {{ $acceptedReservations->currentPage() == $acceptedReservations->lastPage() ? 'disabled' : '' }}">
-                           <a class="page-link" href="{{ $acceptedReservations->nextPageUrl() }}" aria-label="Next">
-                               <span aria-hidden="true">&raquo;</span>
-                           </a>
-                       </li>
-               </ul>
-           </nav>
+            <li class="page-item {{ $acceptedReservations->currentPage() == $acceptedReservations->lastPage() ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $acceptedReservations->nextPageUrl() }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
        </div>
 
        @foreach($pendingReservations as $reservation)
@@ -563,4 +596,74 @@
                });
            }
        </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const showPendingButton = document.getElementById('showPendingButton');
+        const showAcceptedButton = document.getElementById('showAcceptedButton');
+        const pendingReservations = document.getElementById('pendingReservations');
+        const acceptedReservations = document.getElementById('acceptedReservations');
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const filterButton = document.getElementById('filterButton');
+        const reservationsTable = document.getElementById('reservationsTable'); // Change the ID to match your table
+
+        showPendingButton.addEventListener('click', function() {
+            pendingReservations.style.display = 'block';
+            acceptedReservations.style.display = 'none';
+        });
+
+        showAcceptedButton.addEventListener('click', function() {
+            pendingReservations.style.display = 'none';
+            acceptedReservations.style.display = 'block';
+        });
+
+        filterButton.addEventListener('click', function() {
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+
+            // Use AJAX to fetch filtered reservations
+            $.ajax({
+                url: '{{ route('filter.pendingReservations') }}', // Define your backend route for pending reservations
+                type: 'POST', // You can use POST or GET depending on your backend route
+                data: {
+                    startDate: startDate,
+                    endDate: endDate,
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    const reservations = response.reservations;
+
+                    // Clear the current table
+                    reservationsTable.innerHTML = '';
+
+                    // Add headers to the table
+                    reservationsTable.innerHTML = `
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <!-- Add other headers as needed -->
+                        </tr>
+                    `;
+
+                    // Populate the table with filtered reservations
+                    reservations.forEach(function(reservation) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${reservation.name}</td>
+                            <td>${reservation.department}</td>
+                            <!-- Add other columns as needed -->
+                        `;
+                        reservationsTable.appendChild(row);
+                    });
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+
+
        @endsection

@@ -45,14 +45,12 @@
     }
 
     /* Style for form inputs */
-    .profile-form input[type="text"],
-    .profile-form input[type="email"],
     .profile-form input[type="password"] {
         width: 50%;
         padding: 10px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
-        border-radius: 0px 15px 0px 15px;
+        border-radius: 15px;
         font-size: 16px;
     }
 
@@ -82,8 +80,6 @@
             font-size: 20px;
         }
 
-        .profile-form input[type="text"],
-        .profile-form input[type="email"],
         .profile-form input[type="password"] {
             font-size: 14px;
         }
@@ -93,9 +89,26 @@
         }
     }
 </style>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '{{ session('success')}}',
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '{{ session('error') }}',
+        });
+    </script>
+@endif
 
 <div class="profile-container">
-    <h1 style="text-align:center">User's Profile</h1>
+    <h1 style="text-align:center">Change Password</h1>
     <hr>
 
     <!-- Display user information -->
@@ -112,7 +125,7 @@
     <hr>
 
     <div class="form-group">
-        <label for="department"><strong>Unit:</strong></label>
+        <label for="department"><strong>Department:</strong></label>
         <p class="form-control-static">{{ Auth::user()->department }}</p>
     </div>
     <hr>
@@ -129,11 +142,11 @@
         <form method="POST" action="{{ route('updatePassword') }}" onsubmit="return validateForm()">
             @csrf
             <div class="form-group">
-                <label for="current_password">Current Password</label>
+                <label for="current_password"><i class="fas fa-lock input-icon"></i> Current Password</label>
                 <input type="password" name="current_password" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="new_password">New Password</label>
+                <label for="new_password"><i class="fas fa-lock input-icon"></i> New Password</label>
                 <div style="width:50%" class="input-group">
                     <input type="password" name="new_password" id="new_password" class="form-control" required>
                     <div style="height:40px" class="input-group-append">
@@ -144,7 +157,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="new_password_confirmation">Confirm New Password</label>
+                <label for="new_password_confirmation"><i class="fas fa-lock input-icon"></i>Confirm New Password</label>
                 <div style="width:50%" class="input-group">
                     <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required>
                     <div style="height:40px" class="input-group-append">
@@ -158,7 +171,9 @@
         </form>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     function validateForm() {
         // Get the values of the password inputs
@@ -194,22 +209,11 @@
             return false; // Prevent form submission
         }
 
-
         // If all validations pass, the form will be submitted
         return true;
     }
 </script>
 
-<script>
-    // Check if password change was successful
-    @if(session('password_changed'))
-    Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Password changed successfully'
-    });
-    @endif
-</script>
 <script>
     // Function to toggle password visibility
     function togglePasswordVisibility(inputId, checkboxId) {
@@ -232,5 +236,4 @@
         togglePasswordVisibility('new_password_confirmation', 'show_confirmation');
     });
 </script>
-
 @endsection

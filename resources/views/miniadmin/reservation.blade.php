@@ -1,4 +1,4 @@
-    @php
+@php
     use Carbon\Carbon;
     @endphp
 
@@ -92,7 +92,32 @@
             <button id="showAcceptedButton" class="btn btn-success">
                 <i class="fas fa-check-circle"></i> Show Accepted Reservations
             </button>
+        </div><br>
+
+        <form method="GET" action="{{ route('miniadmin.searchReservations') }}">
+    <div class="form-row">
+        <div class="col-md-3">
+            <input type="text" name="search" class="form-control" placeholder="Search...">
         </div>
+        <div class="col-md-2">
+            <select name="status" class="form-control">
+                <option value="">Filter by Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Declined">Declined</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="start_date" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="end_date" class="form-control" placeholder="End Date">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+</form>
         <div id="pendingReservations" style="display: block;">
             <h2>Pending Reservations</h2>
             <table>
@@ -129,8 +154,8 @@
                     <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                     <td>{{ $reservation->event }}</td>
                     <td>{{ $reservation->reservationDate }}</td>
-                    <td>{{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
-                    <td>{{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
+                    <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
+                    <td>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                     <td>{{ $reservation->room->name }}</td>
                     <td>{{ $reservation->status }}</td>
                     <td>{{ $reservation->remarks }}</td>
@@ -208,8 +233,8 @@
                     <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                     <td>{{ $reservation->event }}</td>
                     <td>{{ $reservation->reservationDate }}</td>
-                    <td>{{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
-                    <td>{{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
+                    <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
+                    <td>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                     <td>{{ $reservation->room->name }}</td>
                     <td>{{ $reservation->status }}</td>
                     <td>{{ $reservation->remarks }}</td>
@@ -313,7 +338,7 @@
                                 <!-- Reservation Time -->
                                 <div class="form-group">
                                     <label><i class="fas fa-clock"></i> Reservation Time:</label>
-                                    <p>{{ $reservation->reservationTime }}</p>
+                                    <p>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</p>
                                 </div>
                                 <hr>
                                 <div class="form-group">
@@ -334,56 +359,7 @@
         </div>
         @endforeach
 
-        @foreach($acceptedReservations as $reservation)
-        <div class="modal fade" id="updateModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ $reservation->id }}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="updateModalLabel{{ $reservation->id }}">Update Reservation Status</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="{{ route('superadmin.updateReservationStatus', $reservation->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="modal-body">
-                            <!-- Status field -->
-                            <div class="form-group row">
-                                <label for="status" class="col-sm-3 col-form-label">
-                                    <i class="fas fa-info-circle"></i> Status:
-                                </label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" name="status" id="status">
-                                        <option value="Accepted">Accepted</option>
-                                        <option value="Declined">Declined</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Remarks field (optional) -->
-                            <div class="form-group row">
-                                <label for="remarks" class="col-sm-3 col-form-label">
-                                    <i class="fas fa-comment"></i> Remarks:
-                                </label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" name="remarks" id="remarks" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" onclick="showAlert('Success', 'Reservation status updated successfully!', 'success')">
-                                <i class="fas fa-check"></i> Update
-                            </button>
-                            @include('sweet::alert')
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
+      
         @foreach($pendingReservations as $reservation)
         <div class="modal fade" id="updateModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ $reservation->id }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -499,7 +475,7 @@
                                 <!-- Reservation Time -->
                                 <div class="form-group">
                                     <label><i class="fas fa-clock"></i> Reservation Time:</label>
-                                    <p>{{ $reservation->reservationTime }}</p>
+                                    <p>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</p>
                                 </div>
                                 <hr>
                                 <div><label><i class="fas fa-check-circle"></i> Status:</label>
