@@ -92,6 +92,7 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::get('/profile', [SuperAdminController::class, 'showProfile'])->name('superadmin.profile.show');
     Route::post('/profile/update-password', [SuperAdminController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::get('/search-reservations', [SuperAdminController::class,'searchReservations'])->name('superadmin.searchReservations');
+    Route::get('/generate-pdf', [SuperAdminController::class, 'generatePDF'])->name('generate-pdf');
 
 
 

@@ -101,7 +101,7 @@
                 <form action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
                     <div class="input-group mb-3">
-                        <input id="email" type="email" name="email" class="form-control" placeholder="Email" required>
+                        <input style="border:1px solid #ccc" id="email" type="email" name="email" class="form-control" placeholder="Email" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -113,7 +113,7 @@
                     @enderror
                     <!-- ... Other form fields ... -->
                     <div class="input-group mb-3">
-                        <input id="password" type="password" name="password" class="form-control" placeholder="Password" required>
+                        <input style="border:1px solid #ccc" id="password" type="password" name="password" class="form-control" placeholder="Password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -158,7 +158,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <p class="mb-0"><i class="fas fa-key mr-2"></i> Forgot your password?</p>
-                            <a href="{{ route('password.request') }}" class="text-info"><i class="fas fa-unlock-alt mr-1"></i> Reset Password</a>
+                            <a href="{{ route('password.request') }}" class="text-info"><i style="margin-left:20px" class="fas fa-unlock-alt mr-1"></i>Reset Password</a>
                         </div>
                         <hr>
                         <p class="mb-2">

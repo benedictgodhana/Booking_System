@@ -101,7 +101,7 @@
                     <input type="hidden" name="token" value="{{ $token }}">
 
                     <div class="input-group mb-3">
-                        <input id="email" type="email" name="email" class="form-control" placeholder="Email" required>
+                        <input style="border:1px solid #ccc" id="email" type="email" name="email" class="form-control" placeholder="Email" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -113,7 +113,7 @@
                     @enderror
 
                     <div class="input-group mb-3">
-                        <input id="password" type="password" name="password" class="form-control" placeholder="New Password" required>
+                        <input style="border:1px solid #ccc" id="password" type="password" name="password" class="form-control" placeholder="New Password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -125,7 +125,7 @@
                     @enderror
 
                     <div class="input-group mb-3">
-                        <input id="password_confirmation" type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
+                        <input style="border:1px solid #ccc" id="password_confirmation" type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -135,7 +135,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+                            <button type="submit" class="btn btn-success btn-block">Reset Password</button>
                         </div>
                     </div>
                 </form>

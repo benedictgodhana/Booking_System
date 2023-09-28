@@ -136,10 +136,8 @@
   <div id="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
-      <div class="sidebar-header" style="background-color:#007BFF;color: #fff;">
-        <h3 style="font-size: 20px;margin-bottom: 10px;">Room Booking System</h3>
-        <hr style="border-color: white;">
-        <p style=" font-size: 18px;font-weight: bold;">Welcome, {{ Auth::user()->name }}</p> <!-- Display the user's name here -->
+      <div class="sidebar-header" style="background-color:#007BFF;color: #fff;border:2px solid #ccc; border-radius:5px">
+      <img src="/logo/iLab white Logo-01.png" style="max-width:250px;height:150px;margin-left:-20px" alt="">
       </div>
 
       <ul class="list-unstyled components">
@@ -149,22 +147,22 @@
         @if(auth()->user()->role == 1)
         <!-- Admin menu -->
         <li>
-          <a href="{{ route('sdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('sdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('sadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('sadminreservation') }}"><i class="fa fa-calendar"></i>All Reservation</a>
         </li>
         <li>
-          <a href="{{ route('superAdminUsers') }}"><i class="fa fa-users"></i> Users</a>
+          <a   style="border:2px solid #ccc; border-radius:10px" href="{{ route('superAdminUsers') }}"><i class="fa fa-users"></i> Users</a>
         </li>
         <li>
-          <a href="{{ route('manageRole') }}"><i class="fa fa-cogs"></i> Manage Role</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('manageRole') }}"><i class="fa fa-cogs"></i> Manage Role</a>
         </li>
         <li>
-          <a href="{{ route('superadminactivities') }}"><i class="fa fa-history mr-3"></i>System Activities</a>
+          <a   style="border:2px solid #ccc; border-radius:10px" href="{{ route('superadminactivities') }}"><i class="fa fa-history mr-3"></i>System Activities</a>
         </li>
         <li>
-          <a href="{{route('superadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{route('superadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
         </li>
 
         @endif
@@ -172,16 +170,16 @@
         @if(auth()->user()->role == 0)
         <!-- User menu -->
         <li>
-          <a href="{{route('userdashboard')}}"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{route('userdashboard')}}"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('booking') }}"><i class="fa fa-building"></i> Book</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('booking') }}"><i class="fa fa-building"></i> Book</a>
         </li>
         <li>
-          <a href="{{ route('reservation') }}"><i class="fa fa-calendar"></i>My Bookings</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('reservation') }}"><i class="fa fa-calendar"></i>My Bookings</a>
         </li>
         <li>
-          <a href="{{route('user.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{route('user.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
         </li>
 
 
@@ -190,10 +188,10 @@
         @if(auth()->user()->role == 2)
         <!-- Sub-admin menu -->
         <li>
-          <a href="{{ route('subdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('subadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
         </li>
         <li>
           <a href="{{route('subadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
@@ -205,13 +203,13 @@
         @if(auth()->user()->role == 3)
         <!-- Admin menu -->
         <li>
-          <a href="{{ route('admindashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('admindashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('adminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('adminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
         </li>
         <li>
-          <a href="{{route('admin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
+          <a  style="border:2px solid #ccc; border-radius:10px"  href="{{route('admin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
         </li>
 
         @endif
@@ -219,21 +217,24 @@
         @if(auth()->user()->role == 4)
         <!-- Mini-admin menu -->
         <li>
-          <a href="{{ route('minidashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('minidashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
         </li>
         <li>
-          <a href="{{ route('miniadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('miniadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
         </li>
         <li>
-          <a href="{{route('miniadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{route('miniadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
         </li>
 
 
         @endif
 
         <!-- Logout -->
-        <li>
-          <a href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        <li >
+          <a  style="border:2px solid #ccc; border-radius:10px" href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        </li>
+        <li class="bg-success" style="border:2px solid; border-radius:10px">
+        <p style="font-size: 18px;font-weight: bold; margin-left:20px;margin-top:10px"><i class="fa fa-user"></i> Welcome, <span style="color:black">{{ Auth::user()->name }}!!</span></p> <!-- Display the user's name here -->
         </li>
       </ul>
     </nav>
@@ -247,6 +248,7 @@
   <script src="{{ asset('js/popper.js') }}"></script>
   <script src="{{ asset('js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
+ 
 </body>
 
 </html>

@@ -110,7 +110,7 @@
                     @csrf
 
                     <div class="input-group mb-3">
-                        <input id="email" type="email" name="email" class="form-control" placeholder="Email" required>
+                        <input style="border:1px solid #ccc;" id="email" type="email" name="email" class="form-control" placeholder="Email" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -123,7 +123,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-success btn-block">Check Activation status</button>
+                            <button type="submit" class="btn btn-success btn-block">Activate Account</button>
                         </div>
                     </div>
                 </form>
