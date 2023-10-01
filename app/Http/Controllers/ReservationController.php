@@ -242,6 +242,25 @@ class ReservationController extends Controller
         return response()->json(['reservations' => $filteredReservations]);
     }
 
+    public function cancelReservation($id)
+{
+    // Your cancellation logic here
+    // For example, you can update the reservation status to "Canceled"
+
+    $reservation = Reservation::find($id);
+    if ($reservation) {
+        $reservation->update([
+            'status' => 'Canceled',
+        ]);
+
+        // You can also add any additional logic here, such as sending notifications, etc.
+
+        return redirect()->back()->with('success', 'Reservation has been canceled successfully.');
+    }
+
+    return redirect()->back()->with('error', 'Reservation not found.');
+}
+
 }
 
 

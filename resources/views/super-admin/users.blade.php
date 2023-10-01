@@ -127,6 +127,30 @@
                 </button>
             </div><br><br>
 
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label for="roleFilter">Filter by Role:</label>
+                            <select class="form-control" id="roleFilter" onchange="filterAndSearch()">
+                                <option value="">All</option>
+                                <option value="Users">User</option>
+                                <option value="SuperAdmin">SuperAdmin</option>   
+                                <option value="SubAdmin">SubAdmin</option>
+                                <option value="MiniAdmin">MiniAdmin</option> 
+                                <option value="Admin">Admin</option>       
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label for="userSearch">Search Users:</label>
+                        <input type="text" class="form-control" id="userSearch" placeholder="Search by name or email" onkeyup="filterAndSearch()">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
             @if (Session::has('success'))
             <div class="alert alert-success" id="success-alert">
                 {{ Session::get('success') }}
@@ -151,7 +175,7 @@
             @endif
 
             <!-- Modify the table structure in your blade file -->
-            <table class="table">
+            <table class="table" id="userTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -491,6 +515,8 @@
 
 
 <script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
     function showAlert(title, message, icon) {
@@ -519,5 +545,51 @@
         }
     });
 </script>
+<script>
+    // Function to filter and search
+    function filterAndSearch() {
+        // JavaScript code for filtering and searching
+    }
+
+    // Event listeners for filter and search inputs
+    document.getElementById('roleFilter').addEventListener('change', filterAndSearch);
+    document.getElementById('userSearch').addEventListener('input', filterAndSearch);
+
+    // Initial filtering and searching
+    filterAndSearch();
+</script>
+
+<script>
+    // JavaScript function to filter and search table rows
+    function filterAndSearch() {
+        // Get selected filter value
+        var filter = document.getElementById("roleFilter").value.toLowerCase();
+        // Get search input value
+        var search = document.getElementById("userSearch").value.toLowerCase();
+        // Get the table rows
+        var rows = document.getElementById("userTable").getElementsByTagName("tr");
+
+        // Loop through all table rows
+        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the table header row
+            var row = rows[i];
+            var user = row.getElementsByTagName("td")[0].textContent.toLowerCase(); // Get user column value
+            var name = row.getElementsByTagName("td")[1].textContent.toLowerCase(); // Get name column value
+            var email = row.getElementsByTagName("td")[2].textContent.toLowerCase(); // Get email column value
+            var role = row.getElementsByTagName("td")[3].textContent.toLowerCase(); // Get role column value
+            var department = row.getElementsByTagName("td")[4].textContent.toLowerCase(); // Get department column value
+
+            // Check if the row matches the filter and search criteria
+            var filterMatch = (filter === "" || filter === "all" || (filter === "Admin" && role === "Admin") || (filter === "subadmin" && role === "SubAdmin"));
+            var searchMatch = (search === "" || user.includes(search) || name.includes(search) || email.includes(search) || role.includes(search) || department.includes(search));
+
+            if (filterMatch && searchMatch) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
+        }
+    }
+</script>
+
 
 @endsection

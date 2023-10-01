@@ -23,7 +23,6 @@ class ActivationController extends Controller
         $user->save();
 
         // Log in the user (optional)
-        auth()->login($user);
 
         // Redirect to a success page or show a message
         return view('activation_success');

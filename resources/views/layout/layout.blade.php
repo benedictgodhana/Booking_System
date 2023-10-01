@@ -5,6 +5,7 @@
   <title>Room Booking App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link style="max-width:20px" rel="icon" type="image/x-icon" href="">
 
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
   <!-- Include Select2 CSS and JS from CDN -->
@@ -194,7 +195,7 @@
           <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
         </li>
         <li>
-          <a href="{{route('subadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
+          <a style="border:2px solid #ccc; border-radius:10px" href="{{route('subadmin.profile.show')}}"><i class="fa fa-user"></i> Profile</a>
         </li>
 
 

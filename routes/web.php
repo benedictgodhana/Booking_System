@@ -186,6 +186,8 @@ Route::post('/users/activate/{user}', [UserController::class, 'activateUser'])->
 // Deactivation Route
 Route::post('/deactivate-user/{user}', [UserController::class, 'deactivateUser'])->name('deactivate.user');
 
+Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.updateProfile');
+
 
 // routes/web.php
 Route::get('/guest-booking', [GuestBookingController::class, 'showForm'])->name('guest.booking.form');
@@ -201,10 +203,14 @@ Route::get('/activate/{user}/{token}', [AuthController::class, 'activateAccount'
 
 Route::post('/send-reservation-email', [ReservationController::class, 'sendEmail']);
 Route::post('/filter-reservations', [ReservationController::class,'filterReservations'])->name('filter');
+Route::delete('/cancel-reservation/{id}',[ReservationController::class,'cancelReservation'])->name('cancelReservation');
+Route::get('/user/searchReservations', [UserController::class,'searchReservations'])->name('user.searchReservations');
+
+
 
 
 
 Route::post('/account/check-activation', [UserController::class, 'checkActivation'])->name('account.check-activation');
-Route::get('/password/change', [UserController::class, 'changePassword'])->name('password.change'); // Implement this method in UserController
+Route::post('/password/change', [UserController::class, 'changePassword'])->name('password.change'); // Implement this method in UserController
 Route::get('/filter/pending-reservations', [ReservationController::class,'filter'])->name('filter.pendingReservations');
 

@@ -78,18 +78,26 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         $userCredential = $request->only('email', 'password');
-
+    
         // Attempt to authenticate the user
         if (Auth::attempt($userCredential)) {
             // Check if the user is activated
             $user = Auth::user();
-
+    
             if ($user->activated) {
                 // User is activated, proceed with login
-                $route = $this->redirectDash();
-                return response()->json(['success' => true, 'redirectTo' => $route]);
+    
+                // Check if it's the user's first login
+                if ($user->first_login) {
+                    // Redirect to the password change page
+                    return redirect()->route('password.change');
+                } else {
+                    // Redirect to the regular dashboard
+                    $route = $this->redirectDash();
+                    return response()->json(['success' => true, 'redirectTo' => $route]);
+                }
             } else {
                 // User is not activated, log them out and return an error message
                 Auth::logout();
@@ -100,7 +108,7 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => 'Username & Password is incorrect']);
         }
     }
-
+    
 
     public function loadLogin()
     {

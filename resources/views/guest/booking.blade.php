@@ -73,9 +73,9 @@
 
 <body>
     <div class="card card-outline card-primary">
-        <a href='/' class="btn btn-primary"><i class="fas fa-arrow-left"></i><strong> Back to Home page</strong> </a>
         <div class="card-header text-center">
             <div class="login-logo">
+            <a href='/' class="btn btn-primary"><i class="fas fa-home mr-2"></i><strong> Back to Home page</strong> </a>
                 <img src="logo/LOGO_2.png" alt="Logo">
             </div>
         </div>

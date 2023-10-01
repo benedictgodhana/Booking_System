@@ -324,36 +324,53 @@ class SuperAdminController extends Controller
         return view('super-admin.search-results', compact('Results'));
     }
 
-public function generatePDF()
-{
-    // Create a new TCPDF instance
-    $pdf = new TCPDF();
-
-    // Set document information
-    $pdf->SetCreator('iLab Booking System');
-    $pdf->SetAuthor('Your Name');
-    $pdf->SetTitle('System Activities PDF');
-    $pdf->SetSubject('System Activities Report');
-    $pdf->SetKeywords('system activities, report, PDF');
-    $pdf->SetMargins(20, 20, 20);
-    // Add a page
-    $pdf->AddPage();
-
-    // Set font
-    $pdf->SetFont('times', '', 12);
-        $activities=Activity::All();
-            // Extend the PDF template
-        // Extend the PDF template and pass the $activities variable
-        $pdf->writeHTML(view('pdf.template', ['activities' => $activities])->render());
-
-    $pdf->SetY(-15); // Move to the bottom of the page
-    $pdf->SetFont('helvetica', 'I', 8);
-    $pdf->Cell(0, 10, 'Page ' . $pdf->getAliasNumPage() . ' of ' . $pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-
-
-    // Output the PDF (inline or as a download)
-    $pdf->Output('system_activities.pdf', 'D');
-}
+    public function generatePDF(Request $request)
+    {
+        // Get the search and filter criteria from the request
+        $search = $request->input('search');
+        $filter = $request->input('filter');
+    
+        // Query the activities based on the filter and search criteria
+        $query = Activity::query();
+        
+        if ($filter === 'action') {
+            $query->where('action', 'like', '%' . $search . '%');
+        } elseif ($filter === 'user') {
+            $query->whereHas('user', function ($userQuery) use ($search) {
+                $userQuery->where('name', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $filteredActivities = $query->get();
+    
+        // Create a new TCPDF instance
+        $pdf = new TCPDF();
+    
+        // Set document information
+        $pdf->SetCreator('iLab Booking System');
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('System Activities PDF');
+        $pdf->SetSubject('System Activities Report');
+        $pdf->SetKeywords('system activities, report, PDF');
+        $pdf->SetMargins(20, 20, 20);
+    
+        // Add a page
+        $pdf->AddPage();
+    
+        // Set font
+        $pdf->SetFont('times', '', 12);
+    
+        // Extend the PDF template and pass the $filteredActivities variable
+        $pdf->writeHTML(view('pdf.template', ['activities' => $filteredActivities])->render());
+    
+        $pdf->SetY(-15); // Move to the bottom of the page
+        $pdf->SetFont('helvetica', 'I', 8);
+        $pdf->Cell(0, 10, 'Page ' . $pdf->getAliasNumPage() . ' of ' . $pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    
+        // Output the PDF (inline or as a download)
+        return $pdf->Output('system_activities.pdf', 'D');
+    }
+    
 
     
 

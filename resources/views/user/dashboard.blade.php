@@ -82,6 +82,7 @@
             display: flex;
             flex-direction: row;
             align-items: flex-start;
+            width: 1200px;
         }
 
         /* Add styles for the legend */

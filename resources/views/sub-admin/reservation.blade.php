@@ -163,6 +163,7 @@
 
 
                     <td class="actions">
+                        
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal{{ $reservation->id }}">
                             <i class="fas fa-edit"></i>Update Status
                         </button>

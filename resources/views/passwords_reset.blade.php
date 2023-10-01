@@ -114,8 +114,11 @@
 
                     <div class="input-group mb-3">
                         <input style="border:1px solid #ccc" id="password" type="password" name="password" class="form-control" placeholder="New Password" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
+                            <button type="button" id="showPasswordBtn" onclick="togglePasswordVisibility()">
+                <i id="showPasswordIcon" class="far fa-eye"></i> <!-- Initially, the icon shows an open eye -->
+            </button>                        
+            <div class="input-group-append">
+                                <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
@@ -126,6 +129,9 @@
 
                     <div class="input-group mb-3">
                         <input style="border:1px solid #ccc" id="password_confirmation" type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
+                        <button type="button" id="showConfirmPasswordBtn" onclick="toggleConfirmPasswordVisibility()">
+                            <i id="showConfirmPasswordIcon" class="far fa-eye"></i>
+                        </button>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -161,6 +167,36 @@
     <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="../../dist/js/adminlte.min.js"></script>
+    <script>
+function togglePasswordVisibility() {
+    var passwordInput = document.getElementById('password');
+    var showPasswordIcon = document.getElementById('showPasswordIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showPasswordIcon.className = 'far fa-eye-slash'; // Change the icon to a slashed eye (password visible)
+    } else {
+        passwordInput.type = 'password';
+        showPasswordIcon.className = 'far fa-eye'; // Change the icon back to an open eye (password hidden)
+    }
+}
+</script>
+<script>
+function toggleConfirmPasswordVisibility() {
+    var confirmPasswordInput = document.getElementById('password_confirmation');
+    var showConfirmPasswordIcon = document.getElementById('showConfirmPasswordIcon');
+
+    if (confirmPasswordInput.type === 'password') {
+        confirmPasswordInput.type = 'text';
+        showConfirmPasswordIcon.className = 'far fa-eye-slash';
+    } else {
+        confirmPasswordInput.type = 'password';
+        showConfirmPasswordIcon.className = 'far fa-eye';
+    }
+}
+</script>
+
+
 </body>
 
 </html>

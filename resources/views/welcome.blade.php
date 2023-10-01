@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link style="max-width:20px" rel="icon" type="image/x-icon" href="/logo/LOGO_2.png">
     <title>Booking Calendar</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
 
+    <!-- ... Your existing head content ... -->
     <style>
         /* Calendar buttons */
         .fc button {
@@ -36,6 +37,7 @@
             background-color: darkblue;
             padding-top: 20px;
             border-radius: 1px 5px;
+            box-shadow: 0 0 5px #333; /* Add a box shadow for depth */
         }
 
         /* Sidebar content */
@@ -49,6 +51,60 @@
             width: 250px;
             margin-bottom: 20px;
         }
+                #calendar {
+            max-width: 100%;
+            background-color: #ffffff; /* Background color of the calendar */
+            border: 1px solid #ccc; /* Border around the calendar */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 0 5px #888; /* Box shadow for a subtle depth effect */
+            padding: 10px;
+            margin: 0px;
+        }
+
+        /* Style the header of the calendar */
+        #calendar .fc-toolbar {
+            background-color:darkblue; /* Header background color */
+            color: #ffffff; /* Header text color */
+            border-radius: 5px 5px 0 0; /* Rounded corners for the top */
+        }
+
+        /* Style the buttons in the header */
+        #calendar .fc-toolbar button {
+            background-color:yellowgreen;
+            color: #ffffff;
+            border: none;
+            border-radius: 0;
+            margin: 2px;
+        }
+
+        #calendar .fc-toolbar button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the events in the calendar */
+        #calendar .fc-event {
+            background-color:yellowgreen; /* Event background color */
+            color: #ffffff; /* Event text color */
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 2px;
+        }
+
+        #calendar .fc-event:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the time display in the calendar */
+        #calendar .fc-time {
+            color: #333; /* Time text color */
+            font-weight: bold;
+        }
+
+        /* Style the event details when hovering */
+      
+        /* Style the event  details when not hovering */
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -65,7 +121,6 @@
 
         /* Mobile view styles */
         @media (max-width: 576px) {
-
             /* Adjust the sidebar for mobile view */
             .sidebar {
                 width: 100%;
@@ -89,7 +144,9 @@
 
             .calendar {
                 max-width: 100%;
-                /* Make the calendar responsive */
+                border: 2px solid #ccc; /* Add a border to the calendar */
+                background-color: white; /* Set the background color for the calendar */
+                
             }
 
             /* Add styles for the legend */
@@ -112,7 +169,36 @@
                 border-radius: 50%;
             }
 
+            .current-time {
+                background-color: #f0f0f0;
+                /* Set background color for the current time display */
+                border: 1px solid #ccc;
+                /* Add a border to the current time display */
+                padding: 10px;
+                margin: 10px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px #888;
+                /* Add space between the calendar and the current time display */
+                margin-top: 20px;
+                /* Align the text center in the current time display */
+                text-align: center;
+            }
 
+            /* Glass Effect for the Current Time Display */
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+                border: none;
+                border-radius: 25px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Box shadow for the glass effect */
+                color: #333; /* Text color */
+                padding: 10px;
+                transition: background 0.3s ease; /* Smooth transition for background */
+            }
+
+            /* Hover effect for the glass button */
+            .glass-effect:hover {
+                background: rgba(255, 255, 255, 0.8); /* Lighten the background on hover */
+            }
         }
     </style>
 </head>
@@ -124,7 +210,7 @@
             <hr style="border-color: white; border-width: 4px;">
             <div class="sidebar-buttons" style="padding:10px">
                 <a href="/login" class="btn btn-success btn-block">Login</a>
-                <a href="{{route('guest.booking.form')}}" style="background-color:orange ; color:white" class="btn btn- btn-block">Guest Booking</a>
+                <a href="{{route('guest.booking.form')}}" style="background-color:orange ; color:white;" class="btn btn- btn-block">Guest Booking</a>
             </div>
             <p></p>
         </div>
@@ -132,9 +218,24 @@
     <br><br>
 
     <div class="container">
+    <h1>Booking Calendar</h1> <!-- Add your page title here -->
         <div class="calendar-container">
-            <div class="calender" id="calendar" style="max-width: 1350px; width:1200px;margin-left:-20px"></div>
-            <div class="legend" style=" margin-left: 1220px;margin-top:-500px;width:200px">
+            <!-- Current Time Display -->
+            <div class="current-time">
+              <button style=" background: rgba(255, 255, 15, 0.5); /* Semi-transparent white background */
+                    border: none;
+                    border-radius: 25px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Box shadow for the glass effect */
+                    color: #333; /* Text color */
+                    padding: 10px;
+                    transition: background 0.3s ease;font-weight:900" class="btn btn-success glass-effect"><strong>Current Time:</strong> <span id="current-time"></span></button>  
+            </div><br>
+
+            <!-- Calendar -->
+            <div class="calender" id="calendar"></div>
+
+            <!-- Legend -->
+            <div class="legend" style="margin-left: 1270px; margin-top:-500px; width:200px">
                 @foreach ($roomColors as $room => $color)
                 <div>
                     <div class="legend-color" style=" margin-right: 5px; height: 20px; width: 20px;display: inline-block;background-color: {{ $color }};"></div> {{ $room }}
@@ -142,9 +243,7 @@
                 @endforeach
             </div>
         </div>
-       
     </div>
-
 
     <!-- JavaScript dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -168,6 +267,23 @@
                 'gray'
             ];
 
+            // Initialize the current time display
+            function updateTime() {
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Handle midnight (0:00)
+                minutes = minutes < 10 ? '0' + minutes : minutes; // Add leading zero to minutes
+                var timeString = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = timeString;
+            }
+
+            // Update the current time every second
+            setInterval(updateTime, 1000);
+
+            // Initialize the FullCalendar
             $('#calendar').fullCalendar({
                 defaultView: 'month',
                 editable: false,
@@ -220,11 +336,7 @@
                 },
             });
         });
+
     </script>
-
-
-
-
 </body>
-
 </html>

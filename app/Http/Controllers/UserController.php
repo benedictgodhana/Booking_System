@@ -82,9 +82,10 @@ class UserController extends Controller
     }
     public function showProfile()
     {
-        return view('user.profile');
+        $user = User::find(auth()->id()); // Assuming you're using authentication
+        return view('user.profile',['user' => $user]);
     }
-    public function updatePassword(Request $request)
+    public function changePassword(Request $request)
     {
         $validatedData = $request->validate([
             'current_password' => 'required',
@@ -198,7 +199,6 @@ class UserController extends Controller
     $user->save();
 
     // Log in the user (optional)
-    auth()->login($user);
 
     // Send an activation email with the token
     Mail::to($user->email)->send(new ActivationMail($user, $token));
@@ -209,6 +209,66 @@ class UserController extends Controller
     return redirect()->back()->with('status','Your Account Has been Activated. Please check your inbox for login credentials.');
     ;
 }
+public function searchReservations(Request $request)
+{
+    // Retrieve the form inputs
+    $searchTerm = $request->input('search');
+    $statusFilter = $request->input('status');
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
 
+    // Query reservations based on the filters
+    $query = Reservation::query();
+
+    // Apply filters based on the form inputs
+    if (!empty($searchTerm)) {
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('event', 'like', "%$searchTerm%")
+                ->orWhere('remarks', 'like', "%$searchTerm%");
+        });
+    }
+
+    if (!empty($statusFilter)) {
+        $query->where('status', $statusFilter);
+    }
+
+    if (!empty($startDate)) {
+        $query->whereDate('reservationDate', '>=', $startDate);
+    }
+
+    if (!empty($endDate)) {
+        $query->whereDate('reservationDate', '<=', $endDate);
+    }
+
+    // Retrieve the filtered reservations
+    $reservations = $query->paginate(10); // Adjust the pagination as needed
+
+    return view('user.reservation', ['reservations' => $reservations]);
+}
+public function updateProfile(Request $request)
+{
+    // Validate the form data
+    $request->validate([
+        'inputUsername' => 'required|string|max:255',
+        'inputOrgName' => 'required|string|max:255',
+        'inputLocation' => 'required|string|max:255',
+        'inputEmailAddress' => 'required|email|unique:users,email,' . Auth::id(),
+    ]);
+
+    // Get the authenticated user
+    $user = Auth::user();
+
+    // Update the user's profile information
+    $user->name = $request->input('inputUsername');
+    $user->department = $request->input('inputOrgName');
+    $user->roles->name = $request->input('inputLocation');
+    $user->email = $request->input('inputEmailAddress');
+
+    // Save the updated user
+    $user->save();
+
+    // Redirect back to the profile page with a success message
+    return redirect()->route('profile.index')->with('success', 'Profile information updated successfully.');
+}
 
 }

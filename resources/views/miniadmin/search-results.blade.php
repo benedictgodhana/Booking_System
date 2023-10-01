@@ -127,15 +127,49 @@ use Carbon\Carbon;
                 <td>{{ $reservation->created_at }}</td>
 
                 <td class="actions">
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#updateModal{{ $reservation->id }}">
-                        <i class="fas fa-edit"></i>Update Status
-                    </button>
+                   @if ($reservation->status == 'Accepted')
+                   <button style="width:140px;border-radius:10px" type="button" class="btn btn-success">
+                    <i class="fas fa-check"></i> Accepted
+                </button>
+                    
                     <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
                         data-target="#viewModal{{ $reservation->id }}">
                         <i class="fas fa-eye"></i> View Details
                     </button>
+                    @endif
+                    @if ($reservation->status == 'Pending')
+                    <button style="border-radius:10px" type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#updateModal{{ $reservation->id }}">
+                        <i class="fas fa-edit"></i> Update Status
+                    </button>
+                    
+                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#viewModal{{ $reservation->id }}">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    @endif
+                    @if ($reservation->status == 'Declined')
+                    
+                    <button style="width:140px;border-radius:10px" type="button" class="btn btn-info" disabled>
+                    <i class="fas fa-ban"></i> Declined
+                </button>
+                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#viewModal{{ $reservation->id }}">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    @endif
+                    @if ($reservation->status == 'Canceled')
+                    
+                    <button style="width:140px;border-radius:10px" type="button" class="btn btn-success" disabled>
+                    <i class="fas fa-ban"></i>Canceled
+                </button>
+                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#viewModal{{ $reservation->id }}">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    @endif
                 </td>
+
             </tr>
             @endforeach
         </tbody>
