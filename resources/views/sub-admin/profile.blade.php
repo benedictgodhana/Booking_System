@@ -1,177 +1,136 @@
 @extends('layout/layout')
 
 @section('space-work')
-<style>
-    /* Style for the profile container */
-    .profile-container {
-        max-width: 2000px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
 
-    /* Style for the profile header */
-    .profile-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-header h1 {
-        font-size: 24px;
-        color: #333;
-    }
-
-    /* Style for user information section */
-    .user-info {
-        margin-bottom: 20px;
-    }
-
-    .user-info strong {
-        font-weight: bold;
-    }
-
-    /* Style for form section */
-    .profile-form {
-        margin-top: 20px;
-    }
-
-    /* Style for form labels */
-    .profile-form label {
-        font-weight: bold;
-        color: #333;
-    }
-
-    /* Style for form inputs */
-    .profile-form input[type="text"],
-    .profile-form input[type="email"],
-    .profile-form input[type="password"] {
-        width: 50%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 15px;
-        font-size: 16px;
-    }
-
-    /* Style for the "Change Password" button */
-    .profile-form button {
-        background-color: #007bff;
-        color: #fff;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    /* Style for the "Change Password" button on hover */
-    .profile-form button:hover {
-        background-color: #0056b3;
-    }
-
-    /* Additional styles for responsiveness */
-    @media (max-width: 768px) {
-        .profile-container {
-            padding: 10px;
-        }
-
-        .profile-header h1 {
-            font-size: 20px;
-        }
-
-        .profile-form input[type="text"],
-        .profile-form input[type="email"],
-        .profile-form input[type="password"] {
-            font-size: 14px;
-        }
-
-        .profile-form button {
-            padding: 10px 15px;
-        }
-    }
-</style>
-@if (session('success'))
+@if(session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
 </div>
 @endif
 
-@if (session('error'))
+@if(session('error'))
 <div class="alert alert-danger">
     {{ session('error') }}
 </div>
 @endif
 
+<div style="margin-left: 50px" class="container-xl px-4 mt-4">
+    <!-- Account page navigation-->
 
-
-<div class="profile-container">
-    <h1 style="text-align:center">User's Profile</h1>
-    <hr>
-
-    <!-- Display user information -->
-    <div class="form-group">
-        <label for="name"><strong>Name:</strong></label>
-        <p class="form-control-static">{{ Auth::user()->name }}</p>
-    </div>
-    <hr>
-
-    <div class="form-group">
-        <label for="email"><strong>Email:</strong></label>
-        <p class="form-control-static">{{ Auth::user()->email }}</p>
-    </div>
-    <hr>
-
-    <div class="form-group">
-        <label for="department"><strong>Department:</strong></label>
-        <p class="form-control-static">{{ Auth::user()->department }}</p>
-    </div>
-    <hr>
-    <div class="form-group">
-        <label for="department"><strong>Role:</strong></label>
-        <p class="form-control-static">{{ Auth::user()->roles->name }}</p>
-    </div>
-
-    <hr>
-    <div class="profile-form">
-        <!-- Display SweetAlert2 alerts here -->
-        <div id="passwordChangeAlert"></div>
-        <!-- Password change form -->
-        <form method="POST" action="{{ route('profile.updatePassword') }}" onsubmit="return validateForm()">
-            @csrf
-            <div class="form-group">
-                <label for="current_password"><i class="fas fa-lock input-icon"></i> Current Password</label>
-                <input type="password" name="current_password" class="form-control" required disabled value="{{ Auth::user()->password }}">
-            </div>
-            <div class="form-group">
-                <label for="new_password"><i class="fas fa-lock input-icon"></i> New Password</label>
-                <div style="width:50%" class="input-group">
-                    <input type="password" name="new_password" id="new_password" class="form-control" required>
-                    <div style="height:40px" class="input-group-append">
-                        <div class="input-group-text">
-                            <input type="checkbox" id="show_password"> Show
-                        </div>
-                    </div>
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Profile Picture</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img style="margin-left:-30px;max-width:300px" class="img-account-profile rounded-circle mb-2"
+                        src="/logo/default-avatar-profile-image-vector-social-media-user-icon-400-228654854.jpg" alt="">
+                    <!-- Profile picture help block-->
+                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Upload new image</button>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="new_password_confirmation"><i class="fas fa-lock input-icon"></i>Confirm New Password</label>
-                <div style="width:50%" class="input-group">
-                    <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required>
-                    <div style="height:40px" class="input-group-append">
-                        <div class="input-group-text">
-                            <input type="checkbox" id="show_confirmation"> Show
+        </div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                <form method="POST" action="{{ route('updateprofilePassword') }}" onsubmit="return validateForm()">
+                     @csrf                            <!-- Form Group (username)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Username (how your name will appear to other
+                                users on the site)</label>
+                            <input class="form-control" id="inputUsername" type="text" placeholder="Enter your name"
+                                value="{{ Auth::user()->name }}">
                         </div>
-                    </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">Full Name</label>
+                                <input class="form-control" id="inputFirstName" type="text"
+                                   name="name" placeholder="Enter your namee" value="{{ Auth::user()->name }}">
+                            </div>
+                            <!-- Form Group (last name)-->
+                        
+                        </div>
+                        <!-- Form Row        -->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputOrgName">Department/Unit</label>
+                                <input class="form-control" id="inputOrgName" type="text"
+                                   name="department" placeholder="Enter your department" value="{{ Auth::user()->department}}">
+                            </div>
+                            <!-- Form Group (location)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLocation">Role</label>
+                                <input class="form-control" id="inputLocation" type="text"
+                                   name="role" placeholder="Enter your role" value="{{ Auth::user()->roles->name }}" readonly>
+                            </div>
+                        </div>
+                        <!-- Form Group (email address)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <input class="form-control" id="inputEmailAddress" type="email"
+                               name="email" placeholder="Enter your email address" value="{{ Auth::user()->email}}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" name="current_password" class="form-control" id="current_password" required placeholder="Enter your current Password">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary" id="hide_current_password">
+                                        Show
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">New Password</label>
+                            <div class="input-group">
+                                <input type="password" name="new_password" id="new_password" class="form-control" required placeholder="Enter your New Password">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary" id="show_new_password">
+                                        Show
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required placeholder="Confirm your current Password">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary" id="show_confirmation_password">
+                                        Show
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                                                    <!-- Form Row-->
+                                                    
+                        <!-- Save changes button-->
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </form>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Change Password</button>
-        </form>
+        </div>
     </div>
 </div>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     function validateForm() {
         // Get the values of the password inputs
@@ -207,34 +166,39 @@
             return false; // Prevent form submission
         }
 
-
         // If all validations pass, the form will be submitted
         return true;
     }
 </script>
 
-
 <script>
     // Function to toggle password visibility
-    function togglePasswordVisibility(inputId, checkboxId) {
-        const passwordInput = document.getElementById(inputId);
-        const checkbox = document.getElementById(checkboxId);
+function togglePasswordVisibility(inputId, buttonId) {
+const passwordInput = document.getElementById(inputId);
+const button = document.getElementById(buttonId);
 
-        if (checkbox.checked) {
-            passwordInput.type = 'text'; // Show password
-        } else {
-            passwordInput.type = 'password'; // Hide password
-        }
-    }
+if (passwordInput.type === 'password') {
+    passwordInput.type = 'text'; // Show password
+    button.textContent = 'Hide';
+} else {
+    passwordInput.type = 'password'; // Hide password
+    button.textContent = 'Show';
+}
+}
 
-    // Add event listeners for toggling password visibility
-    document.getElementById('show_password').addEventListener('change', function() {
-        togglePasswordVisibility('new_password', 'show_password');
-    });
+// Add event listeners for toggling password visibility
+document.getElementById('hide_current_password').addEventListener('click', function () {
+togglePasswordVisibility('current_password', 'hide_current_password');
+});
 
-    document.getElementById('show_confirmation').addEventListener('change', function() {
-        togglePasswordVisibility('new_password_confirmation', 'show_confirmation');
-    });
+document.getElementById('show_new_password').addEventListener('click', function () {
+togglePasswordVisibility('new_password', 'show_new_password');
+});
+
+document.getElementById('show_confirmation_password').addEventListener('click', function () {
+togglePasswordVisibility('new_password_confirmation', 'show_confirmation_password');
+});
+
 </script>
 
-@endsection
+    @endsection

@@ -13,6 +13,7 @@ use App\Notifications\BookingDeclinedNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -226,5 +227,31 @@ class SubAdminController extends Controller
 
         // Redirect back with a success message
         return redirect()->back();
+    }
+    public function updatePassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8',
+            'new_password_confirmation' => 'required|same:new_password',
+        ]);
+
+        // Check if the current password matches the authenticated user's password
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return redirect()->back()->with('error', 'Incorrect current password');
+        }
+
+        // Check if the new password is too obvious (e.g., contains "password" or "123456")
+        $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
+        if (in_array($request->new_password, $obviousPasswords)) {
+            return redirect()->back()->with('error', 'Please choose a stronger password');
+        }
+
+        // Update the user's password
+        $user = Auth::user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
 }

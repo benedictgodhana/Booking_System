@@ -166,9 +166,7 @@ use Carbon\Carbon;
 
 
                 <td class="actions">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal{{ $reservation->id }}">
-                        <i class="fas fa-edit"></i>Update Status
-                    </button>
+                    
                     <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewModal{{ $reservation->id }}">
                         <i class="fas fa-eye"></i> View Details
                     </button>
@@ -363,9 +361,31 @@ use Carbon\Carbon;
                     <!-- Additional fields go here -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Close
-                    </button>
-                </div>
+                @php
+                        $currentDate = \Carbon\Carbon::now();
+                        $currentDateTime = \Carbon\Carbon::now();
+                        $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
+                        $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
+
+                        // Compare the current date with the reservation date
+                        $isDatePassed = $currentDate->gt($reservationDate);
+                        $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
+                    @endphp
+
+                    @if ($isDatePassed && $isTimeLimitPassed)
+                        <!-- Display an alert if the reservation date has passed -->
+                        <button type="button" class="btn btn-warning" onclick="showAlert('Alert', 'The reservation date has passed.', 'warning')">
+                            <i class="fas fa-exclamation-triangle"></i> Reservation Date Passed
+                        </button>
+                    @else
+                        <!-- Show the update button if the reservation date is in the future -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal{{ $reservation->id }}">
+                            <i class="fas fa-edit"></i> Update Status
+                        </button>
+                    @endif
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                   </div>
             </div>
         </div>
     </div>

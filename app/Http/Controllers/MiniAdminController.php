@@ -269,5 +269,6 @@ class MiniAdminController extends Controller
         // Redirect back with a success message
         return redirect()->back();
     }
+    
 
 }

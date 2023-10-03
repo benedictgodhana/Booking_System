@@ -100,6 +100,20 @@
             color: #333; /* Time text color */
             font-weight: bold;
         }
+        .legend{
+
+            margin-left: 1270px;
+             margin-top:-500px;
+              width:200px
+        }
+        .legend-color{
+            margin-right: 5px; 
+            height: 20px; width: 20px;
+            display: inline-block;
+
+        }
+        
+        
 
         /* Style the event details when hovering */
       
@@ -109,7 +123,7 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .sidebar {
-                width: 50%;
+                width: 100%;
                 position: relative;
                 height: auto;
             }
@@ -151,23 +165,25 @@
 
             /* Add styles for the legend */
             .legend {
-                margin-left: 120px;
+                margin-left:0px;
                 /* Adjust this value to control the spacing between calendar and legend */
                 background-color: white;
                 /* Set the background color of the legend */
                 padding: 10px;
                 border-radius: 5px;
                 box-shadow: 0 0 5px #333;
+                margin-top:20px;
+                width: 100%;;
             }
 
             /* Add styles for the legend colors */
-            .legend-color {
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-                margin-right: 5px;
-                border-radius: 50%;
-            }
+            .legend-color{
+            margin-right: 5px; 
+            height: 20px; width: 20px;
+            display: inline-block;
+
+        }
+        
 
             .current-time {
                 background-color: #f0f0f0;
@@ -235,10 +251,10 @@
             <div class="calender" id="calendar"></div>
 
             <!-- Legend -->
-            <div class="legend" style="margin-left: 1270px; margin-top:-500px; width:200px">
+            <div class="legend">
                 @foreach ($roomColors as $room => $color)
                 <div>
-                    <div class="legend-color" style=" margin-right: 5px; height: 20px; width: 20px;display: inline-block;background-color: {{ $color }};"></div> {{ $room }}
+                    <div class="legend-color" style="background-color:{{ $color }};"></div> {{ $room }}
                 </div>
                 @endforeach
             </div>

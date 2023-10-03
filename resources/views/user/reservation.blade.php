@@ -98,25 +98,30 @@
                         <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->remarks }}</td>
-                        <td>
-                        @if ($reservation->status === 'Declined')
-                            <!-- Button indicating reservation is declined -->
-                            <button style="border-radius:10px" type="button" class="btn btn-info" disabled>
-                                <i class="fas fa-ban"></i> Reservation Declined
-                            </button>
-                        @elseif ($reservation->status === 'Canceled')
-                            <!-- Button indicating reservation is canceled -->
-                            <button style="border-radius:10px" type="button" class="btn btn-secondary" disabled>
-                                <i class="fas fa-ban"></i> Reservation Canceled
-                            </button>
-                        @else
-                            <!-- Button to open the cancellation modal -->
-                            <button style="width:200px;border-radius:10px" type="button" class="btn btn-danger"
-                                data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
-                                <i class="fas fa-times"></i> Cancel Reservation
-                            </button>
-                        @endif
-                    </td>
+                        <td class="actions">
+        @php
+            $currentDate = \Carbon\Carbon::now();
+            $currentDateTime = \Carbon\Carbon::now();
+            $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
+            $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
+            // Compare the current date with the reservation date
+            $isDatePassed = $currentDate->gt($reservationDate);
+            $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
+        @endphp
+
+        @if ($isDatePassed && $isTimeLimitPassed)         
+           <!-- Reservation date has passed, disable cancellation -->
+            <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
+                <i class="fas fa-times"></i> Cancel Reservation
+            </button>
+        @else
+            <!-- Reservation date is in the future, enable cancellation -->
+            <button style="width:200px;border-radius:10px" type="button" class="btn btn-success"
+                data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
+                <i class="fas fa-times"></i> Cancel Reservation
+            </button>
+        @endif
+    </td>
 
                     </tr>
                     @endforeach
@@ -150,7 +155,7 @@
                 aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header bg-danger text-white">
+                        <div class="modal-header bg-success text-white">
                             <h5 class="modal-title" id="cancelModalLabel{{ $reservation->id }}">Cancel Reservation</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -164,7 +169,7 @@
                             <form action="{{ route('cancelReservation', $reservation->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Confirm Cancelation</button>
+                                <button type="submit" class="btn btn-success">Confirm Cancelation</button>
                             </form>
                         </div>
                     </div>

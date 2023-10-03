@@ -3,6 +3,7 @@
 @section('space-work')
 @php
 use Carbon\Carbon;
+$currentDate = Carbon::now();
 @endphp
 
 <style>
@@ -77,16 +78,18 @@ use Carbon\Carbon;
         }
     }
 </style>
+<div style="margin: 4px, 4px; padding: 4px; width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
 
 @if(count($Results) > 0)
 <div class="user-table">
     <h1>Search Results</h1>
+    <a  class="btn btn-primary" href="{{ route('adminreservation') }}"><i class="fa fa-calendar"></i>  All Reservation</a>
+</button>
 
     <table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Department</th>
                 <th>Items (Optional)</th>
                 <th>Event</th>
@@ -127,49 +130,11 @@ use Carbon\Carbon;
                 <td>{{ $reservation->created_at }}</td>
 
                 <td class="actions">
-                   @if ($reservation->status == 'Accepted')
-                   <button style="width:140px;border-radius:10px" type="button" class="btn btn-success">
-                    <i class="fas fa-check"></i> Accepted
-                </button>
-                    
-                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
+                        <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
                         data-target="#viewModal{{ $reservation->id }}">
                         <i class="fas fa-eye"></i> View Details
                     </button>
-                    @endif
-                    @if ($reservation->status == 'Pending')
-                    <button style="border-radius:10px" type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#updateModal{{ $reservation->id }}">
-                        <i class="fas fa-edit"></i> Update Status
-                    </button>
-                    
-                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
-                        data-target="#viewModal{{ $reservation->id }}">
-                        <i class="fas fa-eye"></i> View Details
-                    </button>
-                    @endif
-                    @if ($reservation->status == 'Declined')
-                    
-                    <button style="width:140px;border-radius:10px" type="button" class="btn btn-info" disabled>
-                    <i class="fas fa-ban"></i> Declined
-                </button>
-                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
-                        data-target="#viewModal{{ $reservation->id }}">
-                        <i class="fas fa-eye"></i> View Details
-                    </button>
-                    @endif
-                    @if ($reservation->status == 'Canceled')
-                    
-                    <button style="width:140px;border-radius:10px" type="button" class="btn btn-success" disabled>
-                    <i class="fas fa-ban"></i>Canceled
-                </button>
-                    <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
-                        data-target="#viewModal{{ $reservation->id }}">
-                        <i class="fas fa-eye"></i> View Details
-                    </button>
-                    @endif
                 </td>
-
             </tr>
             @endforeach
         </tbody>
@@ -201,9 +166,142 @@ use Carbon\Carbon;
 <p>No search results found.</p>
 @endif
 
-@foreach($Results as $reservation)
-       <div class="modal fade" id="updateModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ $reservation->id }}" aria-hidden="true">
-           <div class="modal-dialog" role="document">
+       @foreach($Results as $reservation)
+    <!-- Modal for Viewing Reservation Details -->
+    <div class="modal fade" id="viewModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel{{ $reservation->id }}" aria-hidden="true">        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 style="margin-left:250px" class="modal-title" id="viewModalLabel{{ $reservation->id }}">View Reservation Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Name:</label>
+                                <p>
+                                    @if ($reservation->user)
+                                        {{ $reservation->user->name }}
+                                    @else
+                                        {{ $reservation->guest_name }}
+                                    @endif
+                                </p>
+                            </div>
+                            <hr>
+
+                            <!-- Department -->
+                            <div class="form-group">
+                                <label><i class="fas fa-building"></i> Department:</label>
+                                <p>
+                                    @if ($reservation->user)
+                                        {{ $reservation->user->department }}
+                                    @else
+                                        {{ $reservation->guest_department }}
+                                    @endif
+                                </p>
+                            </div>
+                            <hr>
+
+                            <!-- Event -->
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Event:</label>
+                                <p>{{ $reservation->event }}</p>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Items (Optional) -->
+                            <div class="form-group">
+                                <label><i class="fas fa-box"></i> Items (Optional):</label>
+                                <p>{{ $reservation->item->name ?? 'N/A' }}</p>
+                            </div>
+                            <hr>
+
+                            <!-- Reservation Date -->
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-alt"></i> Reservation Date:</label>
+                                <p>{{ $reservation->reservationDate }}</p>
+                            </div>
+                            <hr>
+
+                            <!-- Reservation Time -->
+                            <div class="form-group">
+                                <label><i class="fas fa-clock"></i> Reservation Time:</label>
+                                <p>{{ $reservation->reservationTime }}</p>
+                            </div>
+                            <hr>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-clock"></i>End of Reservation:</label>
+                                <p>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</p>
+                            </div>
+                            <hr>
+
+                            <div><label><i class="fas fa-check-circle"></i> Status:</label>
+                                <p>{{ $reservation->status }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                @php
+                        $currentDate = \Carbon\Carbon::now();
+                        $currentDateTime = \Carbon\Carbon::now();
+                        $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
+                        $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
+
+                        // Compare the current date with the reservation date
+                        $isDatePassed = $currentDate->gt($reservationDate);
+                        $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
+                    @endphp
+
+                    @if ($isDatePassed && $isTimeLimitPassed)
+        <!-- Display an alert for passed reservations -->
+        <div class="alert alert-danger" role="alert">
+            This reservation has <strong>already passed</strong>.
+        </div>
+    @elseif ($reservation->status === 'Accepted')
+        <!-- Display an alert for Accepted reservations -->
+        <div class="alert alert-success" role="alert">
+            This reservation has been <strong>Accepted</strong>.
+        </div>
+    @elseif ($reservation->status === 'Declined')
+        <!-- Display an alert for Declined reservations -->
+        <div class="alert alert-danger" role="alert">
+            This reservation has been <strong>Declined</strong>.
+        </div>
+    @elseif ($reservation->status === 'Canceled')
+        <!-- Display an alert for Canceled reservations -->
+        <div class="alert alert-warning" role="alert">
+            This reservation has been <strong>Canceled</strong>.
+        </div>
+    @else
+        <!-- Display the "Update Status" button if the reservation date is in the future -->
+        <button style="margin-top: 10px; width: 100%;" type="button" class="btn btn-primary update-status-button"
+                data-toggle="modal" data-target="#updateModal{{ $reservation->id }}">
+            <i class="fas fa-edit"></i> Update Status
+        </button>
+    @endif
+    <!-- Close button -->
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <i class="fas fa-times"></i> Close
+    </button>
+</div>
+
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @foreach($Results as $reservation)
+    <div class="modal fade" id="updateModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel{{ $reservation->id }}" aria-hidden="true">           <div class="modal-dialog" role="document">
                <div class="modal-content">
                    <div class="modal-header bg-primary">
                        <h5 style="margin-left:150px" class="modal-title" id="updateModalLabel{{ $reservation->id }}">Update Reservation Status</h5>
@@ -213,7 +311,7 @@ use Carbon\Carbon;
                    </div>
                    <form action="{{ route('admin.update', $reservation->id) }}" method="POST">
                        @csrf
-                       @method('PUT')
+                       @method('PATCH')
                        <div class="modal-body">
                            <!-- Status field -->
                            <div class="form-group row">
@@ -251,96 +349,15 @@ use Carbon\Carbon;
        </div>
        @endforeach
 
-       @foreach($Results as $reservation)
-       <!-- Modal for Viewing Reservation Details -->
-       <div class="modal fade" id="viewModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel{{ $reservation->id }}" aria-hidden="true">
-           <div class="modal-dialog modal-lg" role="document">
-               <div class="modal-content">
-                   <div class="modal-header bg-primary">
-                       <h5 style="margin-left:250px" class="modal-title" id="viewModalLabel{{ $reservation->id }}">View Reservation Details</h5>
-                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">&times;</span>
-                       </button>
-                   </div>
-                   <div class="modal-body">
-                       <div class="row">
-                           <div class="col-md-6">
-                               <!-- Name -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-user"></i> Name:</label>
-                                   <p>
-                                       @if ($reservation->user)
-                                       {{ $reservation->user->name }}
-                                       @else
-                                       {{ $reservation->guest_name }}
-                                       @endif
-                                   </p>
-                               </div>
-                               <hr>
 
-                               <!-- Department -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-building"></i> Department:</label>
-                                   <p>
-                                       @if ($reservation->user)
-                                       {{ $reservation->user->department }}
-                                       @else
-                                       {{ $reservation->guest_department }}
-                                       @endif
-                                   </p>
-                               </div>
-                               <hr>
-
-                               <!-- Event -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-calendar"></i> Event:</label>
-                                   <p>{{ $reservation->event }}</p>
-                               </div>
-                               <hr>
-                           </div>
-                           <div class="col-md-6">
-                               <!-- Items (Optional) -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-box"></i> Items (Optional):</label>
-                                   <p>{{ $reservation->item->name ?? 'N/A' }}</p>
-                               </div>
-                               <hr>
-
-                               <!-- Reservation Date -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-calendar-alt"></i> Reservation Date:</label>
-                                   <p>{{ $reservation->reservationDate }}</p>
-                               </div>
-                               <hr>
-
-                               <!-- Reservation Time -->
-                               <div class="form-group">
-                                   <label><i class="fas fa-clock"></i> Reservation Time:</label>
-                                   <p>{{ $reservation->reservationTime }}</p>
-                               </div>
-                               <hr>
+@endforeach
 
 
-                               <div class="form-group">
-                                   <label><i class="fas fa-clock"></i>End of Reservation:</label>
-                                   <p>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</p>
-                               </div>
-                               <hr>
-                               <div><label><i class="fas fa-check-circle"></i> Status:</label>
-                                   <p>{{ $reservation->status }}</p>
-                               </div>
 
 
-                           </div>
-                       </div>
-                       <!-- Additional fields go here -->
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Close
-                       </button>
-                   </div>
-               </div>
-           </div>
-       </div>
-       @endforeach
+
+
+
+
+
 @endsection

@@ -112,6 +112,8 @@ Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], f
     Route::get('/profile', [SubAdminController::class, 'showProfile'])->name('subadmin.profile.show');
     Route::get('/search-reservations', [SubAdminController::class,'searchReservations'])->name('subadmin.searchReservations');
     Route::post('/subadmin/create-reservation', [SubAdminController::class, 'createReservation'])->name('subadmin.createReservation'); // You can name the route as you prefer
+    Route::post('/profile/update-password', [SubAdminController::class, 'updatePassword'])->name('updateprofilePassword');
+
 
 });
 
@@ -122,6 +124,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
     Route::put('/admin/reservation/update/{id}', [AdminController::class, 'updateReservationStatus'])->name('admin.update');
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
     Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
+    Route::post('/profile/update-password', [AdminController::class, 'updatePassword'])->name('Adminprofile');
+
 
 });
 Route::middleware(['auth', 'miniadmin'])->group(function () {

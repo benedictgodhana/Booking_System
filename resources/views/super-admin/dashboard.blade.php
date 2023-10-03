@@ -96,7 +96,9 @@
 
 
 <div class="row" style="width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
+
     <div class="col-lg-3 col-6">
+        
         <!-- small card -->
         <div class="small-box bg-info">
             <div class="inner">
@@ -170,6 +172,7 @@
 
 
         <div class="container">
+            
             <h1 style="color: brown; font-weight: bold; margin-left: 370px">Booking Calendar</h1><br>
             <div class="calendar-container">
                 <div id="calendar" style="max-width: 950px;"></div>

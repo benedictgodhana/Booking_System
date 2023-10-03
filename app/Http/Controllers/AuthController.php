@@ -90,10 +90,7 @@ class AuthController extends Controller
                 // User is activated, proceed with login
     
                 // Check if it's the user's first login
-                if ($user->first_login) {
-                    // Redirect to the password change page
-                    return redirect()->route('password.change');
-                } else {
+         {
                     // Redirect to the regular dashboard
                     $route = $this->redirectDash();
                     return response()->json(['success' => true, 'redirectTo' => $route]);
@@ -108,8 +105,8 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => 'Username & Password is incorrect']);
         }
     }
-    
 
+    
     public function loadLogin()
     {
         if (Auth::user()) {

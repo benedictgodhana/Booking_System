@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>login</title>
+    <title>Login</title>
     <link style="max-width:20px" rel="icon" type="image/x-icon" href="/logo/LOGO_2.png">
 
     <!-- Google Font: Source Sans Pro -->
@@ -40,9 +40,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-top: -300px;
+            margin-top: -150px;
             margin-right: 50px;
-
         }
 
         .card-body {
@@ -82,6 +81,38 @@
             margin-left: 1000px;
             /* Adjust the right margin as needed */
         }
+        @media (max-width: 576px) {
+
+            .login-box {
+            width:100%;
+            max-width:400px;
+            size: 100px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top:10px;
+            margin-right: 0px;
+            height:auto;
+        }
+        .login-logo img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        .btn-success {
+            width:100px;
+            margin-left: -120px;
+
+        }
+        
+
+        
+
+        }
+
     </style>
 </head>
 
@@ -123,21 +154,16 @@
                     @error('password')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
-                    
-                        <!-- /.col -->
-                        <div class="col-4" style="margin-right:10px; margin-left: 198px">
-                            <button type="submit" value="Submit" class="btn btn-success btn-block">
-                                <i class="fas fa-sign-in-alt"></i> Log in
-                            </button>
-                            @include('sweet::alert')
-                        </div>
-                        <!-- /.col -->
+
+                    <!-- /.col -->
+                    <div class="col-4" style="margin-right:10px; margin-left: 198px">
+                        <button type="submit" value="Submit" class="btn btn-success btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Log in
+                        </button>
+                        @include('sweet::alert')
                     </div>
+                    <!-- /.col -->
                 </form>
-
-              
-
-
 
             </div>
             <!-- /.card-body -->
@@ -150,32 +176,42 @@
         Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
     </footer>
     <!-- /.login-box -->
-    <!-- Card for password reset link (placed on the right side) -->
-    <div class="password-reset-card">
-        <div class="card mt-3">
-            <div class="card-body">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <p class="mb-0"><i class="fas fa-key mr-2"></i> Forgot your password?</p>
-                            <a href="{{ route('password.request') }}" class="text-info"><i style="margin-left:20px" class="fas fa-unlock-alt mr-1"></i>Reset Password</a>
-                        </div>
-                        <hr>
-                        <p class="mb-2">
-                            <i class="fas fa-user-plus mr-2"></i> <a href="{{ route('account.activate') }}" class="text-info">New user?</a>
-                        </p>
-                        <hr>
-                        <p class="mb-0">
-                            <i class="fas fa-home mr-2"></i> <a href="/" class="text-info">Home</a>
-                        </p>
-                        <hr>
+
+    <!-- Button to trigger the modal -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#quickLinksModal">Quick Links</button>
+
+    <!-- Modal for Quick Links -->
+    <div class="modal fade" id="quickLinksModal" tabindex="-1" role="dialog" aria-labelledby="quickLinksModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickLinksModalLabel">Quick Links</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Quick Links content goes here -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="mb-0"><i class="fas fa-key mr-2"></i> Forgot your password?</p>
+                        <a href="{{ route('password.request') }}" class="text-info"><i style="margin-left:20px"
+                                class="fas fa-unlock-alt mr-1"></i>Reset Password</a>
                     </div>
+                    <hr>
+                    <p class="mb-2">
+                        <i class="fas fa-user-plus mr-2"></i> <a href="{{ route('account.activate') }}"
+                            class="text-info">New user?</a>
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        <i class="fas fa-home mr-2"></i> <a href="/" class="text-info">Home</a>
+                    </p>
+                    <hr>
                 </div>
             </div>
         </div>
-
     </div>
-
 
     <!-- jQuery -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
