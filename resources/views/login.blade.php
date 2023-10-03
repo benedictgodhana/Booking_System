@@ -89,8 +89,6 @@
             size: 100px;
             background: #fff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             margin-top:10px;
             margin-right: 0px;
             height:auto;
