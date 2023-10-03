@@ -117,13 +117,13 @@ class ReservationController extends Controller
         });
 
         // for superadmin Notification
-        $superAdmin = User::where('role', 1)->first();
-        if ($superAdmin) {
-            $superAdminName = $superAdmin->name;
+        // $superAdmin = User::where('role', 1)->first();
+        // if ($superAdmin) {
+        //     $superAdminName = $superAdmin->name;
 
-            if ($superAdmin) {
-                Mail::to($superAdmin->email)->send(new ReservationCreated($reservation, $superAdminName));
-            }
+        //     if ($superAdmin) {
+        //         Mail::to($superAdmin->email)->send(new ReservationCreated($reservation, $superAdminName));
+        //     }
 
             //for subadmin Notification 
             $subAdmins = User::where('role', 2)->get();

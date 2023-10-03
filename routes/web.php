@@ -70,7 +70,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/login', function () {
     return redirect('/');
 });
-Route::get('/login', [AuthController::class, 'loadLogin']);
+Route::get('/login', [AuthController::class, 'loadLogin'])->name('LoginPage');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/login/validate', [AuthController::class, 'validateLogin'])->name('login.validate');

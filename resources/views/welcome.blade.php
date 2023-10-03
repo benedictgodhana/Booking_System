@@ -225,7 +225,7 @@
             <img src="logo/iLab white Logo-01.png" alt="Logo" class="logo">
             <hr style="border-color: white; border-width: 4px;">
             <div class="sidebar-buttons" style="padding:10px">
-                <a href="/login" class="btn btn-success btn-block">Login</a>
+                <a href="{{route('LoginPage')}}" class="btn btn-success btn-block">Login</a>
                 <a href="{{route('guest.booking.form')}}" style="background-color:orange ; color:white;" class="btn btn- btn-block">Guest Booking</a>
             </div>
             <p></p>

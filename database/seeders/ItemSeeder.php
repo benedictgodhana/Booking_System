@@ -15,9 +15,9 @@ class ItemSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['name' => 'Item 1', 'asset_tag' => 'TAG123', 'model_number' => 'Model A', 'serial_number' => 'S12345'],
-            ['name' => 'Item 2', 'asset_tag' => 'TAG456', 'model_number' => 'Model B', 'serial_number' => 'S67890'],
-            ['name' => 'Item 3', 'asset_tag' => 'TAG789', 'model_number' => 'Model C', 'serial_number' => 'S54321'],
+            ['name' => 'Mouse', 'asset_tag' => 'TAG123', 'model_number' => 'Model A', 'serial_number' => 'S12345'],
+            ['name' => 'Keyboard', 'asset_tag' => 'TAG456', 'model_number' => 'Model B', 'serial_number' => 'S67890'],
+            ['name' => 'Projector', 'asset_tag' => 'TAG789', 'model_number' => 'Model C', 'serial_number' => 'S54321'],
             // Add more items as needed
         ];
         foreach ($items as $itemData) {

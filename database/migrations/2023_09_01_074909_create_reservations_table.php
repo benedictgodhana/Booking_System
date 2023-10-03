@@ -16,7 +16,7 @@ class CreateReservationsTable extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // Reference to users table
-            $table->unsignedBigInteger('item_id'); // Reference to items table
+            $table->unsignedBigInteger('item_id')->nullable()->default(NULL); // Reference to items table
             $table->date('reservationDate'); // Date of Reservation
             $table->time('reservationTime'); // Reservation Time
             $table->unsignedBigInteger('room_id'); // Reference to rooms table

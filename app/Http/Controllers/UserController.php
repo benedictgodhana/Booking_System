@@ -179,9 +179,13 @@ class UserController extends Controller
 
     // Check if the user is activated (assuming 'is_active' is a boolean field in the database)
     if ($user->activated) {
-
         // User is already activated
         return redirect()->back()->with('status', 'Your account is already activated. You can now log in.');
+    }
+
+    // Check if the user is marked as a guest (is_guest is 1)
+    if ($user->is_guest === 1) {
+        return redirect()->back()->with('error', 'Guests cannot activate accounts.');
     }
 
     $token = Str::random(60);
@@ -206,9 +210,9 @@ class UserController extends Controller
     // Send an activation link or perform the activation process here
 
     // After sending the activation link, you can notify the user accordingly
-    return redirect()->back()->with('status','Your Account Has been Activated. Please check your inbox for login credentials.');
-    ;
+    return redirect()->back()->with('status', 'Your Account Has been Activated. Please check your inbox for login credentials.');
 }
+
 public function searchReservations(Request $request)
 {
     // Retrieve the form inputs
