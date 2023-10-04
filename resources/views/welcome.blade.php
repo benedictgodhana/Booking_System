@@ -1,17 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link style="max-width:20px" rel="icon" type="image/x-icon" href="/logo/LOGO_2.png">
-    <title>Booking Calendar</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RoomBooking</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <!-- ... Your existing head content ... -->
+
     <style>
-        /* Calendar buttons */
-        .fc button {
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+      :root {
+        --header-height: 3rem;
+        --nav-width: 78px;
+        --first-color: #4723d9;
+        --first-color-light: #afa5d9;
+        --white-color: #f7f6fb;
+        --body-font: "Nunito", sans-serif;
+        --normal-font-size: 1rem;
+        --z-fixed: 100;
+      }
+      .fc button {
             background-color: yellowgreen;
             color: black;
             font-family: Arial, sans-serif;
@@ -26,32 +50,7 @@
         .fc button:hover {
             background-color: yellow;
         }
-
-        /* Sidebar */
-        .sidebar {
-            height: 100%;
-            width: 300px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: darkblue;
-            padding-top: 20px;
-            border-radius: 1px 5px;
-            box-shadow: 0 0 5px #333; /* Add a box shadow for depth */
-        }
-
-        /* Sidebar content */
-        .sidebar-content {
-            text-align: center;
-            color: white;
-        }
-
-        /* Logo */
-        .logo {
-            width: 250px;
-            margin-bottom: 20px;
-        }
-                #calendar {
+      #calendar {
             max-width: 100%;
             background-color: #ffffff; /* Background color of the calendar */
             border: 1px solid #ccc; /* Border around the calendar */
@@ -60,15 +59,11 @@
             padding: 10px;
             margin: 0px;
         }
-
-        /* Style the header of the calendar */
         #calendar .fc-toolbar {
             background-color:darkblue; /* Header background color */
             color: #ffffff; /* Header text color */
             border-radius: 5px 5px 0 0; /* Rounded corners for the top */
         }
-
-        /* Style the buttons in the header */
         #calendar .fc-toolbar button {
             background-color:yellowgreen;
             color: #ffffff;
@@ -76,7 +71,6 @@
             border-radius: 0;
             margin: 2px;
         }
-
         #calendar .fc-toolbar button:hover {
             background-color: #0056b3;
         }
@@ -112,128 +106,207 @@
             display: inline-block;
 
         }
-        
-        
 
-        /* Style the event details when hovering */
-      
-        /* Style the event  details when not hovering */
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
 
+      body {
+        position: relative;
+        margin: var(--header-height) 0 0 0;
+        padding: 0 1rem;
+        font-family: var(--body-font);
+        font-size: var(--normal-font-size);
+        transition: 0.5s;
+      }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-                height: auto;
-            }
+      a {
+        text-decoration: none;
+      }
 
-            .container {
-                margin-left: 0;
-            }
+      .header {
+        width: 100%;
+        height: var(--header-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        background-color: var(--white-color);
+        z-index: var(--z-fixed);
+        transition: 0.5s;
+      }
+
+      .header_toggle {
+        color: var(--first-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .header_img {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .header_img img {
+        width: 40px;
+      }
+
+      .l-navbar {
+        position: fixed;
+        top: 0;
+        left: -30%;
+        width: var(--nav-width);
+        height: 100vh;
+        background-color:darkblue;
+        padding: 0.5rem 1rem 0 0;
+        transition: 0.5s;
+        z-index: var(--z-fixed);
+      }
+
+      .nav {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      .nav_logo,
+      .nav_link {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+      }
+
+      .nav_logo {
+        margin-bottom: 2rem;
+      }
+
+      .nav_logo-icon {
+        font-size: 1.25rem;
+        color: var(--white-color);
+      }
+
+      .nav_logo-name {
+        color: var(--white-color);
+        font-weight: 700;
+      }
+
+      .nav_link {
+        position: relative;
+        color: var(--first-color-light);
+        margin-bottom: 1.5rem;
+        transition: 0.3s;
+      }
+
+      .nav_link:hover {
+        color: var(--white-color);
+      }
+
+      .nav_icon {
+        font-size: 1.25rem;
+      }
+
+      .show {
+        left: 0;
+      }
+
+      .body-pd {
+        padding-left: calc(var(--nav-width) + 1rem);
+      }
+
+      .active {
+        color: var(--white-color);
+      }
+
+      .active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 32px;
+        background-color: var(--white-color);
+      }
+
+      .height-100 {
+        height: 100vh;
+      }
+
+      @media screen and (min-width: 768px) {
+        body {
+          margin: calc(var(--header-height) + 1rem) 0 0 0;
+          padding-left: calc(var(--nav-width) + 2rem);
         }
 
-        /* Mobile view styles */
-        @media (max-width: 576px) {
-            /* Adjust the sidebar for mobile view */
-            .sidebar {
-                width: 100%;
-                height: auto;
-                padding-top: 10px;
-                text-align: center;
-            }
-
-            .logo {
-                width: 150px;
-                /* Adjust the logo size for mobile */
-                margin-bottom: 10px;
-                max-width: 350px;
-            }
-
-            /* Adjust the calendar and legend for mobile view */
-            .calendar-container {
-                flex-direction: column-reverse;
-                /* Stack legend below the calendar */
-            }
-
-            .calendar {
-                max-width: 100%;
-                border: 2px solid #ccc; /* Add a border to the calendar */
-                background-color: white; /* Set the background color for the calendar */
-                
-            }
-
-            /* Add styles for the legend */
-            .legend {
-                margin-left:0px;
-                /* Adjust this value to control the spacing between calendar and legend */
-                background-color: white;
-                /* Set the background color of the legend */
-                padding: 10px;
-                border-radius: 5px;
-                box-shadow: 0 0 5px #333;
-                margin-top:20px;
-                width: 100%;;
-            }
-
-            /* Add styles for the legend colors */
-            .legend-color{
-            margin-right: 5px; 
-            height: 20px; width: 20px;
-            display: inline-block;
-
+        .header {
+          height: calc(var(--header-height) + 1rem);
+          padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
         }
-        
 
-            .current-time {
-                background-color: #f0f0f0;
-                /* Set background color for the current time display */
-                border: 1px solid #ccc;
-                /* Add a border to the current time display */
-                padding: 10px;
-                margin: 10px;
-                border-radius: 5px;
-                box-shadow: 0 0 5px #888;
-                /* Add space between the calendar and the current time display */
-                margin-top: 20px;
-                /* Align the text center in the current time display */
-                text-align: center;
-            }
-
-            /* Glass Effect for the Current Time Display */
-            .glass-effect {
-                background: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
-                border: none;
-                border-radius: 25px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Box shadow for the glass effect */
-                color: #333; /* Text color */
-                padding: 10px;
-                transition: background 0.3s ease; /* Smooth transition for background */
-            }
-
-            /* Hover effect for the glass button */
-            .glass-effect:hover {
-                background: rgba(255, 255, 255, 0.8); /* Lighten the background on hover */
-            }
+        .header_img {
+          width: 40px;
+          height: 40px;
         }
+
+        .header_img img {
+          width: 45px;
+        }
+
+        .l-navbar {
+          left: 0;
+          padding: 1rem 1rem 0 0;
+        }
+
+        .show {
+          width: calc(var(--nav-width) + 156px);
+        }
+
+        .body-pd {
+          padding-left: calc(var(--nav-width) + 188px);
+        }
+      }
     </style>
-</head>
-
-<body style="background-color:#FAF9F6;">
-    <div class="sidebar">
-        <div class="sidebar-content">
-            <img src="logo/iLab white Logo-01.png" alt="Logo" class="logo">
-            <hr style="border-color: white; border-width: 4px;">
-            <div class="sidebar-buttons" style="padding:10px">
-                <a href="{{route('LoginPage')}}" class="btn btn-success btn-block">Login</a>
-                <a href="{{route('guest.booking.form')}}" style="background-color:orange ; color:white;" class="btn btn- btn-block">Guest Booking</a>
-            </div>
-            <p></p>
+  </head>
+  <body id="body-pd">
+    <header class="header" id="header">
+      <div class="header_toggle">
+        <i class="bx bx-menu" id="header-toggle"></i>
+      </div>
+     
+    </header>
+    <div class="l-navbar" id="nav-bar">
+      <nav class="nav">
+        <div>
+          <a href="#" class="nav_logo">
+            <span><img style="max-width:240px;margin-left:-40px;" src="/logo/iLab white Logo-01.png" alt=""/></span>
+          </a><hr style="border:2px solid #ccc">
+          <div class="nav_list" style="margin-left:0px;padding-left:10px">
+                <a href="{{ route('LoginPage') }}" class="nav_link" data-toggle="tooltip" data-placement="top" title="Login">
+            <i class="bx bx-log-in nav_icon"></i>
+            <span class="nav_name"><strong>Login</strong></span>
+                </a><hr>
+                <a href="{{ route('guest.booking.form') }}" class="nav_link" data-toggle="tooltip" data-placement="right" title="Guest Reservation">
+                <i class="bx bx-user-plus nav_icon"></i>
+                <span class="nav_name"><strong>Guest Reservation</strong></span>
+            </a><hr>
+           
+          </div>
         </div>
+      </nav>
     </div>
-    <br><br>
+    <div class="height-100 bg-light">
 
-    <div class="container">
     <h1>Booking Calendar</h1> <!-- Add your page title here -->
         <div class="calendar-container">
             <!-- Current Time Display -->
@@ -251,25 +324,56 @@
             <div class="calender" id="calendar"></div>
 
             <!-- Legend -->
-            <div class="legend">
-                @foreach ($roomColors as $room => $color)
-                <div>
-                    <div class="legend-color" style="background-color:{{ $color }};"></div> {{ $room }}
-                </div>
-                @endforeach
-            </div>
+
         </div>
     </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+          const toggle = document.getElementById(toggleId),
+            nav = document.getElementById(navId),
+            bodypd = document.getElementById(bodyId),
+            headerpd = document.getElementById(headerId);
 
-    <!-- JavaScript dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+          // Validate that all variables exist
+          if (toggle && nav && bodypd && headerpd) {
+            toggle.addEventListener("click", () => {
+              // show navbar
+              nav.classList.toggle("show");
+              // change icon
+              toggle.classList.toggle("bx-x");
+              // add padding to body
+              bodypd.classList.toggle("body-pd");
+              // add padding to header
+              headerpd.classList.toggle("body-pd");
+            });
+          }
+        };
 
-    <!-- Calendar initialization -->
-    <script>
+        showNavbar("header-toggle", "nav-bar", "body-pd", "header");
+
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll(".nav_link");
+
+        function colorLink() {
+          if (linkColor) {
+            linkColor.forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+          }
+        }
+        linkColor.forEach((l) => l.addEventListener("click", colorLink));
+
+        // Your code to run since DOM is loaded and ready
+      });
+    </script>
+     <!-- Calendar initialization -->
+     <script>
         $(document).ready(function() {
             // Define an array of colors for each room
             var roomColors = [
@@ -354,5 +458,5 @@
         });
 
     </script>
-</body>
+  </body>
 </html>

@@ -60,7 +60,7 @@ class GuestBookingController extends Controller
             $guestUser->save();
         }
 
-        $startTime = strtotime($validatedData['booking_date']);
+        $startTime = strtotime($validatedData['booking_time']);
         $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
         // Create a new reservation for the guest user
         $reservation = new Reservation();
@@ -102,7 +102,7 @@ class GuestBookingController extends Controller
             'room_name' => $reservation->room->name, // Replace with your actual room variable
             'reservation_date' => $request->input('booking_date'),
             'reservation_time' => date("h:i A", strtotime($request->input('booking_time'))), // Format as AM/PM
-            'timelimit' => date("h:i A", strtotime($request->input('time_limit'))), // Format as AM/PM
+            'timelimit' => date("h:i A", strtotime($request->input('timelimit'))), // Format as AM/PM
             'department' => $guestUser->department,
             'event' => $reservation->event,
             'selectedItems' => $selectedItems, // Include selectedItems

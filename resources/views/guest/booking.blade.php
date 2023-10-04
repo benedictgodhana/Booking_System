@@ -1,101 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Guest Boooking form</title>
-
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-    <!-- SweetAlert CSS -->
-    <link rel="styleshxeet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- SweetAlert JavaScript -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RoomBooking</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
     <style>
-        body {
-            background-color: white;
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+      :root {
+        --header-height: 3rem;
+        --nav-width: 78px;
+        --first-color: #4723d9;
+        --first-color-light: #afa5d9;
+        --white-color: #f7f6fb;
+        --body-font: "Nunito", sans-serif;
+        --normal-font-size: 1rem;
+        --z-fixed: 100;
+      }
+      .fc button {
+            background-color: yellowgreen;
+            color: black;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            border: none;
+            border-radius: 1px;
+            padding: 8px 16px;
+            margin: 4px;
+            cursor: pointer;
         }
 
-        .login-page {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
 
-        .login-box {
-            width: 600px;
+        .form-container {
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style form labels */
+    .form-label {
+        font-weight: bold;
+    }
+
+    /* Style form inputs */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    /* Style the submit button */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    /* Style the secondary button */
+    .btn-secondary {
+        background-color: #ccc;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    /* Add some spacing between elements */
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+
+    /* Style the footer */
+    footer {
+        color: #555;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .show {
+    left: 0;
+  }
+
+  /* Add a transition for smoother sidebar animation */
+  .l-navbar {
+    transition: left 0.5s;
+  }
+
+  /* Adjust the width of the sidebar in the "show" state */
+  .l-navbar.show {
+    left: 0;
+  }
+
+
+        .btn-reserve{
+            margin-left: 320px;
+        }
+        .fc button:hover {
+            background-color: yellow;
+        }
+      #calendar {
             max-width: 100%;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* Background color of the calendar */
+            border: 1px solid #ccc; /* Border around the calendar */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 0 5px #888; /* Box shadow for a subtle depth effect */
+            padding: 10px;
+            margin: 0px;
         }
-
-        .card-body {
-            padding: 30px;
+        #calendar .fc-toolbar {
+            background-color:darkblue; /* Header background color */
+            color: #ffffff; /* Header text color */
+            border-radius: 5px 5px 0 0; /* Rounded corners for the top */
         }
-
-        .login-logo img {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            margin: 0 auto 20px;
-            display: block;
+        #calendar .fc-toolbar button {
+            background-color:yellowgreen;
+            color: #ffffff;
+            border: none;
+            border-radius: 0;
+            margin: 2px;
         }
-
-        .icheck-primary input:checked+label::before {
-            border-color: #007bff;
-            background-color: #007bff;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
+        #calendar .fc-toolbar button:hover {
             background-color: #0056b3;
-            border-color: #0056b3;
         }
-    </style>
-</head>
 
-<body>
-    <div class="card card-outline card-primary">
-        <div class="card-header text-center">
-            <div class="login-logo">
-            <a href='/' class="btn btn-primary"><i class="fas fa-home mr-2"></i><strong> Back to Home page</strong> </a>
-                <img src="logo/LOGO_2.png" alt="Logo">
-            </div>
+        /* Style the events in the calendar */
+        #calendar .fc-event {
+            background-color:yellowgreen; /* Event background color */
+            color: #ffffff; /* Event text color */
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 2px;
+        }
+
+        #calendar .fc-event:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the time display in the calendar */
+        #calendar .fc-time {
+            color: #333; /* Time text color */
+            font-weight: bold;
+        }
+        .legend{
+
+            margin-left: 1270px;
+             margin-top:-500px;
+              width:200px
+        }
+        .legend-color{
+            margin-right: 5px; 
+            height: 20px; width: 20px;
+            display: inline-block;
+
+        }
+
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        position: relative;
+        margin: var(--header-height) 0 0 0;
+        padding: 0 1rem;
+        font-family: var(--body-font);
+        font-size: var(--normal-font-size);
+        transition: 0.5s;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .header {
+        width: 100%;
+        height: var(--header-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        background-color: var(--white-color);
+        z-index: var(--z-fixed);
+        transition: 0.5s;
+      }
+
+      .header_toggle {
+        color: var(--first-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .header_img {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .header_img img {
+        width: 40px;
+      }
+
+      .l-navbar {
+        position: fixed;
+        top: 0;
+        left: -30%;
+        width: var(--nav-width);
+        height: 100vh;
+        background-color:darkblue;
+        padding: 0.5rem 1rem 0 0;
+        transition: 0.5s;
+        z-index: var(--z-fixed);
+      }
+
+      .nav {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      .nav_logo,
+      .nav_link {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+      }
+
+      .nav_logo {
+        margin-bottom: 2rem;
+      }
+
+      .nav_logo-icon {
+        font-size: 1.25rem;
+        color: var(--white-color);
+      }
+
+      .nav_logo-name {
+        color: var(--white-color);
+        font-weight: 700;
+      }
+
+      .nav_link {
+        position: relative;
+        color: var(--first-color-light);
+        margin-bottom: 1.5rem;
+        transition: 0.3s;
+      }
+
+      .nav_link:hover {
+        color: var(--white-color);
+      }
+
+      .nav_icon {
+        font-size: 1.25rem;
+      }
+
+      .show {
+        left: 0;
+      }
+
+      .body-pd {
+        padding-left: calc(var(--nav-width) + 1rem);
+      }
+
+      .active {
+        color: var(--white-color);
+      }
+
+      .active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 32px;
+        background-color: var(--white-color);
+      }
+
+      .height-100 {
+        height: 100vh;
+      }
+
+      @media screen and (min-width: 768px) {
+        body {
+          margin: calc(var(--header-height) + 1rem) 0 0 0;
+          padding-left: calc(var(--nav-width) + 2rem);
+        }
+
+        .header {
+          height: calc(var(--header-height) + 1rem);
+          padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+        }
+
+        .header_img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .header_img img {
+          width: 45px;
+        }
+
+        .l-navbar {
+          left: 0;
+          padding: 1rem 1rem 0 0;
+        }
+        
+        
+      }
+    </style>
+  </head>
+  <body id="body-pd">
+    <header class="header" id="header">
+      <div class="header_toggle">
+        <i class="bx bx-menu" id="header-toggle"></i>
+      </div>
+     
+    </header>
+    <div class="l-navbar" id="nav-bar">
+      <nav class="nav">
+        <div>
+          <a href="#" class="nav_logo">
+            <span><img style="max-width:240px;margin-left:-40px;" src="/logo/iLab white Logo-01.png" alt=""/></span>
+          </a><hr style="border:2px solid #ccc">
+          <div class="nav_list" style="margin-left:0px;padding-left:10px">
+                
+                <a href="{{ route('guest.booking.form') }}" class="nav_link" data-toggle="tooltip" data-placement="right" title="Guest Reservation">
+                <i class="bx bx-user-plus nav_icon"></i>
+                <span class="nav_name"><strong>Guest Reservation</strong></span>
+            </a><hr>
+            <a href="/" class="nav_link" data-toggle="tooltip" data-placement="right" title="Guest Reservation">
+                <i class="bx bx-home nav_icon"></i> <!-- Add the bx-home icon for Home -->
+                <span class="nav_name"><strong>Home</strong></span>
+                </a>
+                <hr>
+
+          </div>
         </div>
-        <!-- ... Your existing HTML code ... -->
-        <!-- ... Your existing HTML code ... -->
-        <div class="container">
-            <h1 style="text-align: center;">Guest Booking Form</h1>
-            <hr style="background-color:black">
+      </nav>
+    </div>
+
+    <div class="height-100 bg-light">
+  <!-- Button to trigger the Reservations Modal -->
+  <!-- Button to open the modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    <i class="bx bx-plus"></i> Create Reservation
+</button>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg"> <!-- Use modal-lg class to make it wider -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><strong>Booking Form</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
             <form action="{{ route('guest.booking.submit') }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="full_name"><i class="fas fa-user"></i> Full Name</label>
+                            <label class="form-label" for="full_name"><i class="bx bx-user"></i><strong> Full Name</strong></label>
                             <input type="text" class="form-control" id="full_name" name="guest_name" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="email"> <i class="fas fa-envelope"></i> Email</label>
+                            <label class="form-label" for="email"> <i class="bx bx-envelope"></i><strong>Email</strong></label>
                             <input type="email" class="form-control" id="email" name="guest_email" required>
                         </div>
                     </div>
@@ -104,7 +414,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="room"> <i class="fas fa-building"></i> Select Room</label>
+                            <label class="form-label" for="room"> <i class="bx bx-building"></i><strong>Select Room</strong></label>
                             <select class="form-control" id="room" name="room" required>
                                 @foreach ($rooms as $room)
                                 <option value="{{ $room->id }}">{{ $room->name }}</option>
@@ -114,7 +424,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="item"><i class="fas fa-shopping-bag"></i> Select Item (Optional)</label>
+                            <label class="form-label" for="item"><i class="fas fa-shopping-bag"></i><strong>Select Item (Optional)</strong></label>
                             <select class="form-control" id="item" name="item_id">
                                 <option class="form-control" value="">Select an item (optional)</option>
                                 @foreach ($items as $item)
@@ -128,13 +438,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="booking_date"><i class="fas fa-calendar"></i> Booking Date</label>
+                            <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
                             <input type="date" class="form-control" id="booking_date" name="booking_date" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="booking_time"> <i class="fas fa-clock"></i> Booking Time</label>
+                            <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
                             <input type="time" class="form-control" id="booking_time" name="booking_time" required min="{{ date('Y-m-d') }}">
                         </div>
                     </div>
@@ -143,21 +453,31 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="time_limit"> <i class="fas fa-clock"></i> Duration (in hours)</label>
+                            <label class="form-label" for="time_limit"> <i class="bx bx-clock"></i><strong> Duration (in hours)</strong></label>
                             <input type="number" class="form-control" id="duration" name="duration">
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="event"> <i class="fas fa-calendar-alt"></i> Event</label>
-                            <input type="text" class="form-control" id="event" name="event">
-                        </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="end_of_reservation">
+                            <i class="bx bx-clock"></i><strong> End of Reservation</strong>
+                        </label>
+                        <input type="text" class="form-control" id="end_of_reservation" name="timelimit" readonly>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="department"> <i class="fas fa-building"></i> Department</label>
+                        <div class="form-group">
+                            <label class="form-label" for="event"> <i class="bx bx-calendar-alt"></i> <strong>Event</strong></label>
+                            <input type="text" class="form-control" id="event" name="event">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label"  for="department"> <i class="bx bx-building"></i><strong>Department</strong></label>
                         <select id="department" name="guest_department" class="form-control">
                             <option value="eHealth">eHealth</option>
                             <option value="IT Outsourcing & BITCU">IT Outsourcing & BITCU</option>
@@ -171,6 +491,7 @@
                             <option value="ADM">@iLab Admin</option>
                             <option value="Others">Other</option>
                         </select>
+                    </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6" id="otherDepartmentField" style="display:none;">
@@ -233,19 +554,77 @@
                 <div class="row">
                     <div class="col-md-6">
                         <button class="btn btn-primary" type="submit">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
                     </div>
                 </div>
                 <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
                     Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
                 </footer>
-            </form><br>
+            </form><br>            </div>
+
+            <!-- Modal Footer -->
+            
         </div>
+    </div>
+</div>
 
+<script>
+    // JavaScript to handle showing/hiding fields based on checkboxes
+    $(document).ready(function () {
+        $("#itServices").change(function () {
+            $("#itemsList").toggle(this.checked);
+        });
 
-        <!-- Include your JavaScript scripts or links here -->
-        <!-- Include your JavaScript scripts or links here -->
-        <!-- ... Your existing HTML code ... -->
-        <script>
+        // Add more checkbox change handlers here
+    });
+</script>
+     <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function (event) {
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+          const toggle = document.getElementById(toggleId),
+            nav = document.getElementById(navId),
+            bodypd = document.getElementById(bodyId),
+            headerpd = document.getElementById(headerId);
+
+          // Validate that all variables exist
+          if (toggle && nav && bodypd && headerpd) {
+            toggle.addEventListener("click", () => {
+              // show navbar
+              nav.classList.toggle("show");
+              // change icon
+              toggle.classList.toggle("bx-x");
+              // add padding to body
+              bodypd.classList.toggle("body-pd");
+              // add padding to header
+              headerpd.classList.toggle("body-pd");
+            });
+          }
+        };
+
+        showNavbar("header-toggle", "nav-bar", "body-pd", "header");
+
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll(".nav_link");
+
+        function colorLink() {
+          if (linkColor) {
+            linkColor.forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+          }
+        }
+        linkColor.forEach((l) => l.addEventListener("click", colorLink));
+
+        // Your code to run since DOM is loaded and ready
+      });
+    </script>
+
+<script>
             document.addEventListener('DOMContentLoaded', function() {
                 var bookingDateInput = document.getElementById('booking_date');
 
@@ -393,5 +772,43 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select relevant input fields
+        const durationInput = document.getElementById("duration");
+        const bookingTimeInput = document.getElementById("booking_time");
+        const endOfReservationInput = document.getElementById("end_of_reservation");
 
+        // Function to update the end time based on duration and booking time
+        function updateEndTime() {
+            const duration = parseFloat(durationInput.value) || 0; // Parse duration as a number
+            const bookingTime = bookingTimeInput.value || "00:00"; // Get booking time as a string
+
+            if (duration > 0) {
+                // Calculate end time
+                const [hours, minutes] = bookingTime.split(":").map(Number);
+                const endTime = new Date();
+                endTime.setHours(hours + Math.floor(duration), minutes + (duration % 1) * 60);
+
+                // Format the end time as "hh:mm AM/PM"
+                const endHours = endTime.getHours() % 12 || 12;
+                const endMinutes = endTime.getMinutes();
+                const amPm = endTime.getHours() >= 12 ? "PM" : "AM";
+
+                // Update the end_of_reservation input field
+                endOfReservationInput.value = `${endHours}:${endMinutes.toString().padStart(2, "0")} ${amPm}`;
+            } else {
+                // Clear the end_of_reservation input if duration is not valid
+                endOfReservationInput.value = "";
+            }
+        }
+
+        // Listen for changes in duration and booking time inputs
+        durationInput.addEventListener("input", updateEndTime);
+        bookingTimeInput.addEventListener("input", updateEndTime);
+    });
+</script>
+
+     <!-- Calendar initialization -->
+       </body>
 </html>

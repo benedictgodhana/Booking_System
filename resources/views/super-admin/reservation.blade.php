@@ -584,6 +584,8 @@
        </div>
        @endforeach
 
+       
+
 
        <script>
            document.addEventListener("DOMContentLoaded", function() {
@@ -681,7 +683,7 @@
                     console.error(error);
                 }
             });
-        });
+        }); 
     });
 </script>
 
