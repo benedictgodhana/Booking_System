@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Carbon\Carbon;
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\User;
 use App\Notifications\BookingAcceptedNotification;
 use App\Notifications\BookingDeclinedNotification;
@@ -22,13 +24,16 @@ class AdminController extends Controller
     {
         $events = [];
         $reservations = Reservation::where('status', 'accepted')->get();
-
+        $roomID=[2,3];
         // Filter reservations for accepted rooms only
         $adminRoomIDs = [1, 2, 3, 4, 5, 6, 7, 8]; // Replace with the IDs of rooms accepted by the admin
         $acceptedReservations = $reservations->filter(function ($reservation) use ($adminRoomIDs) {
             return in_array($reservation->room_id, $adminRoomIDs);
         });
         $totalUsersCount = User::count();
+        $users=User::all();
+        $rooms=Room::whereIn('id',$roomID)->get();
+        $items=Item::all();
 
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
@@ -51,9 +56,16 @@ class AdminController extends Controller
             // Add more rooms and colors as needed
         ];
 
-       
-
-        foreach ($adminRoomIDs as $roomID) {
+        $roomsCount = Room::count();
+        $usersCount = User::where('role', 0)->count();
+        $reservationsAcceptedCount = DB::table('reservations')
+        ->where('status', 'Accepted')
+        ->count();
+        $pendingReservations = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'pending')
+        ->get();
+        $pendingBookingsCount = $pendingReservations->count();
+            foreach ($adminRoomIDs as $roomID) {
             $pendingCount = $reservations->filter(function ($reservation) use ($roomID) {
                 return $reservation->room_id == $roomID;
             })->count();
@@ -75,7 +87,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors'));
+        return view('admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','roomsCount','usersCount','pendingBookingsCount','reservationsAcceptedCount','users','rooms','items'));
     }
 
     public function reservation()
@@ -220,8 +232,8 @@ class AdminController extends Controller
         $reservation->timelimit = $endTime; // Store the calculated end time
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->event = $validatedData['event'];
-        $reservation->status = 'accepted';
 
+        $reservation->status = 'accepted';
 
         // Save the reservation to the database
         $reservation->save();
@@ -232,6 +244,7 @@ class AdminController extends Controller
         // Redirect back with a success message
         return redirect()->back();
     }
+
     public function updatePassword(Request $request)
     {
         $validatedData = $request->validate([

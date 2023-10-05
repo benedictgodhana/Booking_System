@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Mail\GuestBookingAcceptedNotification;
 use App\Mail\MiniAdminReservationCreated;
 use App\Models\Activity;
+use App\Models\Item;
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\User;
 use App\Notifications\BookingAcceptedNotification;
 use App\Notifications\BookingDeclinedNotification;
@@ -25,13 +27,25 @@ class MiniAdminController extends Controller
     {
         $events = [];
         $reservations = Reservation::where('status', 'accepted')->get();
-
+        $roomID=[4,5,6,7,8];
         // Filter reservations for accepted rooms only
         $miniadminRoomIDs = [1, 2, 3, 4, 5, 6, 7, 8]; // Replace with the IDs of rooms accepted by the admin
         $acceptedReservations = $reservations->filter(function ($reservation) use ($miniadminRoomIDs) {
             return in_array($reservation->room_id, $miniadminRoomIDs);
         });
         $totalUsersCount = User::count();
+        $pendingReservations = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'pending')
+        ->get();
+        $users=User::all();
+        $rooms=Room::whereIn('id',$roomID)->get();
+        $items=Item::all();
+        $pendingBookingsCount = $pendingReservations->count();
+        $roomsCount = Room::count();
+        $usersCount = User::where('role', 0)->count();
+        $reservationsAcceptedCount =Reservation::whereIn('room_id',$roomID)
+        ->where('status', 'Accepted')
+        ->count();
 
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
@@ -40,6 +54,7 @@ class MiniAdminController extends Controller
         $usersWithReservationsCount = max($usersWithReservationsCount, 0);
 
         $totalRoomsCount = count($miniadminRoomIDs); // Count the room IDs in the array
+        
         $pendingCounts = [];
         $roomColors = [
             'Kifaru' => 'Orange',
@@ -77,7 +92,7 @@ class MiniAdminController extends Controller
             ];
         }
 
-        return view('miniadmin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors'));
+        return view('miniadmin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','pendingReservations','pendingBookingsCount','roomsCount','usersCount','reservationsAcceptedCount','users','rooms','items'));
     }
 
 

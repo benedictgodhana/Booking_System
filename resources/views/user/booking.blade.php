@@ -135,14 +135,10 @@
                 <!-- Checkbox for Requirements -->
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label">Requirements:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="itServices">
-                            <label class="form-check-label" for="itServices">IT Services</label>
-                        </div>
+                        <label class="form-label">Optional Requirements:</label>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="setupAssistance">
-                            <label class="form-check-label" for="setupAssistance">Setup Assistance</label>
+                            <label class="form-check-label" for="setupAssistance">IT Setup Assistance</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="requestItems">

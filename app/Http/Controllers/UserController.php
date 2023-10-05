@@ -71,7 +71,7 @@ class UserController extends Controller
     public function reservation()
     {
         $user = auth()->user();
-        $reservations = $user->reservations()->paginate(10); // Assuming you have defined a relationship in the User model      
+        $reservations = $user->reservations()->paginate(7); // Assuming you have defined a relationship in the User model      
         return view('user.reservation', compact('reservations'));
     }
     public function getAcceptedRooms()
@@ -245,9 +245,25 @@ public function searchReservations(Request $request)
     }
 
     // Retrieve the filtered reservations
-    $reservations = $query->paginate(10); // Adjust the pagination as needed
+    $reservations = $query->paginate(7); // Adjust the pagination as needed
 
-    return view('user.reservation', ['reservations' => $reservations]);
+    // Define the $isTimeLimitPassed variable here
+    $isTimeLimitPassed = [];
+
+    foreach ($reservations as $reservation) {
+        // Calculate $isTimeLimitPassed for each reservation
+        $currentDate = \Carbon\Carbon::now();
+        $currentDateTime = \Carbon\Carbon::now();
+        $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
+        $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
+        
+        // Compare the current date with the reservation date
+        $isDatePassed = $currentDate->gt($reservationDate);
+        $isTimeLimitPassed[$reservation->id] = $currentDateTime->gt($timeLimit);
+    }
+
+    // Pass $isTimeLimitPassed to the view along with $reservations
+    return view('user.search_results', ['reservations' => $reservations, 'isTimeLimitPassed' => $isTimeLimitPassed]);
 }
 public function updateProfile(Request $request)
 {

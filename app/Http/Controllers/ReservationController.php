@@ -113,7 +113,7 @@ class ReservationController extends Controller
             // Add other email variables here
         ], function ($message) {
             $message->to(auth()->user()->email)->subject('Reservation Confirmation')
-                ->from('booking@ilab.com', 'iLab Room Booking System');
+                ->from('ilabroombooking@strathmore.edu', 'iLab Room Booking System');
         });
 
         // for superadmin Notification
@@ -175,7 +175,7 @@ class ReservationController extends Controller
                 return 'No reservations found for rooms 2 and 3.';
             }
         }
-    }
+    
 
     public function updateReservationStatus(Request $request, $id)
     {
@@ -210,11 +210,12 @@ class ReservationController extends Controller
         // Redirect back to the reservation status page with a success message
         return redirect()->back()->with('success', 'Reservation status updated successfully.');
     }
+
     public function index()
     {
         $reservations = Reservation::all();
         $events = [];
-
+    
         foreach ($reservations as $reservation) {
             $events[] = [
                 'title' => $reservation->event, // Use the event details
@@ -223,9 +224,10 @@ class ReservationController extends Controller
                 'room' => $reservation->room->name,
             ];
         }
-
+    
         return view('events.index', compact('events'));
     }
+    
 
         public function filterPendingReservations(Request $request)
     {
@@ -242,7 +244,7 @@ class ReservationController extends Controller
         return response()->json(['reservations' => $filteredReservations]);
     }
 
-    public function cancelReservation($id)
+ public  function cancelReservation($id)
 {
     // Your cancellation logic here
     // For example, you can update the reservation status to "Canceled"
@@ -258,9 +260,5 @@ class ReservationController extends Controller
         return redirect()->back()->with('success', 'Reservation has been canceled successfully.');
     }
 
-    return redirect()->back()->with('error', 'Reservation not found.');
 }
-
 }
-
-

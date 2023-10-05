@@ -50,31 +50,10 @@
 
     <div class="card">
         <div class="card-body">
-            <h2 style="margin-left:10px;font-size:23px" class="card-title">Reservation List</h2><br><br>
-            <form method="GET" action="{{ route('user.searchReservations') }}">
-    <div class="form-row">
-        <div class="col-md-3">
-            <input type="text" name="search" class="form-control" placeholder="Search by event or remarks">
-        </div>
-        <div class="col-md-2">
-            <select name="status" class="form-control">
-                <option value="">Filter by Status</option>
-                <option value="Pending">Pending</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Declined">Declined</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="date" name="start_date" class="form-control" placeholder="Start Date">
-        </div>
-        <div class="col-md-3">
-            <input type="date" name="end_date" class="form-control" placeholder="End Date">
-        </div>
-        <div class="col-md-1">
-            <button type="submit" class="btn btn-primary">Filter</button>
-        </div>
-    </div>
-</form>
+            <h2 style="margin-left:10px;font-size:23px" class="card-title">Search Results</h2><br><br>
+            <!-- Add a link to go back to the search form page if needed -->
+            <a href="{{ route('reservation') }}" class="btn btn-primary">Back to Reservation List</a><br><br>
+            
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -101,7 +80,8 @@
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->remarks }}</td>
                         <td class="actions">
-        @php
+
+                        @php
             $currentDate = \Carbon\Carbon::now();
             $currentDateTime = \Carbon\Carbon::now();
             $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
@@ -110,16 +90,16 @@
             $isDatePassed = $currentDate->gt($reservationDate);
             $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
         @endphp
-
+                            <!-- Display the action buttons (e.g., cancel reservation) as needed -->
         @if ($reservation->status === 'Canceled')
             <!-- Reservation is already cancelled, disable the button -->
             <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
-                <i class="fas fa-times"></i> Canceled Reservation
+                <i class="fas fa-times"></i> Cancel Reservation
             </button>
         @elseif ($isDatePassed || $isTimeLimitPassed)
             <!-- Reservation date has passed, disable cancellation -->
-            <button style="width:200px;border-radius:10px" type="button" class="btn btn-danger" disabled>
-                <i class="fas fa-lock"></i> locked Reservation
+            <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
+                <i class="fas fa-times"></i> Cancel Reservation
             </button>
         @else
             <!-- Reservation date is in the future, enable cancellation -->
@@ -128,13 +108,14 @@
                 <i class="fas fa-times"></i> Cancel Reservation
             </button>
         @endif
-    </td>
-
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table><br>
-            <!-- Pagination with collapsed version when more than 20 pages -->
+
+            <!-- Replace $Results with $reservations -->
+<!-- Pagination with collapsed version when more than 20 pages -->
 <nav aria-label="Page navigation" style="width: 100px; margin-left: 680px">
     <ul class="pagination justify-content-center">
         <!-- Display the first page link -->
@@ -176,34 +157,37 @@
 </nav>
 
 
-            <!-- Modal for Canceling Reservation -->
-            @foreach($reservations as $reservation)
-            <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-success text-white">
-                            <h5 class="modal-title" id="cancelModalLabel{{ $reservation->id }}">Cancel Reservation</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to cancel this reservation for <span>{{$reservation->room->name}}?</span></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <form action="{{ route('cancelReservation', $reservation->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-success">Confirm Cancelation</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
+            <!-- Pagination can remain the same as in the reservation.blade.php view -->
         </div>
     </div>
+
+    <!-- Modal for Canceling Reservation -->
+@foreach($reservations as $reservation)
+<div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="cancelModalLabel{{ $reservation->id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="cancelModalLabel{{ $reservation->id }}">Cancel Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this reservation for <span>{{$reservation->room->name}}?</span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ route('cancelReservation', $reservation->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-success">Confirm Cancellation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
 </body>
 @endsection

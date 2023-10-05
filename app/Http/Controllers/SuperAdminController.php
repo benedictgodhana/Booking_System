@@ -42,6 +42,8 @@ class SuperAdminController extends Controller
         $users = User::all();
         $items = Item::all();
         $pendingBookingsCount = Reservation::where('status', 'pending')->count();
+        $reservationsAcceptedCount = Reservation::where('status', 'Accepted')->count();
+
 
         $roomColors = [
             'Kifaru' => 'Orange',
@@ -68,7 +70,7 @@ class SuperAdminController extends Controller
 
             ];
         }
-        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors'));
+        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors','reservationsAcceptedCount'));
     }
 
     public function users()

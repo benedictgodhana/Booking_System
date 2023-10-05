@@ -265,8 +265,7 @@
         <!-- small card -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3></h3>
-
+            <h3>{{ $pendingBookingsCount }}</h3> <!-- Inject the pending bookings count here -->
                 <p>Number of pending bookings</p>
             </div>
             <div class="icon">
@@ -282,8 +281,7 @@
         <!-- small card -->
         <div class="small-box bg-primary">
             <div class="inner">
-                <h3></h3>
-
+            <h3>{{ $usersCount }}</h3> <!-- Inject the total users count here -->
                 <p>Total users</p>
             </div>
             <div class="icon">
@@ -298,9 +296,8 @@
         <!-- small card -->
         <div class="small-box bg-success">
             <div class="inner">
-                <h3></h3>
-
-                <p>Total users</p>
+            <h3>{{ $reservationsAcceptedCount }}</h3> <!-- Inject the accepted reservations count here -->
+                <p>Number of Reservations accepted</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -315,8 +312,7 @@
         <!-- small card -->
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3></h3>
-
+            <h3>{{ $roomsCount }}</h3> <!-- Inject the total rooms count here -->
                 <p>Total rooms</p>
             </div>
             <div class="icon">
@@ -490,6 +486,23 @@
                 'gray'
             ];
 
+            // Initialize the current time display
+            function updateTime() {
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes();
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Handle midnight (0:00)
+                minutes = minutes < 10 ? '0' + minutes : minutes; // Add leading zero to minutes
+                var timeString = hours + ':' + minutes + ' ' + ampm;
+                document.getElementById('current-time').textContent = timeString;
+            }
+
+            // Update the current time every second
+            setInterval(updateTime, 1000);
+
+            // Initialize the FullCalendar
             $('#calendar').fullCalendar({
                 defaultView: 'month',
                 editable: false,
@@ -517,6 +530,12 @@
                     if (roomIndex !== -1) {
                         element.css('background-color', roomColors[roomIndex]);
                     }
+
+                    // Format the reservation time to include "am" or "pm"
+                    var formattedTime = moment(event.start).format('hh:mm A');
+
+                    // Append the formatted time to the event title
+                    element.find('.fc-title').append('<br>' + formattedTime);
                 },
                 eventMouseover: function(event, jsEvent, view) {
                     var tooltip = '<div class="tooltipevent" style="width:auto;height:auto;background:yellow;position:absolute;z-index:10001;padding:10px;border-radius:5px;box-shadow:0 0 5px #333;">' + '<br>Event: ' + event.title + '<br>Room: ' + event.room + '<br>Start: ' + moment(event.start).format('YYYY-MM-DD hh:mm A') + '<br>End: ' + moment(event.end).format('YYYY-MM-DD hh:mm A') + '</div>';
@@ -536,6 +555,7 @@
                 },
             });
         });
+
     </script>
 
     <script>

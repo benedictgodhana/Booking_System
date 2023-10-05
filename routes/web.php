@@ -125,6 +125,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
     Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
     Route::post('/profile/update-password', [AdminController::class, 'updatePassword'])->name('Adminprofile');
+    Route::post('/admin/create-reservation', [AdminController::class, 'createReservation'])
+    ->name('create.reservation'); 
 
 
 });

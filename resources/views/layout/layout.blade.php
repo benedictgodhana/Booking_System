@@ -189,7 +189,7 @@
         @if(auth()->user()->role == 2)
         <!-- Sub-admin menu -->
         <li>
-          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subdashboard') }}"><i class="fa fa-tachometer-alt"></i> Dashboard</a>
         </li>
         <li>
           <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('subadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
@@ -204,7 +204,7 @@
         @if(auth()->user()->role == 3)
         <!-- Admin menu -->
         <li>
-          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('admindashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('admindashboard') }}"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
         </li>
         <li>
           <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('adminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>
@@ -218,7 +218,7 @@
         @if(auth()->user()->role == 4)
         <!-- Mini-admin menu -->
         <li>
-          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('minidashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('minidashboard') }}"><i class="fa fa-tachometer-alt"></i> Dashboard</a>
         </li>
         <li>
           <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('miniadminreservation') }}"><i class="fa fa-calendar"></i> Reservation</a>

@@ -22,7 +22,7 @@ class RoomAvailability implements Rule
     public function passes($attribute, $value)
     {
         // Check if there is a conflicting reservation for the same room, date, and time
-        return !ModelsReservation::where('selectRoom', $this->selectRoom)
+        return !ModelsReservation::where('room_id', $this->selectRoom)          
             ->where('reservationDate', $this->reservationDate)
             ->where('reservationTime', $this->reservationTime)
             ->exists();
