@@ -222,19 +222,20 @@ form.sign-in-form {
   color: #fff;
   transition: transform 0.9s ease-in-out;
   transition-delay: 0.6s;
+  margin-top: -220px;
 }
 
 .panel h3 {
   font-weight: 600;
   line-height: 1;
   font-size: 1.5rem;
-  margin-left: -300px;
+  margin-left: -400px;
 }
 
 .panel p {
   font-size: 0.95rem;
   padding: 0.7rem 0;
-  margin-left: -220px;
+  margin-left: -320px;
 
 }
 
@@ -246,8 +247,13 @@ form.sign-in-form {
   height: 41px;
   font-weight: 600;
   font-size: 0.8rem;
-  margin-left: -240px;
+  margin-left: -340px;
+  text-decoration: none;
 }
+.btn.transparent a{
+    color:white;
+    text-decoration: none;
+}   
 
 .right-panel .image,
 .right-panel .content {
@@ -357,6 +363,10 @@ form.sign-in-form {
     height: 35px;
     font-size: 0.7rem;
   }
+  .btn.transparent a{
+    color:white;
+    text-decoration: none;
+}
 
   .container:before {
     width: 1500px;
@@ -424,12 +434,20 @@ form.sign-in-form {
 .btn:hover {
   background-color:green;
 }
-  .panel .content {
-    padding: 0.5rem 1rem;
-  }
+    .panel .content {
+        padding: 0.5rem 1rem;
+    }
   .container {
     padding: 1.5rem;
   }
+
+  .panel .content {
+  color: #fff;
+  transition: transform 0.9s ease-in-out;
+  transition-delay: 0.6s;
+  margin-top: 20px;
+}
+
 
   .container:before {
     bottom: 72%;
@@ -464,6 +482,11 @@ form.sign-in-form {
   font-weight: 600;
   font-size: 0.8rem;
   margin-left: 20px;
+  text-decoration: none;
+}
+.btn.transparent a{
+    color:white;
+    text-decoration: none;
 }
 .btn-d{
     width: 320px;
@@ -522,7 +545,7 @@ form.sign-in-form {
             <p>
               Kindly Activate your Account
             </p><br>
-            <button  class="btn transparent"><a href="{{ route('account.activate') }}" style="color:white; text-decoration:none;font-weight:800">
+            <button  class="btn transparent"><a href="{{ route('account.activate') }}">
               Activate account
             </a></button>
           </div>

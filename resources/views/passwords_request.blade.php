@@ -240,6 +240,7 @@ form.sign-in-form {
   color: #fff;
   transition: transform 0.9s ease-in-out;
   transition-delay: 0.6s;
+  margin-top: -190px;
 }
 
 .panel h3 {
@@ -463,6 +464,13 @@ form.sign-in-form {
   .container {
     padding: 1.5rem;
   }
+
+  .panel .content {
+  color: #fff;
+  transition: transform 0.9s ease-in-out;
+  transition-delay: 0.6s;
+  margin-top: 20px;
+}
 
   .container:before {
     bottom: 72%;

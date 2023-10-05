@@ -18,7 +18,7 @@
 
     <p>Thank you for using iLab Room Booking System.</p>
 
-    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
+    <p>For any inquiries, please contact us at <a href="ilabsupport@strathmore.edu">ilabsupport@strathmore.edu</a></p>
 
 
     <p>© 2023 Strathmore. All rights reserved.</p>

@@ -20,9 +20,9 @@
     </ul>
 
     <p>Click on the following link to log in:</p>
-    <a href='http://127.0.0.1:8000/login'>Log In</a>
+    <a href="{{route('LoginPage')}}">Log In</a>
 
-    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
+    <p>For any inquiries, please contact us at <a href="ilabsupport@strathmore.edu">ilabsupport@strathmore.edu</a></p>
 
     <p>Thank you for choosing iLab Room Booking System.</p>
 

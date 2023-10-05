@@ -3,53 +3,10 @@
 @section('space-work')
 
 <style>
-    /* Card Styles */
-    .card {
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
-    .card-title {
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
 
-    .card-text {
-        font-size: 1rem;
-        color: #333;
-    }
-
-    /* Container for Cards */
-    .container {
-        padding: 20px;
-    }
-
-    /* Responsive Layout */
-    @media (max-width: 768px) {
-        .container {
-            padding: 10px;
-        }
-
-        h5{
-            text-align: center;
-        }
-
-        .card {
-            margin-bottom: 10px;
-        }
-
-        /* Reduce the calendar size */
-        #calendar {
-            height: 200px;
-            width: 30px;
-            /* Adjust the height as needed */
-            overflow-y: scroll;
-            /* Add vertical scrollbar if necessary */
-        }
-
-        .fc button {
+      .fc button {
             background-color: yellowgreen;
             color: black;
             font-family: Arial, sans-serif;
@@ -61,27 +18,233 @@
             cursor: pointer;
         }
 
-        /* Add this CSS to your existing styles */
-        .calendar-container {
-            max-height: 400px;
-            /* Adjust the max height as needed */
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .fc button:hover {
+            background-color: yellow;
+        }
+      #calendar {
+            max-width: 100%;
+            background-color: #ffffff; /* Background color of the calendar */
+            border: 1px solid #ccc; /* Border around the calendar */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 0 5px #888; /* Box shadow for a subtle depth effect */
             padding: 10px;
+            margin: 0px;
+        }
+        #calendar .fc-toolbar {
+            background-color:darkblue; /* Header background color */
+            color: #ffffff; /* Header text color */
+            border-radius: 5px 5px 0 0; /* Rounded corners for the top */
+        }
+        #calendar .fc-toolbar button {
+            background-color:yellowgreen;
+            color: #ffffff;
+            border: none;
+            border-radius: 0;
+            margin: 2px;
+        }
+        #calendar .fc-toolbar button:hover {
+            background-color: #0056b3;
         }
 
+        /* Style the events in the calendar */
+        #calendar .fc-event {
+            background-color:yellowgreen; /* Event background color */
+            color: #ffffff; /* Event text color */
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 2px;
+        }
+
+        #calendar .fc-event:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style the time display in the calendar */
+        #calendar .fc-time {
+            color: #333; /* Time text color */
+            font-weight: bold;
+        }
+        .legend{
+
+            margin-left: 1270px;
+             margin-top:-500px;
+              width:200px
+        }
+        .legend-color{
+            margin-right: 5px; 
+            height: 20px; width: 20px;
+            display: inline-block;
+
+        }
+
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        position: relative;
+        margin: var(--header-height) 0 0 0;
+        padding: 0 1rem;
+        font-family: var(--body-font);
+        font-size: var(--normal-font-size);
+        transition: 0.5s;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .header {
+        width: 100%;
+        height: var(--header-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        background-color: var(--white-color);
+        z-index: var(--z-fixed);
+        transition: 0.5s;
+      }
+
+      .header_toggle {
+        color: var(--first-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .header_img {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .header_img img {
+        width: 40px;
+      }
+
+      .l-navbar {
+        position: fixed;
+        top: 0;
+        left: -30%;
+        width: var(--nav-width);
+        height: 100vh;
+        background-color:darkblue;
+        padding: 0.5rem 1rem 0 0;
+        transition: 0.5s;
+        z-index: var(--z-fixed);
+      }
+
+      .nav {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      .nav_logo,
+      .nav_link {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+      }
+
+      .nav_logo {
+        margin-bottom: 2rem;
+      }
+
+      .nav_logo-icon {
+        font-size: 1.25rem;
+        color: var(--white-color);
+      }
+
+      .nav_logo-name {
+        color: var(--white-color);
+        font-weight: 700;
+      }
+
+      .nav_link {
+        position: relative;
+        color: var(--first-color-light);
+        margin-bottom: 1.5rem;
+        transition: 0.3s;
+      }
+
+      .nav_link:hover {
+        color: var(--white-color);
+      }
+
+      .nav_icon {
+        font-size: 1.25rem;
+      }
+
+      .show {
+        left: 0;
+      }
+
+      .body-pd {
+        padding-left: calc(var(--nav-width) + 1rem);
+      }
+
+      .active {
+        color: var(--white-color);
+      }
+
+      .active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 32px;
+        background-color: var(--white-color);
+      }
+
+      .height-100 {
+        height: 100vh;
+      }
+
+      @media screen and (min-width: 768px) {
         body {
-            overflow: hidden;
-            
+          margin: calc(var(--header-height) + 1rem) 0 0 0;
+          padding-left: calc(var(--nav-width) + 2rem);
         }
 
+        .header {
+          height: calc(var(--header-height) + 1rem);
+          padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+        }
 
+        .header_img {
+          width: 40px;
+          height: 40px;
+        }
 
-    }
-</style>
+        .header_img img {
+          width: 45px;
+        }
 
+        .l-navbar {
+          left: 0;
+          padding: 1rem 1rem 0 0;
+        }
+
+        
+
+        .body-pd {
+          padding-left: calc(var(--nav-width) + 188px);
+        }
+      }</style>
 @if(Session::has('success'))
 <div class="alert alert-success">
     {{ Session::get('success') }}
@@ -173,24 +336,33 @@
 
         <div class="container">
             
-            <h1 style="color: brown; font-weight: bold; margin-left: 370px">Booking Calendar</h1><br>
-            <div class="calendar-container">
-                <div id="calendar" style="max-width: 950px;"></div>
-            </div>
+        <h1>Booking Calendar</h1> <!-- Add your page title here -->
+        <div class="calendar-container">
+            <!-- Current Time Display -->
+            <div class="current-time">
+              <button style=" background: rgba(255, 255, 15, 0.5); /* Semi-transparent white background */
+                    border: none;
+                    border-radius: 25px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Box shadow for the glass effect */
+                    color: #333; /* Text color */
+                    padding: 10px;
+                    transition: background 0.3s ease;font-weight:900" class="btn btn-success glass-effect"><strong>Current Time:</strong> <span id="current-time"></span></button>  
+            </div><br>
 
-            <div class="legend" style=" margin-left: 1120px;margin-top:-500px;width:200px">
-                @foreach ($roomColors as $room => $color)
-                <div>
-                    <div class="legend-color" style=" margin-right: 5px; height: 20px; width: 20px;display: inline-block;background-color: {{ $color }};"></div> {{ $room }}
-                </div>
-                @endforeach
-            </div>
+            <!-- Calendar -->
+            <div class="calender" id="calendar"></div>
+
+            <!-- Legend -->
+
         </div>
     </div>
-    <div class="container mt-4">
-        <!-- Booking Graph -->
-        <canvas id="bookingGraph" width="400" height="200"></canvas>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    
 
 
 

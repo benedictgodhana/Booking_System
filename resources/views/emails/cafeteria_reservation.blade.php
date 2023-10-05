@@ -18,7 +18,7 @@
 
     <p>Please review and confirm the reservation.</p>
 
-    <p>For any inquiries, please contact us at <a href="ilabroombooking@strathmore.edu">ilabroombooking@strathmore.edu</a></p>
+    <p>For any inquiries, please contact us at <a href="ilabsupport@strathmore.edu">ilabsupport@strathmore.edu</a></p>
 
 
     <p>Thank you!</p>

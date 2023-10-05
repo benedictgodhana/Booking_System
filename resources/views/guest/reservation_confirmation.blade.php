@@ -20,7 +20,7 @@
         <!-- Add more reservation details here -->
     </ul>
     <p>Thank you for using our reservation system.</p>
-    <p>For any inquiries, please contact us at <a href="mailto:booking@ilab.com">booking@ilab.com</a></p>
+    <p>For any inquiries, please contact us at <a href="ilabsupport@strathmore.edu">ilabsupport@strathmore.edu</a></p>
 
     <!-- Email Footer -->
 

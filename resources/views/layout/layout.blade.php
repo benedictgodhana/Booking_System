@@ -148,7 +148,7 @@
         @if(auth()->user()->role == 1)
         <!-- Admin menu -->
         <li>
-          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('sdashboard') }}"><i class="fa fa-tachometer-alt"></i> Admin Dashboard</a>
+          <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('sdashboard') }}"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
         </li>
         <li>
           <a  style="border:2px solid #ccc; border-radius:10px" href="{{ route('sadminreservation') }}"><i class="fa fa-calendar"></i>All Reservation</a>

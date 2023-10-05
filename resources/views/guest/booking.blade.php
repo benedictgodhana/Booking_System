@@ -365,7 +365,7 @@
                 <i class="bx bx-user-plus nav_icon"></i>
                 <span class="nav_name"><strong>Guest Reservation</strong></span>
             </a><hr>
-            <a href="/" class="nav_link" data-toggle="tooltip" data-placement="right" title="Guest Reservation">
+            <a href="/" class="nav_link" data-toggle="tooltip" data-placement="right" title="Home">
                 <i class="bx bx-home nav_icon"></i> <!-- Add the bx-home icon for Home -->
                 <span class="nav_name"><strong>Home</strong></span>
                 </a>
@@ -379,24 +379,14 @@
     <div class="height-100 bg-light">
   <!-- Button to trigger the Reservations Modal -->
   <!-- Button to open the modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-    <i class="bx bx-plus"></i> Create Reservation
-</button>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-lg"> <!-- Use modal-lg class to make it wider -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"><strong>Booking Form</strong></h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-            <form action="{{ route('guest.booking.submit') }}" method="POST">
-                @csrf
-                <div class="row">
+  <div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Reservation Form</h5>
+    </div>
+    <div class="card-body">
+        <form action="{{ route('guest.booking.submit') }}" method="POST">
+            @csrf
+            <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="full_name"><i class="bx bx-user"></i><strong> Full Name</strong></label>
@@ -554,20 +544,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <button class="btn btn-primary" type="submit">Submit</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                     </div>
                 </div>
                 <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
                     Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
                 </footer>
-            </form><br>            </div>
-
-            <!-- Modal Footer -->
-            
-        </div>
+        </form>
     </div>
 </div>
+
 
 <script>
     // JavaScript to handle showing/hiding fields based on checkboxes
