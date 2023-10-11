@@ -464,28 +464,28 @@
                     </div>
 
                     <div class="col-md-6">
-    <div class="form-group">
-        <label class="form-label" for="department">
-            <i class="bx bx-building"></i><strong>Department</strong>
-        </label>
-        <input type="text" id="department" name="guest_department" class="form-control" list="department-list" placeholder="Select or type your department">
-        <datalist id="department-list">
-            @foreach($departments as $department)
-                <option value="{{ $department->name }}">
-            @endforeach
-        </datalist>
-    </div>
-</div>
+                      <div class="form-group">
+                          <label class="form-label" for="department">
+                              <i class="bx bx-building"></i><strong>Department</strong>
+                          </label>
+                          <input type="text" id="department" name="guest_department" class="form-control" list="department-list" placeholder="Select or type your department">
+                          <datalist id="department-list">
+                              @foreach($departments as $department)
+                                  <option value="{{ $department->name }}">
+                              @endforeach
+                          </datalist>
+                      </div>
+                  </div>
 
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
-            <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes"></textarea>
-        </div>
-    </div>
-</div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
+                              <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes"></textarea>
+                          </div>
+                      </div>
+                  </div>
 
 
 

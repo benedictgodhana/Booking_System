@@ -88,7 +88,7 @@ class GuestBookingController extends Controller
     $reservation->save();
 
 // Include selected items (assuming you have the logic to determine selected items)
-if ($validatedData['itemRequests']) {
+if (isset($validatedData['itemRequests']) && $validatedData['itemRequests']) {
     $reservation->items()->attach($validatedData['itemRequests']);
 }
 
