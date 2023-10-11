@@ -464,42 +464,20 @@
                     </div>
 
                     <div class="col-md-6">
-            <div class="form-group">
-                <label class="form-label" for="department">
-                    <i class="bx bx-building"></i><strong>Department</strong>
-                </label>
-                <input
-                    id="department"
-                    name="guest_department"
-                    class="form-control"
-                    list="departmentList"
-                    placeholder="Search or enter your department"
-                />
-        <datalist id="departmentList">
-            <option value="CIPIT">Centre for Intellectual Property and Information Technology Law (CIPIT)</option>
-            <option value="SCES">Strathmore School of Computing and Engineering Sciences (SCES)</option>
-            <option value="PARTNERSHIP">Partnership</option>
-            <option value="SAIRC">Strathmore Academy for International Research Collaboration</option>
-            <option value="STH">Strathmore School of Tourism and Hospitality</option>
-            <option value="SUMC">Strathmore University Medical Centre (SUMC)</option>
-            <option value="SERC">Strathmore Energy Research Centre (SERC) </option>
-            <option value="SIMS">Strathmore University Institute of Mathematical Sciences (SIMS)</option>
-            <option value="SHSS">School of Humanities and Social Sciences</option>
-            <option value="SBS">Strathmore Business School</option>
-            <option value="MENTORSHIP">Mentorship</option>
-            <option value="FINANCE">Finance </option>
-            <option value="FAO"> Strathmore University Financial Aid Office</option>
-            <option value="PNC">Strathmore People and Culture</option>
-            <option value="SUF"></option>
-            <option value="SUSA">Strathmore University student affairs</option>
-
-
-
-            <!-- Add more department options here -->
+    <div class="form-group">
+        <label class="form-label" for="department">
+            <i class="bx bx-building"></i><strong>Department</strong>
+        </label>
+        <input type="text" id="department" name="guest_department" class="form-control" list="department-list" placeholder="Select or type your department">
+        <datalist id="department-list">
+            @foreach($departments as $department)
+                <option value="{{ $department->name }}">
+            @endforeach
         </datalist>
     </div>
 </div>
-</div>
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">

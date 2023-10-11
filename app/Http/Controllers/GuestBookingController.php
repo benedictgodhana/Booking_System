@@ -10,6 +10,7 @@ use App\Mail\GuestSubadminNotificationMail;
 use App\Mail\GuestSuperadminNotificationMail;
 use App\Mail\MiniAdminReservationCreated;
 use App\Mail\ReservationRequest;
+use App\Models\Department;
 use App\Models\Item;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -25,7 +26,8 @@ class GuestBookingController extends Controller
     {
         $rooms = Room::all();
         $items = Item::all();
-        return view('guest.booking', compact('rooms', 'items'));
+        $departments=Department::all();
+        return view('guest.booking', compact('rooms', 'items','departments'));
     }
 
     public function submitBooking(Request $request)
