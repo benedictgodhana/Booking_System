@@ -5,80 +5,68 @@
    use Carbon\Carbon;
    @endphp
    <style>
-       .user-management {
-           background-color: #f5f5f5;
-           padding: 0px;
-       }
+    .user-table {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px; /* Increased padding for better spacing */
+        margin-bottom: 20px;
+        overflow-x: auto; /* Add horizontal scroll for small screens */
+    }
 
-       .user-table {
-           background-color: #fff;
-           border-radius: 8px;
-           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-           padding: 10px;
-           margin-bottom: 20px;
-           border-collapse: collapse;
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ccc;
+    }
 
-       }
+    th,
+    td {
+        padding: 12px; /* Increased padding for better spacing */
+        border: 1px solid #ccc;
+        text-align: left;
+    }
 
-       /* Your styles here */
-       table {
-           border-collapse: collapse;
-           width: 100%;
-           border: 1px solid #ccc;
-           margin-top: 20px;
-       }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
 
-       th,
-       td {
-           padding: 7px;
-           border: 1px solid #ccc;
-           text-align: left;
-       }
+    tr:nth-child(even) {
+        background-color: #f5f5f5; /* Slightly different background color */
+    }
 
-       .pagination {
-           margin-top: 20px;
-           background-color: #fff;
-           border-radius: 4px;
-           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-           padding: 10px;
-       }
+    tr:hover {
+        background-color: #e0e0e0; /* Hover effect for rows */
+    }
 
-       th {
-           background-color: #f2f2f2;
-           font-weight: bold;
-       }
+    /* Style the buttons */
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-       tr:nth-child(even) {
-           background-color: #f2f2f2;
-       }
+    .btn-primary {
+        background-color:#0056b3;
+        color: #fff;
+    }
 
-       tr:hover {
-           background-color: #e0e0e0;
-       }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
 
-       .actions {
-           display: flex;
-       }
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+    }
 
-       .action-button {
-           margin-right: 5px;
-       }
-
-
-
-       th,
-       td {
-           white-space: nowrap;
-       }
-
-       /* Optional: Add media query for smaller screens */
-       @media (max-width: 768px) {
-           table {
-               font-size: 14px;
-               /* Adjust font size for smaller screens */
-           }
-       }
-   </style>
+    .btn-success:hover {
+        background-color: #1d943c;
+    }
+</style>
 
    <!-- Table for pending reservations -->
 
@@ -154,7 +142,17 @@
                        {{ $reservation->guest_department }}
                        @endif
                    </td>
-                   <td>{{ $reservation->item->name ?? 'N/A' }}</td>
+                   <td>
+                        @if ($reservation->items->count() > 0)
+                    <ul>
+                        @foreach ($reservation->items as $item)
+                            <li>{{ $item->name }}</li>
+                        @endforeach
+                    </ul>
+                        @else
+                            N/A
+                        @endif
+                        </td>
                    <td>{{ $reservation->event }}</td>
                    <td>{{ $reservation->reservationDate }}</td>
                    <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
@@ -373,7 +371,7 @@
                         $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
                     @endphp
 
-                    @if ($isDatePassed && $isTimeLimitPassed)
+                    @if ($isDatePassed || $isTimeLimitPassed)
                         <!-- Display an alert if the reservation date has passed -->
                         <button type="button" class="btn btn-warning" onclick="showAlert('Alert', 'The reservation date has passed.', 'warning')">
                             <i class="fas fa-exclamation-triangle"></i> Reservation Date Passed

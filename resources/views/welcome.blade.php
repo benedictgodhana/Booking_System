@@ -36,9 +36,8 @@
         --z-fixed: 100;
       }
       .fc button {
-            background-color: yellowgreen;
+            background-color:#ec7d30;
             color: black;
-            font-family: Arial, sans-serif;
             font-size: 20px;
             border: none;
             border-radius: 1px;
@@ -46,9 +45,13 @@
             margin: 4px;
             cursor: pointer;
         }
+        .fc-header-toolbar .fc-left button,
+      .fc-header-toolbar .fc-right button {
+          text-transform: capitalize;
+      }
 
         .fc button:hover {
-            background-color: yellow;
+            background-color:white;
         }
       #calendar {
             max-width: 100%;
@@ -60,20 +63,18 @@
             margin: 0px;
         }
         #calendar .fc-toolbar {
-            background-color:darkblue; /* Header background color */
+            background-color:#ec7d30; /* Header background color */
             color: #ffffff; /* Header text color */
             border-radius: 5px 5px 0 0; /* Rounded corners for the top */
         }
         #calendar .fc-toolbar button {
-            background-color:yellowgreen;
-            color: #ffffff;
+            color:black;
             border: none;
             border-radius: 0;
             margin: 2px;
+            font-weight: 600;
         }
-        #calendar .fc-toolbar button:hover {
-            background-color: #0056b3;
-        }
+        
 
         /* Style the events in the calendar */
         #calendar .fc-event {
@@ -333,45 +334,71 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function (event) {
-        const showNavbar = (toggleId, navId, bodyId, headerId) => {
-          const toggle = document.getElementById(toggleId),
-            nav = document.getElementById(navId),
-            bodypd = document.getElementById(bodyId),
-            headerpd = document.getElementById(headerId);
+   <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+  const showNavbar = (toggleId, navId, bodyId, headerId) => {
+    const toggle = document.getElementById(toggleId),
+      nav = document.getElementById(navId),
+      bodypd = document.getElementById(bodyId),
+      headerpd = document.getElementById(headerId);
 
-          // Validate that all variables exist
-          if (toggle && nav && bodypd && headerpd) {
-            toggle.addEventListener("click", () => {
-              // show navbar
-              nav.classList.toggle("show");
-              // change icon
-              toggle.classList.toggle("bx-x");
-              // add padding to body
-              bodypd.classList.toggle("body-pd");
-              // add padding to header
-              headerpd.classList.toggle("body-pd");
-            });
-          }
-        };
+    // Validate that all variables exist
+    if (toggle && nav && bodypd && headerpd) {
+      // Function to open the sidebar
+      const openSidebar = () => {
+        // Show navbar
+        nav.classList.add("show");
+        // Change icon
+        toggle.classList.add("bx-x");
+        // Add padding to body
+        bodypd.classList.add("body-pd");
+        // Add padding to header
+        headerpd.classList.add("body-pd");
+      };
 
-        showNavbar("header-toggle", "nav-bar", "body-pd", "header");
+      // Function to close the sidebar
+      const closeSidebar = () => {
+        // Hide navbar
+        nav.classList.remove("show");
+        // Change icon
+        toggle.classList.remove("bx-x");
+        // Remove padding from body
+        bodypd.classList.remove("body-pd");
+        // Remove padding from header
+        headerpd.classList.remove("body-pd");
+      };
 
-        /*===== LINK ACTIVE =====*/
-        const linkColor = document.querySelectorAll(".nav_link");
+      // Initially open the sidebar
+      openSidebar();
 
-        function colorLink() {
-          if (linkColor) {
-            linkColor.forEach((l) => l.classList.remove("active"));
-            this.classList.add("active");
-          }
+      toggle.addEventListener("click", () => {
+        // Toggle the sidebar when the button is clicked
+        if (nav.classList.contains("show")) {
+          closeSidebar();
+        } else {
+          openSidebar();
         }
-        linkColor.forEach((l) => l.addEventListener("click", colorLink));
-
-        // Your code to run since DOM is loaded and ready
       });
-    </script>
+    }
+  };
+
+  showNavbar("header-toggle", "nav-bar", "body-pd", "header");
+
+  /*===== LINK ACTIVE =====*/
+  const linkColor = document.querySelectorAll(".nav_link");
+
+  function colorLink() {
+    if (linkColor) {
+      linkColor.forEach((l) => l.classList.remove("active"));
+      this.classList.add("active");
+    }
+  }
+  linkColor.forEach((l) => l.addEventListener("click", colorLink));
+
+  // Your code to run since DOM is loaded and ready
+});
+
+   </script>
      <!-- Calendar initialization -->
      <script>
         $(document).ready(function() {

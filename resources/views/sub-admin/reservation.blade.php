@@ -166,7 +166,7 @@
                         
                        
                         <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewModal{{ $reservation->id }}">
-                            <i class="fas fa-eye"></i> View Details
+                            <i class="fas fa-eye"></i> View 
                         </button>
                     </td>
                 </tr>
@@ -229,7 +229,17 @@
                         {{ $reservation->guest_department }}
                         @endif
                     </td>
-                    <td>{{ $reservation->item->name ?? 'N/A' }}</td>
+                    <td>
+                        @if ($reservation->items->count() > 0)
+                    <ul>
+                        @foreach ($reservation->items as $item)
+                            <li>{{ $item->name }}</li>
+                        @endforeach
+                    </ul>
+                        @else
+                            N/A
+                        @endif
+                        </td>
                     <td>{{ $reservation->event }}</td>
                     <td>{{ $reservation->reservationDate }}</td>
                     <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
@@ -242,7 +252,7 @@
                     <td class="actions">
 
                         <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewModal{{ $reservation->id }}">
-                            <i class="fas fa-eye"></i> View Details
+                            <i class="fas fa-eye"></i> View 
                         </button>
                     </td>
                 </tr>

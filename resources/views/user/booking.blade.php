@@ -10,8 +10,8 @@
 
 <div class="container mt-5">
     <div class="card">
-        <div class="card-header bg-primary">
-            <h3 style="text-align: center;" class="word">Reservation Form</h3>
+        <div class="card-header" style="background:darkblue">
+            <h3 style="text-align: center; color:white" class="word">Reservation Form</h3>
         </div>
         <div class="card-body">
             @if(session('success'))
@@ -105,14 +105,14 @@
 
 
                     <div class="col-md-6">
-                        <label for="event" class="form-label">Event:</label>
+                        <label for="event" class="form-label">Event Name:</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-check"></i>
                                 </span>
                             </div>
-                            <input type="text" id="event" name="event" class="form-control" placeholder="Enter Event Details">
+                            <input type="text" id="event" name="event" class="form-control" placeholder="Enter Event Name">
                         </div>
                     </div>
                 </div>
@@ -132,41 +132,45 @@
                     </div>
                 </div>
 
+                        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="itemRequests" class="form-label">Select Items(Optional):</label>
+                <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                    @foreach($items as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+                <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="comment" class="form-label">Comment (Optional):</label>
+                    <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes"></textarea>
+                </div>
+            </div>
+
+
                 <!-- Checkbox for Requirements -->
                 <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label class="form-label">Optional Requirements:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="setupAssistance">
-                            <label class="form-check-label" for="setupAssistance">IT Setup Assistance</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="requestItems">
-                            <label class="form-check-label" for="requestItems">Request Items</label>
-                        </div>
-                    </div>
+    <div class="col-md-12">
+        <label class="form-label">Optional Requirements:</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
+            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
+        </div>
+    </div>
+</div>
+
+            <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
+                <div class="col-md-12">
+                    <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
+                    <input type="text" id="setupAssistanceDetails" name="setupAssistanceDetails" class="form-control" placeholder="please describe the IT setup you will require">
                 </div>
-
-
-                <div class="row mb-3" id="itemRequestField" style="display: none;">
-                    <div class="col-md-12">
-                        <label for="itemRequests" class="form-label">Requested Items:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-
-                            </div>
-                            <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                                @foreach($items as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
+            </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn" style="background:darkblue;color:white">
                     <span>
                         <i class="fas fa-check-circle"></i> Submit
                     </span>
@@ -357,5 +361,27 @@ durationInput.addEventListener('input', function() {
 });
 
 </script>
+<script>
+    // Attach the function to the change event of the select element
+document.getElementById('itemRequests').addEventListener('change', limitItemSelection);
 
+</script>
+
+<script>
+    // Get references to the checkbox and the description text field
+var setupAssistanceCheckbox = document.getElementById('setupAssistanceCheckbox');
+var setupAssistanceDescription = document.getElementById('setupAssistanceDescription');
+
+// Add an event listener to the checkbox
+setupAssistanceCheckbox.addEventListener('change', function () {
+    if (setupAssistanceCheckbox.checked) {
+        // Checkbox is checked, show the description field
+        setupAssistanceDescription.style.display = 'block';
+    } else {
+        // Checkbox is unchecked, hide the description field
+        setupAssistanceDescription.style.display = 'none';
+    }
+});
+
+</script>
 @endsection

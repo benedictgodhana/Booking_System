@@ -97,7 +97,17 @@
                         <td>{{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
                         <td>{{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                         <td>{{ $reservation->event }}</td>
-                        <td>{{ $reservation->item->name ?? 'N/A' }}</td>
+                        <td>
+                        @if ($reservation->items->count() > 0)
+                    <ul>
+                        @foreach ($reservation->items as $item)
+                            <li>{{ $item->name }}</li>
+                        @endforeach
+                    </ul>
+                        @else
+                            N/A
+                        @endif
+                        </td>
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->remarks }}</td>
                         <td class="actions">
@@ -114,12 +124,12 @@
         @if ($reservation->status === 'Canceled')
             <!-- Reservation is already cancelled, disable the button -->
             <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
-                <i class="fas fa-times"></i> Canceled Reservation
+                <i class="fas fa-times"></i> Cancelled Reservation
             </button>
         @elseif ($isDatePassed || $isTimeLimitPassed)
             <!-- Reservation date has passed, disable cancellation -->
             <button style="width:200px;border-radius:10px" type="button" class="btn btn-danger" disabled>
-                <i class="fas fa-lock"></i> locked Reservation
+                <i class="fas fa-lock"></i> Locked Reservation
             </button>
         @else
             <!-- Reservation date is in the future, enable cancellation -->

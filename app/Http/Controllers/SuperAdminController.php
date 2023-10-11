@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ActivationEmail;
 use App\Models\Activity;
+use App\Models\Department;
 use App\Notifications\UserReservationNotification;
 use TCPDF;
 use App\Models\Item;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-
+use Iterator;
 
 class SuperAdminController extends Controller
 {
@@ -43,6 +44,49 @@ class SuperAdminController extends Controller
         $items = Item::all();
         $pendingBookingsCount = Reservation::where('status', 'pending')->count();
         $reservationsAcceptedCount = Reservation::where('status', 'Accepted')->count();
+        // In your controller method
+        $monthlyReservationCounts = Reservation::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) reservation_count'))
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'asc')
+        ->orderBy('month', 'asc')
+        ->get();
+
+        $currentDate = now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
+        $dailyReservations = []; // Initialize an empty array
+        $roomColors = [
+            'Kifaru' => 'Orange',
+            'Shark Tank Boardroom' => 'blue',
+            'Executive Boardroom' => 'green',
+            'Oracle Lab' => 'black',
+            'Safaricom Lab' => 'black',
+            'Ericsson Lab' => 'black',
+            'Small Meeting Room' => 'purple',
+            'Samsung Lab' => 'black'
+
+
+            // Add more rooms and colors as needed
+        ];
+     foreach ($rooms as $room) {
+        // Query to get daily reservation counts for a specific room on the current date
+        $dailyCount = DB::table('reservations')
+            ->where('room_id', $room->id)
+            ->whereDate('created_at', $currentDate)
+            ->count();
+
+        // Format the data for the room
+        $roomData = [
+            'label' => $room->name,
+            'data' => [$dailyCount], // Use an array with the count for the current date
+            'backgroundColor' => $roomColors[array_rand($roomColors)],
+            'borderColor' => 'rgba(255, 255, 255, 0.8)',
+            'borderWidth' => 1,
+        ];
+
+        $dailyReservations[] = $roomData;
+    }
+
+    // Create a separate array for dates as labels
+
 
 
         $roomColors = [
@@ -70,7 +114,7 @@ class SuperAdminController extends Controller
 
             ];
         }
-        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors','reservationsAcceptedCount'));
+        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors','reservationsAcceptedCount','monthlyReservationCounts','dailyReservations'));
     }
 
     public function users()
@@ -373,8 +417,98 @@ class SuperAdminController extends Controller
         return $pdf->Output('system_activities.pdf', 'D');
     }
     
+    public function items(){
+        $items=Item::all();
+        $items = Item::simplePaginate(10); // You can specify the number of items per page (e.g., 10 per page) // You can change the number of items per page (e.g., 10) as needed
+        return view('super-admin.items',compact('items'));
+    }
 
+    public function storeItems(Request $request)
+    {
+        // Validation rules for the asset creation form
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'asset_tag' => 'required|string|max:50',
+        ]);
     
+        // Create and save the asset
+        $item = new Item([
+            'name' => $validatedData['name'],
+            'asset_tag' => $validatedData['asset_tag'],
+        ]);
+    
+        $item->save();
+    
+        $items=Item::all();
+        return redirect()->back()->with('success', 'Asset added successfully');
+    }
+    public function deleteItem(Item $item)
+{
+    // Delete the item from the database
+    $item->delete();
+    $items=Item::all();
+
+
+    return redirect()->back()->with('success', 'Item deleted successfully');
+}
+// SuperAdminController.php
+public function updateItem(Request $request, $id)
+{
+    // Validation rules for updating the item
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'asset_tag' => 'required|string|max:50',
+    ]);
+
+    // Find the item by ID
+    $item = Item::findOrFail($id);
+
+    // Update the item's attributes
+    $item->update([
+        'name' => $validatedData['name'],
+        'asset_tag' => $validatedData['asset_tag'],
+    ]);
+
+    // Redirect back to the page with a success message
+    return redirect()->back()->with('success', 'Item updated successfully');
+}
+public function Department(){
+    $departments=Department::all();
+    return view('super-admin.department',compact('departments'));
+}
+public function storeDepartment(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255', // Add any validation rules you need
+    ]);
+
+    // Create and store the department
+    $department = new Department();
+    $department->name = $validatedData['name'];
+    $department->save();
+
+    return redirect()->back()->with('success', 'Department added successfully');
+}
+public function updateDepartment(Request $request, Department $department)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    $department->update([
+        'name' => $request->input('name'),
+    ]);
+
+    return redirect()->back()->with('success', 'Department updated successfully.');
+}
+
+public function destroy(Department $department)
+{
+    $department->delete();
+
+    return redirect()->back()->with('success', 'Department deleted successfully.');
+}
+
 
 
     

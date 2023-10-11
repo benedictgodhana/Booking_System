@@ -21,11 +21,12 @@ class Reservation extends Model
 
     /**
      * Define a many-to-one relationship with the Item model.
-     */
-    public function item(): BelongsTo
+        */
+        public function items()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsToMany(Item::class);
     }
+
     public function room()
     {
         return $this->belongsTo(Room::class, 'room_id');

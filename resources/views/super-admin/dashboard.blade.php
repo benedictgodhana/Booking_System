@@ -7,7 +7,6 @@
 
 
       .fc button {
-            background-color: yellowgreen;
             color: black;
             font-family: Arial, sans-serif;
             font-size: 20px;
@@ -21,7 +20,8 @@
         .fc button:hover {
             background-color: yellow;
         }
-      #calendar {
+        
+        #calendar {
             max-width: 100%;
             background-color: #ffffff; /* Background color of the calendar */
             border: 1px solid #ccc; /* Border around the calendar */
@@ -31,16 +31,17 @@
             margin: 0px;
         }
         #calendar .fc-toolbar {
-            background-color:darkblue; /* Header background color */
+            background-color:#ec7d30; /* Header background color */
             color: #ffffff; /* Header text color */
             border-radius: 5px 5px 0 0; /* Rounded corners for the top */
         }
+        #calendar
         #calendar .fc-toolbar button {
-            background-color:yellowgreen;
-            color: #ffffff;
+            color:black;
             border: none;
             border-radius: 0;
             margin: 2px;
+            font-weight: 600;
         }
         #calendar .fc-toolbar button:hover {
             background-color: #0056b3;
@@ -56,27 +57,20 @@
             margin: 2px;
         }
 
+        .fc-header-toolbar .fc-left button,
+      .fc-header-toolbar .fc-right button {
+          text-transform: capitalize;
+      }
+
         #calendar .fc-event:hover {
             background-color: #0056b3;
         }
-
         /* Style the time display in the calendar */
         #calendar .fc-time {
             color: #333; /* Time text color */
             font-weight: bold;
         }
-        .legend{
-
-            margin-left: 1270px;
-             margin-top:-500px;
-              width:200px
-        }
-        .legend-color{
-            margin-right: 5px; 
-            height: 20px; width: 20px;
-            display: inline-block;
-
-        }
+        
 
       *,
       ::before,
@@ -266,7 +260,7 @@
         <div class="small-box bg-info">
             <div class="inner">
             <h3>{{ $pendingBookingsCount }}</h3> <!-- Inject the pending bookings count here -->
-                <p>Number of pending bookings</p>
+                <p>pending Reservations</p>
             </div>
             <div class="icon">
                 <i class="fas fa-shopping-cart"></i>
@@ -297,7 +291,7 @@
         <div class="small-box bg-success">
             <div class="inner">
             <h3>{{ $reservationsAcceptedCount }}</h3> <!-- Inject the accepted reservations count here -->
-                <p>Number of Reservations accepted</p>
+                <p>Reservations accepted</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -346,11 +340,31 @@
             </div><br>
 
             <!-- Calendar -->
-            <div class="calender" id="calendar"></div>
+            <div class="calender" id="calendar"></div><br>
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Reservation Bar Chart</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 650px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            
 
             <!-- Legend -->
 
         </div>
+    </div>
     </div>
     </div>
     <script
@@ -689,5 +703,30 @@ document.getElementById('selectRoom').addEventListener('change', updateCapacityT
 updateCapacityTooltip();
 
 </script>
+<script src="../../plugins/chart.js/Chart.min.js"></script>
+<script>
+    // Prepare the data for the bar chart
+    var dailyReservationData = {
+        datasets: @json($dailyReservations), // Use the formatted dataset array
+    };
 
+    // Get the canvas element
+    var ctx = document.getElementById('barChart').getContext('2d');
+
+    // Create the bar chart
+    var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: dailyReservationData, // Use the prepared data
+        options: {
+            scales: {
+                x: {
+                    stacked: true, // Stack bars for each room on the x-axis
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+</script>
     @endsection

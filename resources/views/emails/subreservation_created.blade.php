@@ -14,6 +14,8 @@
     <p>Reservation Time: {{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</p>
     <p>End of Reservation: {{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</p>
     <p>Event: {{ $reservation->event }}</p>
+    <p>Comments: <strong>{{ $reservation->comment }}</strong></p>
+
     <!-- Other email content -->
 
     <!-- Call to Action Button -->

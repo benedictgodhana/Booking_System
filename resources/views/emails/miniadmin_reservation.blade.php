@@ -22,6 +22,9 @@
 
     <p>Event: {{ $reservation->event }}</p>
 
+    <p>Comments: <strong>{{ $reservation->comment }}</strong></p>
+
+
     <!-- Call to Action Button -->
     <p>
         To approve this reservation, please log in to the admin panel.

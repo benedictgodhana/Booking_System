@@ -81,6 +81,9 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('sdashboard');
 
     Route::get('/users', [SuperAdminController::class, 'users'])->name('superAdminUsers');
+    Route::get('/department', [SuperAdminController::class, 'Department'])->name('superAdminDepartment');
+    Route::get('/items', [SuperAdminController::class, 'items'])->name('superAdminItems');
+    Route::post('/Items', [SuperAdminController::class, 'storeItems'])->name('superAdminAddItems');
     Route::get('/manage-role', [SuperAdminController::class, 'manageRole'])->name('manageRole');
     Route::post('/update-role', [SuperAdminController::class, 'updateRole'])->name('updateRole');
     Route::get('/reservation', [SuperAdminController::class, 'reservation'])->name('sadminreservation');
@@ -93,6 +96,17 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
     Route::post('/profile/update-password', [SuperAdminController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::get('/search-reservations', [SuperAdminController::class,'searchReservations'])->name('superadmin.searchReservations');
     Route::get('/generate-pdf', [SuperAdminController::class, 'generatePDF'])->name('generate-pdf');
+    Route::delete('/items/{item}', [SuperAdminController::class, 'deleteItem'])->name('superAdminDeleteItem');
+    Route::put('/items/{id}', [SuperAdminController::class, 'updateItem'])->name('superAdminUpdateItem');
+    Route::post('/departments', [SuperAdminController::class,'storeDepartment'])->name('departments.store');
+    Route::put('/departments/{department}', [SuperAdminController::class, 'updateDepartment'])->name('departments.update');
+
+    Route::delete('/departments/{department}', [SuperAdminController::class, 'destroy'])->name('departments.destroy');
+
+
+
+
+
 
 
 

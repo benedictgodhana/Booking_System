@@ -14,6 +14,7 @@
     <p>Reservation Date: {{ $reservationDate }}</p>
     <p>Reservation Time: {{ $reservationTime }}</p>
     <p>End of Reservation:{{$EndReservation}}</p>
+    <p>Comments:{{$Comments}}</p>
     <!-- Other email content -->
 
     <!-- Call to Action Button -->

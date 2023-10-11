@@ -168,7 +168,8 @@ $currentDate = Carbon::now();
 
        @foreach($Results as $reservation)
     <!-- Modal for Viewing Reservation Details -->
-    <div class="modal fade" id="viewModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel{{ $reservation->id }}" aria-hidden="true">        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="viewModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel{{ $reservation->id }}" aria-hidden="true">        
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 style="margin-left:250px" class="modal-title" id="viewModalLabel{{ $reservation->id }}">View Reservation Details</h5>
@@ -294,9 +295,7 @@ $currentDate = Carbon::now();
             </div>
         </div>
                 </div>
-            </div>
         </div>
-    </div>
 
 
 

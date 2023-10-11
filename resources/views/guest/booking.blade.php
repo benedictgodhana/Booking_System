@@ -390,13 +390,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="full_name"><i class="bx bx-user"></i><strong> Full Name</strong></label>
-                            <input type="text" class="form-control" id="full_name" name="guest_name" required>
+                            <input type="text" class="form-control" id="full_name" name="guest_name" required placeholder="Enter Your FullName">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="email"> <i class="bx bx-envelope"></i><strong>Email</strong></label>
-                            <input type="email" class="form-control" id="email" name="guest_email" required>
+                            <input type="email" class="form-control" id="email" name="guest_email" required placeholder="Enter Your Email">
                         </div>
                     </div>
                 </div>
@@ -406,25 +406,23 @@
                         <div class="form-group">
                             <label class="form-label" for="room"> <i class="bx bx-building"></i><strong>Select Room</strong></label>
                             <select class="form-control" id="room" name="room" required>
+                            <option class="form-control" value="">Select Room......</option>
                                 @foreach ($rooms as $room)
                                 <option value="{{ $room->id }}">{{ $room->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="item"><i class="fas fa-shopping-bag"></i><strong>Select Item (Optional)</strong></label>
-                            <select class="form-control" id="item" name="item_id">
-                                <option class="form-control" value="">Select an item (optional)</option>
-                                @foreach ($items as $item)
-                                <option class="form-control" value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
+                    <div class="row mb-3">
+              <div class="col-md-12">
+                  <label for="itemRequests" class="form-label">Select Items:</label>
+                  <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                      @foreach($items as $item)
+                          <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
+                  </select>
+              </div>
+            </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -460,84 +458,76 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="event"> <i class="bx bx-calendar-alt"></i> <strong>Event</strong></label>
-                            <input type="text" class="form-control" id="event" name="event">
+                            <label class="form-label" for="event"> <i class="bx bx-calendar-alt"></i> <strong>Event Title</strong></label>
+                            <input type="text" class="form-control" id="event" name="event" placeholder="Enter Event Title">
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label"  for="department"> <i class="bx bx-building"></i><strong>Department</strong></label>
-                        <select id="department" name="guest_department" class="form-control">
-                            <option value="eHealth">eHealth</option>
-                            <option value="IT Outsourcing & BITCU">IT Outsourcing & BITCU</option>
-                            <option value="Digital Learning">Digital Learning</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="IoT">IoT</option>
-                            <option value="IT Security">IT Security</option>
-                            <option value="iBizAfrica">iBizAfrica</option>
-                            <option value="IR &EE">IR &EE</option>
-                            <option value="PR">PR</option>
-                            <option value="ADM">@iLab Admin</option>
-                            <option value="Others">Other</option>
-                        </select>
-                    </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" id="otherDepartmentField" style="display:none;">
+            <div class="form-group">
+                <label class="form-label" for="department">
+                    <i class="bx bx-building"></i><strong>Department</strong>
+                </label>
+                <input
+                    id="department"
+                    name="guest_department"
+                    class="form-control"
+                    list="departmentList"
+                    placeholder="Search or enter your department"
+                />
+        <datalist id="departmentList">
+            <option value="CIPIT">Centre for Intellectual Property and Information Technology Law (CIPIT)</option>
+            <option value="SCES">Strathmore School of Computing and Engineering Sciences (SCES)</option>
+            <option value="PARTNERSHIP">Partnership</option>
+            <option value="SAIRC">Strathmore Academy for International Research Collaboration</option>
+            <option value="STH">Strathmore School of Tourism and Hospitality</option>
+            <option value="SUMC">Strathmore University Medical Centre (SUMC)</option>
+            <option value="SERC">Strathmore Energy Research Centre (SERC) </option>
+            <option value="SIMS">Strathmore University Institute of Mathematical Sciences (SIMS)</option>
+            <option value="SHSS">School of Humanities and Social Sciences</option>
+            <option value="SBS">Strathmore Business School</option>
+            <option value="MENTORSHIP">Mentorship</option>
+            <option value="FINANCE">Finance </option>
+            <option value="FAO"> Strathmore University Financial Aid Office</option>
+            <option value="PNC">Strathmore People and Culture</option>
+            <option value="SUF"></option>
+            <option value="SUSA">Strathmore University student affairs</option>
 
-                            <input style="margin-top:30px;width:565px;margin-left:5px" id="otherDepartment" type="text" name="other_department" class="form-control" placeholder="Enter your department" style="width:500px">
-                        </div>
-                    </div>
-                </div><br>
+
+
+            <!-- Add more department options here -->
+        </datalist>
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
+            <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes"></textarea>
+        </div>
+    </div>
+</div>
+
+
+
                     <div id="endOfReservation"></div>
                 <!-- Checkbox for Requirements -->
                 <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label class="form-label">Requirements:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="itServices">
-                            <label class="form-check-label" for="itServices">IT Services</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="setupAssistance">
-                            <label class="form-check-label" for="setupAssistance">Setup Assistance</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="requestItems">
-                            <label class="form-check-label" for="requestItems">Request Items</label>
-                        </div>
+    <div class="col-md-12">
+        <label class="form-label">Optional Requirements:</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="setupAssistance" onchange="toggleTextField()">
+            <label class="form-check-label" for="setupAssistance">IT Setup Assistance</label>
+        </div>
 
-                        <div id="itemsList" style="display: none;">
-                            <label for="selectedItems">Select Items:</label>
-                            <select multiple class="form-control" id="selectedItems">
-                                <option value="Item 1">Item 1</option>
-                                <option value="Item 2">Item 2</option>
-                                <option value="Item 3">Item 3</option>
-                                <!-- Add more items as needed -->
-                            </select>
-                        </div>
+        <div id="itemsList" style="display: none;">
+            <textarea name="" id="additionalDetails" cols="50" rows="3" placeholder="Kindly Provide more details"></textarea>
+        </div><br>
 
-                        <textarea id="selectedItemsDisplay" name="selectedItems" style="display: none;"></textarea>
+                     
 
-                    </div>
-                </div>
-
-                <div class="row mb-3" id="itemRequestField" style="display: none;">
-                    <div class="col-md-12">
-                        <label for="itemRequests" class="form-label">Requested Items:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-
-                            </div>
-                            <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                                @foreach($items as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                
 
 
                 <input type="hidden" name="guest" value="1">
@@ -548,7 +538,7 @@
                     </div>
                 </div>
                 <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
-                    Strathmore University. All Rights Reserved. &copy; 2023 Strathmore
+                    @iLabAfrica. All Rights Reserved. &copy; 2023 Strathmore
                 </footer>
         </form>
     </div>
@@ -626,52 +616,40 @@
 
         <!-- Include your JavaScript scripts or links here -->
 </body>
-<script>
-    // Function to toggle the "other department" field
-    function toggleOtherDepartmentField() {
-        var departmentSelect = document.getElementById('department');
-        var otherDepartmentField = document.getElementById('otherDepartmentField');
-        var otherDepartmentInput = document.getElementById('otherDepartment');
 
-        if (departmentSelect.value === 'Others') {
-            otherDepartmentField.style.display = 'block';
-            otherDepartmentInput.style.display = 'block'; // Add this line to make the input field visible
-            otherDepartmentInput.required = true;
-        } else {
-            otherDepartmentField.style.display = 'none';
-            otherDepartmentInput.style.display = 'none'; // Add this line to hide the input field
-            otherDepartmentInput.required = false;
-        }
-    }
-
-    // Add an event listener to the department select
-    document.getElementById('department').addEventListener('change', toggleOtherDepartmentField);
-
-    // Call the function initially to set the initial state
-    toggleOtherDepartmentField();
-</script>
 
 <script>
-    // Function to validate the email domain
-    function validateEmailDomain() {
-        var emailInput = document.getElementById('email');
-        var email = emailInput.value;
+  // Get references to the input and other department input elements
+const departmentInput = document.getElementById("department");
+const otherDepartmentField = document.getElementById("otherDepartmentField");
+const otherDepartmentInput = document.getElementById("otherDepartment");
 
-        if (!/^[A-Za-z0-9._%+-]+@strathmore\.edu$/i.test(email)) {
-            Swal.fire({
-                title: 'Error',
-                text: 'Please enter a valid email address from @strathmore.edu domain.',
-                icon: 'error',
-                timer: 5000, // Adjust the time you want the alert to be visible (in milliseconds)
-                showConfirmButton: false // Hide the "OK" button
-            });
-            emailInput.value = '';
-            emailInput.focus();
-        }
+// Add an event listener to the department input element
+departmentInput.addEventListener("input", function () {
+    // Check if the user's input matches any department from the list
+    const inputIsInList = Array.from(departmentInput.list.options).some(
+        (option) => option.value === departmentInput.value
+    );
+
+    if (inputIsInList) {
+        // If the input matches a department in the list, hide the "Other" department field
+        otherDepartmentField.style.display = "none";
+        // Clear the "Other" department input field
+        otherDepartmentInput.value = "";
+    } else {
+        // If the input does not match any department in the list, show the "Other" department field
+        otherDepartmentField.style.display = "block";
     }
+});
 
-    // Add an event listener to validate the email domain when the field loses focus
-    document.getElementById('email').addEventListener('blur', validateEmailDomain);
+// Add an event listener to the "Other" department input field
+otherDepartmentInput.addEventListener("input", function () {
+    // Handle the input in the "Other" department field
+    // This is where you can process the user's input for the "Other" department
+    const otherDepartmentValue = otherDepartmentInput.value;
+    // You can use otherDepartmentValue as needed, e.g., save it to a variable or send it to the server
+});
+
 </script>
 <script>
     // Get references to the elements
@@ -793,6 +771,59 @@
         durationInput.addEventListener("input", updateEndTime);
         bookingTimeInput.addEventListener("input", updateEndTime);
     });
+</script>
+
+<script>
+  // Get references to the select and input elements
+const departmentSelect = document.getElementById("department");
+const otherDepartmentField = document.getElementById("otherDepartmentField");
+const otherDepartmentInput = document.getElementById("otherDepartment");
+
+// Add an event listener to the department select element
+departmentSelect.addEventListener("change", function () {
+    // Check if the selected option is "Other"
+    if (departmentSelect.value === "Others") {
+        // Show the input field when "Other" is selected
+        otherDepartmentField.style.display = "block";
+    } else {
+        // Hide the input field for other selections
+        otherDepartmentField.style.display = "none";
+        // Clear the input field value
+        otherDepartmentInput.value = "";
+    }
+});
+
+// Add an event listener to the input field for searching departments
+otherDepartmentInput.addEventListener("input", function () {
+    const searchValue = otherDepartmentInput.value.trim().toUpperCase();
+    
+    // Loop through the options in the select element
+    for (let i = 0; i < departmentSelect.options.length; i++) {
+        const option = departmentSelect.options[i];
+        
+        // Check if the option text contains the search value
+        if (option.text.toUpperCase().includes(searchValue)) {
+            // Show the matching option
+            option.style.display = "";
+        } else {
+            // Hide non-matching options
+            option.style.display = "none";
+        }
+    }
+});
+
+</script>
+<script>
+    function toggleTextField() {
+        var checkbox = document.getElementById("setupAssistance");
+        var textField = document.getElementById("itemsList");
+
+        if (checkbox.checked) {
+            textField.style.display = "block";
+        } else {
+            textField.style.display = "none";
+        }
+    }
 </script>
 
      <!-- Calendar initialization -->

@@ -83,6 +83,7 @@
     </style>
 
     <!-- Table for pending reservations -->
+    <div style="margin: 4px, 4px; padding: 4px; width: auto; height: 70vh; overflow-x: hidden;">
 
     <div class="user-table">
         <div>
@@ -118,6 +119,7 @@
         </div>
     </div>
 </form>
+
         <div id="pendingReservations" style="display: block;">
             <h2>Pending Reservations</h2>
             <table>
@@ -151,7 +153,17 @@
                         {{ $reservation->guest_department }}
                         @endif
                     </td>
-                    <td>{{ $reservation->item->name ?? 'N/A' }}</td>
+                    <td>
+                        @if ($reservation->items->count() > 0)
+                    <ul>
+                        @foreach ($reservation->items as $item)
+                            <li>{{ $item->name }}</li>
+                        @endforeach
+                    </ul>
+                        @else
+                            N/A
+                        @endif
+                        </td>
                     <td>{{ $reservation->event }}</td>
                     <td>{{ $reservation->reservationDate }}</td>
                     <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>

@@ -258,7 +258,7 @@
 </script>
 
 
-<div class="row" style="width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
+<div class="row" style="width: auto; height: 70vh; overflow-x: hidden; overflow-y: scroll;">
 
     <div class="col-lg-3 col-6">
         

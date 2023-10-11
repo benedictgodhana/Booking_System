@@ -21,6 +21,8 @@
         <li><strong>End of Reservation:</strong> {{ $data['timelimit'] }}</li>
         <li><strong>Guest's Department:</strong> {{$data['department']}}</li>
         <li><strong>Event:</strong> {{$data['event']}}</li>
+        <li><strong>Comments</strong>{{$data['Comments']}}</li>
+
 
         <!-- Add more reservation details as needed -->
     </ul>

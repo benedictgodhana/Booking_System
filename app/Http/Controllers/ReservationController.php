@@ -49,8 +49,9 @@ class ReservationController extends Controller
             'itServices' => 'boolean',
             'setupAssistance' => 'boolean',
             'requestItems' => 'boolean',
-            'itemRequests' => 'array', // Assuming 'itemRequests' is the name of the input field
-            'itemRequests.*' => 'exists:items,id', // Assuming 'items' is the table name
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
+            'comment' => 'nullable|string', // Comment field is optional
             'selectRoom' => [
                 'required',
                 'exists:rooms,id',
@@ -80,9 +81,14 @@ class ReservationController extends Controller
         $reservation->event = $validatedData['event'];
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
+        $reservation->comment = $validatedData['comment'];
     
         // Save the reservation to the database
         $reservation->save();
+
+        if ($validatedData['itemRequests']) {
+            $reservation->items()->attach($validatedData['itemRequests']);
+        }
     
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
@@ -108,12 +114,12 @@ class ReservationController extends Controller
             'reservationTime' => $reservationTime,
             'EndReservation' => $timelimit,
             'Event' => $reservation->event,
+            'Comments'=>$reservation->comment,
             'viewReservationUrl' => url('/user/reservations'),
 
             // Add other email variables here
         ], function ($message) {
-            $message->to(auth()->user()->email)->subject('Reservation Confirmation')
-                ->from('ilabroombooking@strathmore.edu', 'iLab Room Booking System');
+            $message->to(auth()->user()->email)->subject('Reservation Confirmation');
         });
 
         // for superadmin Notification

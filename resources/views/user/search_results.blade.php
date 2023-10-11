@@ -94,12 +94,12 @@
         @if ($reservation->status === 'Canceled')
             <!-- Reservation is already cancelled, disable the button -->
             <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
-                <i class="fas fa-times"></i> Cancel Reservation
+                <i class="fas fa-times"></i> Cancelled Reservation
             </button>
         @elseif ($isDatePassed || $isTimeLimitPassed)
             <!-- Reservation date has passed, disable cancellation -->
             <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
-                <i class="fas fa-times"></i> Cancel Reservation
+                <i class="fas fa-times"></i> Cancelled Reservation
             </button>
         @else
             <!-- Reservation date is in the future, enable cancellation -->

@@ -53,6 +53,7 @@ class UserReservationNotification extends Notification
                 'roomName' => $this->room->name,
                 'reservationDate' => $this->reservation->reservationDate,
                 'reservationTime' => $this->reservation->reservationTime,
+                'Comments'=>$this->reservation->comment,
                 'viewReservationUrl' => url('/user/reservations'),
             ])
             ->subject('Room Booking System - Reservation Confirmation')

@@ -84,6 +84,7 @@ $currentDate = Carbon::now();
 <div class="user-table">
     <h1>Search Results</h1>
     <a  class="btn btn-primary" href="{{ route('subadminreservation') }}"><i class="fa fa-calendar"></i>  All Reservation</a>
+
 </button>
 
     <table>
@@ -132,7 +133,7 @@ $currentDate = Carbon::now();
                 <td class="actions">
                         <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal"
                         data-target="#viewModal{{ $reservation->id }}">
-                        <i class="fas fa-eye"></i> View Details
+                        <i class="fas fa-eye"></i> View 
                     </button>
                 </td>
             </tr>

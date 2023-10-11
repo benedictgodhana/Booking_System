@@ -36,22 +36,22 @@ class RoomSeeder extends Seeder
                 'description' => 'A Class room with whiteboard and projector.',
             ],
             [
-                'name' => 'Oracle',
+                'name' => 'Oracle Lab',
                 'capacity' => 22,
                 'description' => 'A Class room with whiteboard and projector.',
             ],
             [
-                'name' => 'Safaricom',
+                'name' => 'Safaricom Lab',
                 'capacity' => 35,
                 'description' => 'A Class meeting room with whiteboard and projector.',
             ],
             [
-                'name' => 'Erickson',
+                'name' => 'Ericsson Lab',
                 'capacity' => 35,
                 'description' => 'A Class meeting room with whiteboard and projector.',
             ],
             [
-                'name' => 'Samsung',
+                'name' => 'Samsung Lab',
                 'capacity' => 22,
                 'description' => 'A Class meeting room with whiteboard and projector.',
             ],
