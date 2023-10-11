@@ -135,7 +135,7 @@ Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], f
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
     Route::get('/reservation', [AdminController::class, 'reservation'])->name('adminreservation');
-    Route::put('/admin/reservation/update/{id}', [AdminController::class, 'updateReservationStatus'])->name('admin.update');
+    Route::patch('/admin/reservation/update/{id}', [AdminController::class, 'updateReservationStatus'])->name('admin.update');
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
     Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
     Route::post('/profile/update-password', [AdminController::class, 'updatePassword'])->name('Adminprofile');
