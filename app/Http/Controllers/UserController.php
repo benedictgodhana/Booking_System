@@ -10,6 +10,8 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
 use App\Notifications\FeedbackNotification;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
+use TCPDF;
 
 class UserController extends Controller
 {
@@ -290,5 +293,31 @@ public function updateProfile(Request $request)
     // Redirect back to the profile page with a success message
     return redirect()->route('profile.index')->with('success', 'Profile information updated successfully.');
 }
+
+public function generateUserGuidePdf()
+{
+    // Create a new Dompdf instance
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
+    $dompdf = new Dompdf($options);
+
+    // Set document information
+    $dompdf->getOptions()->set('isPhpEnabled', true);
+    $dompdf->setPaper('A4', 'portrait');
+
+    // HTML content for the user guide
+    $content = '<h1>User Guide</h1><p>This is your user guide content.</p>';
+
+    // Load HTML content
+    $dompdf->loadHtml($content);
+
+    // Render the PDF (you can specify the output mode)
+    $dompdf->render();
+
+    // Stream the PDF directly to the browser for download
+    $dompdf->stream('user_guide.pdf');
+}
+
 
 }

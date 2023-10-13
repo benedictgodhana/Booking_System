@@ -301,7 +301,11 @@
                 <i class="bx bx-user-plus nav_icon"></i>
                 <span class="nav_name"><strong>Guest Reservation</strong></span>
             </a><hr>
-           
+            <a href="{{ route('user-guide-pdf') }}" class="nav_link" data-toggle="tooltip" data-placement="right" title="User Guide">
+  <i class="bx bx-book-open nav_icon"></i>
+  <span class="nav_name"><strong>User Guide</strong></span>
+</a>
+
           </div>
         </div>
       </nav>

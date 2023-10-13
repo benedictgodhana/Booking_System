@@ -119,8 +119,17 @@ $currentDate = Carbon::now();
                     {{ $reservation->guest_department }}
                     @endif
                 </td>
-                <td>{{ $reservation->item->name ?? 'N/A' }}</td>
-                <td>{{ $reservation->event }}</td>
+                <td>
+                        @if ($reservation->items->count() > 0)
+                    <ul>
+                        @foreach ($reservation->items as $item)
+                            <li>{{ $item->name }}</li>
+                        @endforeach
+                    </ul>
+                        @else
+                            N/A
+                        @endif
+                        </td>                <td>{{ $reservation->event }}</td>
                 <td>{{ $reservation->reservationDate }}</td>
                 <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
                 <td>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>

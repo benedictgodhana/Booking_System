@@ -409,7 +409,7 @@
 
                         <div class="form-group">
                             <label for="items"><i class="fas fa-shopping-bag"></i> Select Items (maximum 5):</label>
-                            <select id="items" name="items[]" multiple size="5" class="form-control">
+                            <select id="items" name="itemRequests[]" multiple size="5" class="form-control">
                                 @foreach($items as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->asset_tag }})</option>
                                 @endforeach

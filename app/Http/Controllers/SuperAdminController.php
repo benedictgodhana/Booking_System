@@ -251,8 +251,9 @@ class SuperAdminController extends Controller
         // Validate the form data
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'items' => 'nullable|array|max:5', // Assuming you want to allow up to 5 items
-            'items.*' => 'exists:items,id', // Validate each item in the array
+            'requestItems' => 'boolean',
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
             'duration' => 'required|integer',
             'reservationDate' => 'required|date',
             'reservationTime' => 'required',
@@ -274,14 +275,11 @@ class SuperAdminController extends Controller
         if (!$isRoomAvailable) {
             throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
         }
-        $selectedItems = array_slice($validatedData['items'], 0, 5);
-        $itemIds = implode(',', $selectedItems);
-
+        
 
         // Create a new reservation instance and populate it with the form data
         $reservation = new Reservation();
         $reservation->user_id = $validatedData['user_id'];
-        $reservation->item_id = $itemIds;
         $reservation->reservationDate = $validatedData['reservationDate'];
         $reservation->reservationTime = $validatedData['reservationTime'];
         $reservation->timelimit = $endTime; // Store the calculated end time
@@ -292,6 +290,13 @@ class SuperAdminController extends Controller
 
         // Save the reservation to the database
         $reservation->save();
+
+        if ($request->has('itemRequests')) {
+            $itemRequests = $request->input('itemRequests');
+            // Now, you can work with $itemRequests
+        }
+        
+    
 
         // Attach selected items (if any) to the reservation
         Session::flash('success', 'Reservation made successfully!');

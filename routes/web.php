@@ -139,8 +139,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
     Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
     Route::post('/profile/update-password', [AdminController::class, 'updatePassword'])->name('Adminprofile');
-    Route::post('/admin/create-reservation', [AdminController::class, 'createReservation'])
-    ->name('create.reservation'); 
+    Route::post('/admin/create-reservation', [AdminController::class, 'createReservation'])->name('create.reservation'); 
 
 
 });
@@ -151,6 +150,8 @@ Route::middleware(['auth', 'miniadmin'])->group(function () {
     Route::get('/miniadmin/profile', [MiniAdminController::class, 'showProfile'])->name('miniadmin.profile.show');
     Route::post('/miniadmin/profile/update-password', [MiniAdminController::class, 'updatePassword'])->name('Edit.Password');
     Route::get('/search-reservations', [MiniAdminController::class,'searchReservations'])->name('miniadmin.searchReservations');
+    Route::post('/miniadmin/create-reservation', [AdminController::class, 'createReservation'])->name('minicreate.reservation'); 
+
 
 
 
@@ -169,6 +170,8 @@ Route::group(['middleware' => ['web', 'isUser', 'verified']], function () {
     Route::post('/booking', [ReservationController::class, 'store'])->name('submit.reservation');
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.profile.show');
     Route::post('/profile/update-password', [UserController::class, 'updatePassword'])->name('updatePassword');
+    Route::get('/user-guide-pdf', [UserController::class,'generateUserGuidePdf'])->name('user-guide-pdf');
+
 });
 Route::get('/get-bookings', [BookingController::class, 'getBookings']);
 
