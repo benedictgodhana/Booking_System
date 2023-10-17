@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class SuperAdminAuthentication
+class NoCacheMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,12 @@ class SuperAdminAuthentication
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user() && auth()->user()->role == 1){
-            return $next($request);
-        }
+        $response = $next($request);
 
-        auth()->logout();
+        $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        $response->header('Pragma', 'no-cache');
+        $response->header('Expires', '0');
 
-        return redirect()->route('login')->with('session_expired', 'Your session has ended. Please log in again.');
+    return $response;
     }
 }

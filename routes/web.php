@@ -77,7 +77,7 @@ Route::post('/login/validate', [AuthController::class, 'validateLogin'])->name('
 
 
 // ********** Super Admin Routes *********
-Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']], function () {
+Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin','no.cache']], function () {
     Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('sdashboard');
 
     Route::get('/users', [SuperAdminController::class, 'users'])->name('superAdminUsers');
@@ -119,7 +119,7 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin']
 });
 
 // ********** Sub Admin Routes *********
-Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], function () {
+Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin','no.cache']], function () {
     Route::get('/dashboard', [SubAdminController::class, 'dashboard'])->name('subdashboard');
     Route::get('/resevation', [SubAdminController::class, 'reservation'])->name('subadminreservation');
     Route::put('/subadmin/reservation/update/{id}', [SubAdminController::class, 'updateReservationStatus'])->name('subadmin.update');
@@ -132,7 +132,7 @@ Route::group(['prefix' => 'sub-admin', 'middleware' => ['web', 'isSubAdmin']], f
 });
 
 // ********** Admin Routes *********
-Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin','no.cache']], function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
     Route::get('/reservation', [AdminController::class, 'reservation'])->name('adminreservation');
     Route::patch('/admin/reservation/update/{id}', [AdminController::class, 'updateReservationStatus'])->name('admin.update');
@@ -143,7 +143,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], function
 
 
 });
-Route::middleware(['auth', 'miniadmin'])->group(function () {
+Route::middleware(['auth', 'miniadmin','no.cache'])->group(function () {
     Route::get('/miniadmin/dashboard', [MiniAdminController::class, 'dashboard'])->name('minidashboard');
     Route::get('/miniadmin/reservation', [MiniAdminController::class, 'reservation'])->name('miniadminreservation');
     Route::put('/miniadmin/reservation/update/{id}', [MiniAdminController::class, 'updateReservationStatus'])->name('miniadmin.update');
