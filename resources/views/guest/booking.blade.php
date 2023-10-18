@@ -70,6 +70,34 @@
         font-size: 16px;
     }
 
+    /* CSS for the tooltip */
+.capacity-tooltip {
+    position: relative;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.capacity-tooltip:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+
     /* Style the submit button */
     .btn-primary {
         background-color: #007bff;
@@ -405,15 +433,24 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="room"> <i class="bx bx-building"></i><strong>Select Room</strong></label>
-                            <select class="form-control" id="room" name="room" required>
+                            <select class="form-control" id="selectRoom" name="room" required>
                             <option class="form-control" value="">Select Room......</option>
                                 @foreach ($rooms as $room)
-                                <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                   <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="capacity"><i class="bx bx-user"></i><strong>Number of people</strong></label>
+                <input type="hidden" id="roomCapacity" value="">
+                <input type="number" id="capacity" name="capacity" class="form-control" onmouseover="updateCapacityTooltip()">
+
+            </div>
+            
+        </div>
+                            <div class="row mb-3">
               <div class="col-md-12">
                   <label for="itemRequests" class="form-label">Select Items:</label>
                   <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
@@ -427,13 +464,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date" required >
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
-                            <input type="time" class="form-control" id="booking_time" name="booking_time" required min="{{ date('Y-m-d') }}">
+                            <input type="time" class="form-control" id="booking_time" name="booking_time"  min="08:00" max="20:00" >
                         </div>
                     </div>
                 </div>
@@ -479,14 +516,13 @@
 
 
                   <div class="row">
-                      <div class="col-md-12">
-                          <div class="form-group">
-                              <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
-                              <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes"></textarea>
-                          </div>
-                      </div>
-                  </div>
-
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
+                        <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes" oninput="limitWords(this, 100)"></textarea>
+                    </div>
+                </div>
+            </div>
 
 
                     <div id="endOfReservation"></div>
@@ -522,6 +558,54 @@
     </div>
 </div>
 
+<script>
+    // JavaScript validation
+    function validateForm() {
+        var selectRoom = document.getElementById('selectRoom');
+        var roomCapacity = parseInt(selectRoom.options[selectRoom.selectedIndex].getAttribute('data-capacity'));
+        var enteredCapacity = parseInt(document.getElementById('capacity').value);
+
+        if (enteredCapacity > roomCapacity) {
+            showAlert('Error', 'Entered capacity of ' + enteredCapacity + ' exceeds room capacity of ' + roomCapacity + '. Please select another room or reduce the capacity.', 'error');
+            return false;
+        }
+
+        // Continue with other form validations
+        var items = document.getElementById('itemRequests');
+        var reservationDate = document.getElementById('booking_date');
+        var reservationTime = document.getElementById('booking_time');
+        var timeLimit = document.getElementById('timeLimit');
+        var event = document.getElementById('event');
+
+        // Check other fields for validation (e.g., if they are empty or meet specific criteria)
+
+        // If all validations pass, the form submission will proceed
+        return true;
+    }
+
+    // Display SweetAlert
+    function showAlert(title, message, icon) {
+        Swal.fire({
+            title: title,
+            text: message,
+            icon: icon,
+            timer: 5000,
+            showConfirmButton: false
+        });
+    }
+</script>
+
+<script>
+function limitWords(textarea, wordLimit) {
+    const words = textarea.value.trim().split(/\s+/); // Split text by spaces
+    if (words.length > wordLimit) {
+        // If the word limit is exceeded, truncate the text
+        const truncatedText = words.slice(0, wordLimit).join(' ');
+        textarea.value = truncatedText;
+    }
+}
+</script>
+ variant_get_type
 
 <script>
     // JavaScript to handle showing/hiding fields based on checkboxes
@@ -803,6 +887,30 @@ otherDepartmentInput.addEventListener("input", function () {
         }
     }
 </script>
+
+<script>
+    // Get references to the elements
+   // Function to update the capacity tooltip based on the selected room
+function updateCapacityTooltip() {
+    var selectRoom = document.getElementById('selectRoom');
+    var capacityInput = document.getElementById('capacity');
+    
+    // Get the selected room's capacity
+    var selectedRoom = selectRoom.options[selectRoom.selectedIndex];
+    var roomCapacity = selectedRoom.getAttribute('data-capacity');
+    
+    // Set the tooltip (title) to display the room's capacity
+    capacityInput.setAttribute('title', 'Room Capacity: ' + roomCapacity + ' people');
+}
+
+// Attach an event listener to the room selection field
+document.getElementById('selectRoom').addEventListener('change', updateCapacityTooltip);
+
+// Initialize the tooltip when the page loads
+updateCapacityTooltip();
+
+</script>
+
 
      <!-- Calendar initialization -->
        </body>

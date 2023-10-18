@@ -514,7 +514,7 @@ form.sign-in-form {
             <div class="social-media">
             <p class="social-text">Back to Login Page</p>
 
-            <a href="{{ route('LoginPage') }}" style="margin-left:10px;margin-top:10px">Login</a>
+            <a href="{{ route('LoginPage') }}" style="margin-left:10px;margin-top:10px;text-decoration:none">Log in</a>
             </div>
           </form>
                  </div>
