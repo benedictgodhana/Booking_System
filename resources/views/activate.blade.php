@@ -217,6 +217,7 @@ form.sign-in-form {
   width: 100%;
   transition: transform 1.1s ease-in-out;
   transition-delay: 0.4s;
+  margin-top: -210px;
 }
 
 .panel {
@@ -248,11 +249,15 @@ form.sign-in-form {
   font-weight: 600;
   line-height: 1;
   font-size: 1.5rem;
+  margin-top: -120px;
+  margin-left: -150px;
 }
 
 .panel p {
   font-size: 0.95rem;
   padding: 0.7rem 0;
+  margin-left: -240px;
+
 }
 
 .btn.transparent {
@@ -299,6 +304,7 @@ form.sign-in-form {
 .container.sign-up-mode .right-panel .image,
 .container.sign-up-mode .right-panel .content {
   transform: translateX(0%);
+  
 }
 
 .container.sign-up-mode .left-panel {

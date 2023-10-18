@@ -229,13 +229,13 @@ form.sign-in-form {
   font-weight: 600;
   line-height: 1;
   font-size: 1.5rem;
-  margin-left: -400px;
+  margin-left: -300px;
 }
 
 .panel p {
   font-size: 0.95rem;
   padding: 0.7rem 0;
-  margin-left: -320px;
+  margin-left: -210px;
 
 }
 
@@ -247,7 +247,7 @@ form.sign-in-form {
   height: 41px;
   font-weight: 600;
   font-size: 0.8rem;
-  margin-left: -340px;
+  margin-left: -220px;
   text-decoration: none;
 }
 .btn.transparent a{
@@ -351,6 +351,7 @@ form.sign-in-form {
 
   .panel h3 {
     font-size: 1.2rem;
+    
   }
 
   .panel p {

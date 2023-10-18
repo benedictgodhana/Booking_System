@@ -119,16 +119,16 @@ class SuperAdminController extends Controller
 
     public function users()
     {
-        $users = User::with('roles')->where('role', '!=', 1)->paginate(7);
+        $users = User::paginate(7);
         $roles = Role::all();
         return view('super-admin.users', compact('users', 'roles'));
     }
 
     public function manageRole()
     {
-        $users = User::where('role', '!=', 1)->get();
+        $users = User::all();
         $roles = Role::all();
-        return view('super-admin.manage-role', compact(['users', 'roles']));
+        return view('super-admin.manage-role', compact('users', 'roles'));
     }
 
     public function updateRole(Request $request)
@@ -189,12 +189,14 @@ class SuperAdminController extends Controller
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'role' => 'required|in:0,1,2,3,4',
             'password' => 'nullable|string|min:6', // Password is optional
+            'is_guest' => 'required|in:0,1',
         ]);
 
         // Update user information
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->role = $request->input('role');
+        $user->is_guest = $request->input('is_guest'); // Update the user type
 
         // Update the password if provided
         if ($request->filled('password')) {
@@ -515,6 +517,10 @@ public function destroy(Department $department)
 }
 
 
+public function rooms(){
+    $rooms=Room::all();
 
+    return view('super-admin.room',compact('rooms'));
+}
     
 }

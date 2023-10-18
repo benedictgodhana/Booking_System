@@ -182,6 +182,7 @@
                         <th>Email</th>
                         <th>Role</th>
                         <th>Department</th>
+                        <th>User Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -198,6 +199,7 @@
                             @endif
                         </td>
                         <td>{{ $user->department }}</td>
+                        <td>{{ $user->is_guest ? 'Guest' : 'Normal User' }}</td>
 
                         <td class="action-buttons">
                             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewUserModal{{ $user->id }}">
@@ -322,7 +324,13 @@
                             <label for="email"><i class="fas fa-envelope"></i> Email</label>
                             <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
                         </div>
-
+                        <div>
+                        <label for="userType"><i class="fas fa-user"></i> User Type</label>
+                        <select name="is_guest" required class="form-control">
+                            <option value="0" {{ $user->is_guest === 0 ? 'selected' : '' }}>Normal User</option>
+                            <option value="1" {{ $user->is_guest === 1 ? 'selected' : '' }}>Guest</option>
+                        </select>
+                    </div>
                         <div class="form-group">
                             <!-- Password (Optional) -->
                             <label for="password"><i class="fas fa-lock"></i> Password (Optional)</label>

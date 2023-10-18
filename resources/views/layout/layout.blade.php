@@ -111,6 +111,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('superAdminRooms') }}" class="nav-link">
+              <i class="nav-icon fa fa-building" style="color:white"></i>
+              <p style="color:white">
+                Rooms
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('superAdminDepartment') }}" class="nav-link">
               <i class="nav-icon fa fa-building" style="color:white"></i>
               <p style="color:white">

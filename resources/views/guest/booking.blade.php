@@ -605,7 +605,6 @@ function limitWords(textarea, wordLimit) {
     }
 }
 </script>
- variant_get_type
 
 <script>
     // JavaScript to handle showing/hiding fields based on checkboxes
