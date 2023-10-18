@@ -37,6 +37,7 @@ class GuestBookingController extends Controller
         'guest_name' => 'required|string|max:255',
         'guest_email' => 'required|email|regex:/^[A-Za-z0-9._%+-]+@strathmore\.edu$/i',
         'room' => 'required|exists:rooms,id',
+        'capacity' => 'required|integer',
         'booking_date' => 'required|date',
         'booking_time' => 'required|date_format:H:i',
         'duration' => 'required|integer',
@@ -74,6 +75,7 @@ class GuestBookingController extends Controller
     $reservation->user_id = $guestUser->id; // Associate the reservation with the guest user
     $reservation->room_id = $request->input('room');
     $reservation->item_id = $request->input('item_id'); // Optional item_id
+    $reservation->capacity = $validatedData['capacity'];
     $reservation->reservationDate = $request->input('booking_date');
     $reservation->reservationTime = $request->input('booking_time');
     $reservation->timelimit = $endTime; // Store the calculated end time

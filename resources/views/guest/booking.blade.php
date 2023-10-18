@@ -536,7 +536,7 @@
         </div>
 
         <div id="itemsList" style="display: none;">
-            <textarea name="" id="additionalDetails" cols="50" rows="3" placeholder="Kindly Provide more details"></textarea>
+            <textarea name="" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details"></textarea>
         </div><br>
 
                      
