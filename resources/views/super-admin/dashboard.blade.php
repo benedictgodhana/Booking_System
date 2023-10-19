@@ -564,7 +564,11 @@
                 dayClick: function(date, jsEvent, view) {
                     var today = new Date();
                     if (date >= today) {
-                        window.location.href = '/login';
+                        var selectedDate = date.format('MM-DD-YYY');
+        
+        // Fill the reservationDate input field with the selected date
+                     $('#reservationDate').val(selectedDate);
+                        $('#createReservationModal').modal('show');
                     } else {
                         Swal.fire({
                             icon: 'error',
