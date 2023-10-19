@@ -12,6 +12,13 @@
             padding: 0px;
         }
 
+        .department-cell {
+    max-width: 150px; /* Adjust the maximum width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
         .user-table {
             background-color: #fff;
             border-radius: 8px;
@@ -147,7 +154,7 @@
                         {{ $reservation->guest_name }}
                         @endif
                     </td>
-                    <td>@if ($reservation->user)
+                    <td class="department-cell">@if ($reservation->user)
                         {{ $reservation->user->department }}
                         @else
                         {{ $reservation->guest_department }}
@@ -234,7 +241,7 @@
                         {{ $reservation->guest_name }}
                         @endif
                     </td>
-                    <td>@if ($reservation->user)
+                    <td class="department-cell">@if ($reservation->user)
                         {{ $reservation->user->department }}
                         @else
                         {{ $reservation->guest_department }}

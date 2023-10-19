@@ -113,7 +113,7 @@ $currentDate = Carbon::now();
                     {{ $reservation->guest_name }}
                     @endif
                 </td>
-                <td>@if ($reservation->user)
+                <td class="department-cell ">@if ($reservation->user)
                     {{ $reservation->user->department }}
                     @else
                     {{ $reservation->guest_department }}

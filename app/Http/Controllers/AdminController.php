@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Item;
 use Carbon\Carbon;
 use App\Models\Reservation;
@@ -34,6 +35,15 @@ class AdminController extends Controller
         $users=User::all();
         $rooms=Room::whereIn('id',$roomID)->get();
         $items=Item::all();
+        $itemsCount=Item::count();
+        $departmentsCount=Department::count();
+        $reservationsAcceptedCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Accepted')
+        ->count();        
+        $pendingReservationsCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Pending')
+        ->count();
+    
 
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
@@ -73,6 +83,43 @@ class AdminController extends Controller
             $pendingCounts[$roomID] = $pendingCount;
                 $pendingCount = $pendingCount > 0 ? $pendingCount : 0;
         }
+        $currentDate = now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
+        $dailyReservations = []; // Initialize an empty array
+        $roomColors = [
+            'Kifaru' => 'Orange',
+            'Shark Tank Boardroom' => 'Blue',
+            'Executive Boardroom' => 'Green',
+            'Oracle Lab' => 'Black',
+            'Safaricom Lab' => 'Black',
+            'Ericsson Lab' => 'Black',
+            'Small Meeting Room' => 'Purple',
+            'Samsung Lab' => 'Black'
+            // Add more rooms and colors as needed
+        ];
+        
+        foreach ($rooms as $room) {
+            // Query to get daily reservation counts for a specific room on the current date
+            $dailyCount = DB::table('reservations')
+                ->where('room_id', $room->id)
+                ->whereDate('created_at', $currentDate)
+                ->count();
+        
+            // Get the background color for the room
+            $backgroundColor = $roomColors[$room->name];
+        
+            // Format the data for the room
+            $roomData = [
+                'label' => $room->name,
+                'data' => [$dailyCount], // Use an array with the count for the current date
+                'backgroundColor' => $backgroundColor, // Use the color from $roomColors
+                'borderColor' => 'rgba(255, 255, 255, 0.8)',
+                'borderWidth' => 1,
+            ];
+        
+            $dailyReservations[] = $roomData;
+        }
+        
+
 
         foreach ($acceptedReservations as $reservation) {
             $roomName = $reservation->room->name;
@@ -87,7 +134,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','roomsCount','usersCount','pendingBookingsCount','reservationsAcceptedCount','users','rooms','items'));
+        return view('admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','roomsCount','usersCount','pendingBookingsCount','reservationsAcceptedCount','users','rooms','items','pendingReservationsCount','itemsCount','departmentsCount','dailyReservations'));
     }
 
     public function reservation()

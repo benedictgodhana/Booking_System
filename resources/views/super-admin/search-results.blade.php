@@ -11,6 +11,12 @@ $currentDate = Carbon::now();
         background-color: #f5f5f5;
         padding: 0px;
     }
+    .department-cell {
+    max-width: 150px; /* Adjust the maximum width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
     .user-table {
         background-color: #fff;
@@ -106,7 +112,7 @@ $currentDate = Carbon::now();
         <tbody>
             @foreach($Results as $reservation)
             <tr>
-                <td>
+                <td class="department-cell ">
                     @if ($reservation->user)
                     {{ $reservation->user->name }}
                     @else

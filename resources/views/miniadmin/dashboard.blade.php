@@ -8,9 +8,13 @@
     max-width: 100%;
 }
 
+.fc-header-toolbar .fc-left button,
+      .fc-header-toolbar .fc-right button {
+          text-transform: capitalize;
+      }
+ 
 
-      .fc button {
-            background-color: yellowgreen;
+.fc button {
             color: black;
             font-family: Arial, sans-serif;
             font-size: 20px;
@@ -34,16 +38,17 @@
             margin: 0px;
         }
         #calendar .fc-toolbar {
-            background-color:darkblue; /* Header background color */
+            background-color:#ec7d30; /* Header background color */
             color: #ffffff; /* Header text color */
             border-radius: 5px 5px 0 0; /* Rounded corners for the top */
         }
+        #calendar
         #calendar .fc-toolbar button {
-            background-color:yellowgreen;
-            color: #ffffff;
+            color:black;
             border: none;
             border-radius: 0;
             margin: 2px;
+            font-weight: 600;
         }
         #calendar .fc-toolbar button:hover {
             background-color: #0056b3;
@@ -67,6 +72,8 @@
         #calendar .fc-time {
             color: #333; /* Time text color */
             font-weight: bold;
+            display: none;
+
         }
         .legend{
 
@@ -261,15 +268,15 @@
 </script>
 
 
-<div class="row" style="width: auto; height: 70vh; overflow-x: hidden; overflow-y: scroll;">
+<div class="row" style="width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
 
     <div class="col-lg-3 col-6">
         
         <!-- small card -->
         <div class="small-box bg-info">
             <div class="inner">
-            <h3>{{ $pendingBookingsCount }}</h3> <!-- Inject the pending bookings count here -->
-                <p>Number of pending bookings</p>
+            <h3>{{ $pendingReservationsCount }}</h3> <!-- Inject the pending bookings count here -->
+                <p>pending Reservations</p>
             </div>
             <div class="icon">
                 <i class="fas fa-shopping-cart"></i>
@@ -284,7 +291,7 @@
         <!-- small card -->
         <div class="small-box bg-primary">
             <div class="inner">
-            <h3>{{ $usersCount }}</h3> <!-- Inject the total users count here -->
+            <h3>{{ $totalUsersCount}}</h3> <!-- Inject the total users count here -->
                 <p>Total users</p>
             </div>
             <div class="icon">
@@ -299,8 +306,8 @@
         <!-- small card -->
         <div class="small-box bg-success">
             <div class="inner">
-            <h3>{{ $reservationsAcceptedCount }}</h3> <!-- Inject the accepted reservations count here -->
-                <p>Number of Reservations accepted</p>
+            <h3>{{ $reservationsAcceptedCount}}</h3> <!-- Inject the accepted reservations count here -->
+                <p>Reservations accepted</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -315,7 +322,7 @@
         <!-- small card -->
         <div class="small-box bg-warning">
             <div class="inner">
-            <h3>{{ $roomsCount }}</h3> <!-- Inject the total rooms count here -->
+            <h3>{{ $totalRoomsCount }}</h3> <!-- Inject the total rooms count here -->
                 <p>Total rooms</p>
             </div>
             <div class="icon">
@@ -326,9 +333,40 @@
             </a>
         </div>
     </div>
+    <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box " style="background:#ec7d30;color:white">
+            <div class="inner">
+            <h3>{{ $itemsCount }}</h3> <!-- Inject the accepted reservations count here -->
+                <p>Items</p>
+            </div>
+            <div class="icon">
+            </div>
+            <a  href="" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-danger ">
+            <div class="inner">
+            <h3>{{$departmentsCount }}</h3> <!-- Inject the total rooms count here -->
+                <p>Departments</p>
+            </div>
+            <div class="icon">
+            </div>
+            <a href="" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+ 
 
     <div class="container">
-        <button  style="border-radius:8px;border:1px white;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReservationModal">
+        <button  style="border-radius:8px;border:1px white;background:darkblue" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReservationModal">
             <i class="fas fa-plus"></i><strong style="margin-left:10px">Create Reservation</strong>
         </button>
 
@@ -349,7 +387,26 @@
             </div><br>
 
             <!-- Calendar -->
-            <div class="calender" id="calendar"></div>
+            <div class="calender" id="calendar"></div><br>
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Reservation Bar Chart</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 650px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            
 
             <!-- Legend -->
 
@@ -370,16 +427,16 @@
     <div class="modal fade" id="createReservationModal" tabindex="-1" role="dialog" aria-labelledby="createReservationModalLabel" aria-hidden="true">
         <div style="border-radius:10px 0px 10px 0px"  class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5  class="modal-title" id="createReservationModalLabel">Create Reservation</h5>
+                <div class="modal-header" style="background: darkblue;">
+                    <h5  class="modal-title" id="createReservationModalLabel" style="color:white">Create Reservation</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div  class="modal-body">
                     <!-- Reservation creation form -->
-                    <form method="POST" action="{{ route('minicreate.reservation') }}" onsubmit="return validateForm()">
-                        @csrf
+                    <form method="POST" action="{{ route('minicreate.reservation') }}" onsubmit="return validateForm()">                         
+                       @csrf
                         <div class="row">
                             <!-- User selection -->
                             <div class="col-md-6">
@@ -412,8 +469,7 @@
 
                         <div class="form-group">
                             <label for="items"><i class="fas fa-shopping-bag"></i> Select Items (maximum 5):</label>
-                            <select id="items" name="itemRequests[]" multiple size="5" class="form-control">
-                                @foreach($items as $item)
+                            <select id="itemRequests" name="itemRequests[]" multiple size="5" class="form-control">                                @foreach($items as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->asset_tag }})</option>
                                 @endforeach
                             </select>
@@ -459,7 +515,7 @@
 
                         <!-- Add more form fields as needed -->
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-info" value="Submit">
+                            <input type="submit" class="btn btn-info" value="Submit" style="background: darkblue;">
                         </div>
                     </form>
                 </div>
@@ -518,8 +574,11 @@
                 dayClick: function(date, jsEvent, view) {
                     var today = new Date();
                     if (date >= today) {
-                        window.location.href = '/login';
-                    } else {
+                        var selectedDate = date.format('MM-DD-YYY');
+        
+        // Fill the reservationDate input field with the selected date
+                     $('#reservationDate').val(selectedDate);
+                        $('#createReservationModal').modal('show');                    } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -691,6 +750,51 @@ document.getElementById('selectRoom').addEventListener('change', updateCapacityT
 // Initialize the tooltip when the page loads
 updateCapacityTooltip();
 
+</script>
+<script src="../../plugins/chart.js/Chart.min.js"></script>
+<script>
+    // Prepare the data for the bar chart
+    var dailyReservationData = {
+        datasets: @json($dailyReservations), // Use the formatted dataset array
+    };
+
+    // Get the canvas element
+    var ctx = document.getElementById('barChart').getContext('2d');
+
+    // Create the bar chart
+    var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: dailyReservationData, // Use the prepared data
+        options: {
+            scales: {
+                x: {
+                    stacked: true, // Stack bars for each room on the x-axis
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+</script>
+
+<script>
+    // Get a reference to the input element
+    var bookingTimeInput = document.getElementById("booking_time");
+
+    // Add an event listener to check the selected time
+    bookingTimeInput.addEventListener("input", function() {
+        var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
+
+        var startTime = new Date("2000-01-01 08:00:00"); // 8 AM
+        var endTime = new Date("2000-01-01 20:00:00");  // 8 PM
+
+        if (selectedTime < startTime || selectedTime > endTime) {
+            // Invalid time selected
+            alert("Please select a time between 8 AM and 8 PM.");
+            bookingTimeInput.value = "08:00"; // Reset to 8 AM
+        }
+    });
 </script>
 
     @endsection

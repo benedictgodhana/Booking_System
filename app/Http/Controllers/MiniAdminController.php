@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\GuestBookingAcceptedNotification;
 use App\Mail\MiniAdminReservationCreated;
 use App\Models\Activity;
+use App\Models\Department;
 use App\Models\Item;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -33,10 +34,18 @@ class MiniAdminController extends Controller
         $acceptedReservations = $reservations->filter(function ($reservation) use ($miniadminRoomIDs) {
             return in_array($reservation->room_id, $miniadminRoomIDs);
         });
+        $itemsCount=Item::count();
+        $departmentsCount=Department::count();
         $totalUsersCount = User::count();
         $pendingReservations = Reservation::whereIn('room_id', $roomID)
         ->where('status', 'pending')
         ->get();
+        $reservationsAcceptedCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Accepted')
+        ->count();        
+        $pendingReservationsCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Pending')
+        ->count();
         $users=User::all();
         $rooms=Room::whereIn('id',$roomID)->get();
         $items=Item::all();
@@ -47,6 +56,7 @@ class MiniAdminController extends Controller
         ->where('status', 'Accepted')
         ->count();
 
+        
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
         // Get the count of users who have made reservations on the specified date
@@ -69,6 +79,43 @@ class MiniAdminController extends Controller
 
             // Add more rooms and colors as needed
         ];
+        $currentDate = now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
+        $dailyReservations = []; // Initialize an empty array
+        $roomColors = [
+            'Kifaru' => 'Orange',
+            'Shark Tank Boardroom' => 'Blue',
+            'Executive Boardroom' => 'Green',
+            'Oracle Lab' => 'Black',
+            'Safaricom Lab' => 'Black',
+            'Ericsson Lab' => 'Black',
+            'Small Meeting Room' => 'Purple',
+            'Samsung Lab' => 'Black'
+            // Add more rooms and colors as needed
+        ];
+        
+        foreach ($rooms as $room) {
+            // Query to get daily reservation counts for a specific room on the current date
+            $dailyCount = DB::table('reservations')
+                ->where('room_id', $room->id)
+                ->whereDate('created_at', $currentDate)
+                ->count();
+        
+            // Get the background color for the room
+            $backgroundColor = $roomColors[$room->name];
+        
+            // Format the data for the room
+            $roomData = [
+                'label' => $room->name,
+                'data' => [$dailyCount], // Use an array with the count for the current date
+                'backgroundColor' => $backgroundColor, // Use the color from $roomColors
+                'borderColor' => 'rgba(255, 255, 255, 0.8)',
+                'borderWidth' => 1,
+            ];
+        
+            $dailyReservations[] = $roomData;
+        }
+        
+
 
 
         foreach ($miniadminRoomIDs as $roomID) {
@@ -92,7 +139,7 @@ class MiniAdminController extends Controller
             ];
         }
 
-        return view('miniadmin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','pendingReservations','pendingBookingsCount','roomsCount','usersCount','reservationsAcceptedCount','users','rooms','items'));
+        return view('miniadmin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','pendingReservations','pendingBookingsCount','roomsCount','usersCount','reservationsAcceptedCount','users','rooms','items','pendingReservationsCount','itemsCount','departmentsCount','dailyReservations'));
     }
 
 

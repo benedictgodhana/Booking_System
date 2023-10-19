@@ -755,7 +755,6 @@ updateCapacityTooltip();
 <script>
     // Prepare the data for the bar chart
     var dailyReservationData = {
-        labels: [@json($rooms->pluck('name'))], // Use room names as labels
         datasets: @json($dailyReservations), // Use the formatted dataset array
     };
 

@@ -12,13 +12,7 @@
             padding: 0px;
         }
 
-        .department-cell {
-    max-width: 150px; /* Adjust the maximum width as needed */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
+     
         .user-table {
             background-color: #fff;
             border-radius: 8px;
