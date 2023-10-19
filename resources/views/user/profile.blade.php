@@ -39,6 +39,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
+                        
                     <form method="POST" action="{{ route('password.change') }}" onsubmit="return validateForm()">
                          @csrf                            <!-- Form Group (username)-->
                             <div class="mb-3">
@@ -67,12 +68,7 @@
                                        name="department" placeholder="Enter your department" value="{{ Auth::user()->department}}">
                                 </div>
                                 <!-- Form Group (location)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLocation">Role</label>
-                                    <input class="form-control" id="inputLocation" type="text"
-                                       name="role" placeholder="Enter your role" value="{{ Auth::user()->roles->name }}" readonly>
-                                </div>
-                            </div>
+                                
                             <!-- Form Group (email address)-->
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputEmailAddress">Email address</label>
