@@ -86,9 +86,10 @@ class ReservationController extends Controller
         // Save the reservation to the database
         $reservation->save();
 
-        if ($validatedData['itemRequests']) {
+        if (isset($validatedData['itemRequests'])) {
             $reservation->items()->attach($validatedData['itemRequests']);
         }
+        
     
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
