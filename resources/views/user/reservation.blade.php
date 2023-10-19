@@ -111,34 +111,34 @@
                         <td>{{ $reservation->status }}</td>
                         <td>{{ $reservation->remarks }}</td>
                         <td class="actions">
-        @php
-            $currentDate = \Carbon\Carbon::now();
-            $currentDateTime = \Carbon\Carbon::now();
-            $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
-            $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
-            // Compare the current date with the reservation date
-            $isDatePassed = $currentDate->gt($reservationDate);
-            $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
-        @endphp
+    @php
+        $currentDate = \Carbon\Carbon::now();
+        $currentDateTime = \Carbon\Carbon::now();
+        $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
+        $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
+        // Compare the current date with the reservation date
+        $isDatePassed = $currentDate->gt($reservationDate);
+        $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
+    @endphp
 
-        @if ($reservation->status === 'Canceled')
-            <!-- Reservation is already cancelled, disable the button -->
-            <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
-                <i class="fas fa-times"></i> Cancelled
-            </button>
-        @elseif ($isDatePassed || $isTimeLimitPassed)
-            <!-- Reservation date has passed, disable cancellation -->
-            <button style="width:200px;border-radius:10px" type="button" class="btn btn-danger" disabled>
-                <i class="fas fa-lock"></i> Locked Reservation
-            </button>
-        @else
-            <!-- Reservation date is in the future, enable cancellation -->
-            <button style="width:200px;border-radius:10px" type="button" class="btn btn-success"
-                data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
-                <i class="fas fa-times"></i> Cancel Reservation
-            </button>
-        @endif
-    </td>
+    @if ($reservation->status === 'Canceled')
+    <!-- Reservation is already canceled, disable the button -->
+    <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
+        <i class="fas fa-times"></i> Cancelled
+    </button>
+@elseif ($isDatePassed)
+    <!-- Reservation date has passed, disable cancellation -->
+    <button style="width:200px;border-radius:10px" type="button" class="btn btn-danger" disabled>
+        <i class="fas fa-lock"></i> Locked Reservation
+    </button>
+@else
+    <!-- Reservation date is in the future, enable cancellation -->
+    <button style="width:200px;border-radius:10px" type="button" class="btn btn-success"
+        data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
+        <i class="fas fa-times"></i> Cancel Reservation
+    </button>
+@endif
+
 
                     </tr>
                     @endforeach
