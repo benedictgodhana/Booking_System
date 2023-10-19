@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Department;
 use App\Models\Item;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -32,7 +33,13 @@ class SubAdminController extends Controller
             return in_array($reservation->room_id, $subadminRoomIDs);
         });
 
-        $reservationsAcceptedCount = Reservation::where('status', 'Accepted')->count();
+        $reservationsAcceptedCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Accepted')
+        ->count();        
+        $pendingReservationsCount = Reservation::whereIn('room_id', $roomID)
+        ->where('status', 'Pending')
+        ->count();
+    
 
         $totalUsersCount = User::count();
         $users=User::All();
@@ -46,7 +53,8 @@ class SubAdminController extends Controller
 
         $totalRoomsCount = count($subadminRoomIDs); // Count the room IDs in the array
         $pendingCounts = [];
-
+        $itemsCount=Item::count();
+        $departmentsCount=Department::count();
         foreach ($subadminRoomIDs as $roomID) {
             $pendingCount = $reservations->filter(function ($reservation) use ($roomID) {
                 return $reservation->room_id == $roomID;
@@ -72,35 +80,38 @@ class SubAdminController extends Controller
         $dailyReservations = []; // Initialize an empty array
         $roomColors = [
             'Kifaru' => 'Orange',
-            'Shark Tank Boardroom' => 'blue',
-            'Executive Boardroom' => 'green',
-            'Oracle Lab' => 'black',
-            'Safaricom Lab' => 'black',
-            'Ericsson Lab' => 'black',
-            'Small Meeting Room' => 'purple',
-            'Samsung Lab' => 'black'
-
-
+            'Shark Tank Boardroom' => 'Blue',
+            'Executive Boardroom' => 'Green',
+            'Oracle Lab' => 'Black',
+            'Safaricom Lab' => 'Black',
+            'Ericsson Lab' => 'Black',
+            'Small Meeting Room' => 'Purple',
+            'Samsung Lab' => 'Black'
             // Add more rooms and colors as needed
         ];
-     foreach ($rooms as $room) {
-        // Query to get daily reservation counts for a specific room on the current date
-        $dailyCount = DB::table('reservations')
-            ->where('room_id', $room->id)
-            ->whereDate('created_at', $currentDate)
-            ->count();
-
-        // Format the data for the room
-        $roomData = [
-            'label' => $room->name,
-            'data' => [$dailyCount], // Use an array with the count for the current date
-            'backgroundColor' => $roomColors[array_rand($roomColors)],
-            'borderColor' => 'rgba(255, 255, 255, 0.8)',
-            'borderWidth' => 1,
-        ];
-
-        $dailyReservations[] = $roomData;
-    }
+        
+        foreach ($rooms as $room) {
+            // Query to get daily reservation counts for a specific room on the current date
+            $dailyCount = DB::table('reservations')
+                ->where('room_id', $room->id)
+                ->whereDate('created_at', $currentDate)
+                ->count();
+        
+            // Get the background color for the room
+            $backgroundColor = $roomColors[$room->name];
+        
+            // Format the data for the room
+            $roomData = [
+                'label' => $room->name,
+                'data' => [$dailyCount], // Use an array with the count for the current date
+                'backgroundColor' => $backgroundColor, // Use the color from $roomColors
+                'borderColor' => 'rgba(255, 255, 255, 0.8)',
+                'borderWidth' => 1,
+            ];
+        
+            $dailyReservations[] = $roomData;
+        }
+        
 
         foreach ($acceptedReservations as $reservation) {
             $roomName = $reservation->room->name;
@@ -115,7 +126,7 @@ class SubAdminController extends Controller
             ];
         }
 
-        return view('sub-admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','users','rooms','items','acceptedReservations','dailyReservations','reservationsAcceptedCount'));
+        return view('sub-admin.dashboard', compact('events', 'reservations', 'pendingCount', 'totalRoomsCount', 'usersWithReservationsCount', 'totalUsersCount', 'roomColors','users','rooms','items','acceptedReservations','dailyReservations','reservationsAcceptedCount','itemsCount','departmentsCount','pendingReservationsCount'));
     }
     public function reservation()
     {
