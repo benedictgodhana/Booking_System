@@ -201,7 +201,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             }
         }
 
-        return view('guest.thankyou');
+        return redirect()->back()->with('success', 'Your reservation has successfully been submitted');
     }
 
 

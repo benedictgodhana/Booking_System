@@ -198,7 +198,7 @@
                             {{ $user->roles->name }}
                             @endif
                         </td>
-                        <td>{{ $user->department }}</td>
+                        <td style="word-wrap: break-word; max-width: 150px;">{{ $user->department }}</td>
                         <td>{{ $user->is_guest ? 'Guest' : 'Normal User' }}</td>
 
                         <td class="action-buttons">

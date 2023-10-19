@@ -1,6 +1,46 @@
 @extends('layout/layout')
 
 @section('space-work')
+
+<style>
+    /* Style the pagination container */
+/* Style the simple pagination container */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Style the individual pagination links */
+.pagination .page-item {
+    margin: 0 5px;
+    list-style: none;
+}
+
+/* Style the current/active page link */
+.pagination .page-item.active .page-link {
+    background-color: #007bff; /* Change to your preferred color */
+    border-color: #007bff; /* Change to your preferred color */
+    color: #fff; /* Text color for active page */
+}
+
+/* Style the previous and next page links */
+.pagination .page-item .page-link {
+    color: #007bff; /* Text color for non-active pages */
+    border: 1px solid #007bff; /* Border color for non-active pages */
+    border-radius: 4px;
+}
+
+/* Style on hover for previous and next page links */
+.pagination .page-item .page-link:hover {
+    background-color: #007bff; /* Change to your preferred color */
+    border-color: #007bff; /* Change to your preferred color */
+    color: #fff; /* Text color on hover */
+}
+
+</style>
+
+
 <div style="margin: 4px, 4px; padding: 4px; width: auto; height: 86vh; overflow-x: hidden;">
     <div class="container-fluid">
         <div class="card vh-100">
@@ -61,27 +101,9 @@
                     </tbody>
                 </table>
                 <!-- Pagination -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item {{ $activities->currentPage() == 1 ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $activities->previousPageUrl() }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-
-                        @for ($i = 1; $i <= $activities->lastPage(); $i++)
-                        <li class="page-item {{ $i == $activities->currentPage() ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $activities->url($i) }}">{{ $i }}</a>
-                        </li>
-                        @endfor
-
-                        <li class="page-item {{ $activities->currentPage() == $activities->lastPage() ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $activities->nextPageUrl() }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="pagination">
+    {{ $activities->links() }}
+        </div>
             </div>
         </div>
     </div>

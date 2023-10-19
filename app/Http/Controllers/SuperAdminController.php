@@ -38,6 +38,8 @@ class SuperAdminController extends Controller
         $reservations = Reservation::where('status', 'accepted')->get();
         $events = [];
         $roomsCount = Room::count();
+        $itemsCount=Item::count();
+        $departmentsCount=Department::count();
         $usersCount = User::where('role', 0)->count();
         $rooms = Room::all();
         $users = User::all();
@@ -55,36 +57,38 @@ class SuperAdminController extends Controller
         $dailyReservations = []; // Initialize an empty array
         $roomColors = [
             'Kifaru' => 'Orange',
-            'Shark Tank Boardroom' => 'blue',
-            'Executive Boardroom' => 'green',
-            'Oracle Lab' => 'black',
-            'Safaricom Lab' => 'black',
-            'Ericsson Lab' => 'black',
-            'Small Meeting Room' => 'purple',
-            'Samsung Lab' => 'black'
-
-
+            'Shark Tank Boardroom' => 'Blue',
+            'Executive Boardroom' => 'Green',
+            'Oracle Lab' => 'Black',
+            'Safaricom Lab' => 'Black',
+            'Ericsson Lab' => 'Black',
+            'Small Meeting Room' => 'Purple',
+            'Samsung Lab' => 'Black'
             // Add more rooms and colors as needed
         ];
-     foreach ($rooms as $room) {
-        // Query to get daily reservation counts for a specific room on the current date
-        $dailyCount = DB::table('reservations')
-            ->where('room_id', $room->id)
-            ->whereDate('created_at', $currentDate)
-            ->count();
-
-        // Format the data for the room
-        $roomData = [
-            'label' => $room->name,
-            'data' => [$dailyCount], // Use an array with the count for the current date
-            'backgroundColor' => $roomColors[array_rand($roomColors)],
-            'borderColor' => 'rgba(255, 255, 255, 0.8)',
-            'borderWidth' => 1,
-        ];
-
-        $dailyReservations[] = $roomData;
-    }
-
+        
+        foreach ($rooms as $room) {
+            // Query to get daily reservation counts for a specific room on the current date
+            $dailyCount = DB::table('reservations')
+                ->where('room_id', $room->id)
+                ->whereDate('created_at', $currentDate)
+                ->count();
+        
+            // Get the background color for the room
+            $backgroundColor = $roomColors[$room->name];
+        
+            // Format the data for the room
+            $roomData = [
+                'label' => $room->name,
+                'data' => [$dailyCount], // Use an array with the count for the current date
+                'backgroundColor' => $backgroundColor, // Use the color from $roomColors
+                'borderColor' => 'rgba(255, 255, 255, 0.8)',
+                'borderWidth' => 1,
+            ];
+        
+            $dailyReservations[] = $roomData;
+        }
+        
     // Create a separate array for dates as labels
 
 
@@ -114,7 +118,7 @@ class SuperAdminController extends Controller
 
             ];
         }
-        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors','reservationsAcceptedCount','monthlyReservationCounts','dailyReservations'));
+        return view('super-admin.dashboard', compact('reservations', 'events', 'pendingBookingsCount', 'usersCount', 'roomsCount', 'users', 'rooms', 'items', 'roomColors','reservationsAcceptedCount','monthlyReservationCounts','dailyReservations','itemsCount','departmentsCount'));
     }
 
     public function users()
@@ -309,7 +313,7 @@ class SuperAdminController extends Controller
 
     public function showActivities()
     {
-        $activities = Activity::latest()->paginate(10); // Paginate the latest 10 activities        
+        $activities = Activity::simplepaginate(10); // Paginate the latest 10 activities        
 
         return view('super-admin.activities', ['activities' => $activities]);
     }
@@ -519,8 +523,48 @@ public function destroy(Department $department)
 
 public function rooms(){
     $rooms=Room::all();
+    $rooms = Room::simplePaginate(10); // You can specify the number of items per page (e.g., 10 per page) // You can change the number of items per page (e.g., 10) as needed
+
 
     return view('super-admin.room',compact('rooms'));
 }
-    
+
+public function storeRoom(Request $request)
+{
+    // Validate the incoming data
+    $validatedData = $request->validate([
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'capacity' => 'required|integer',
+    ]);
+
+    // Create a new room using the validated data
+    Room::create($validatedData);
+
+    // Redirect back or to a specific page after creating the room
+    return redirect()->back()->with('success', 'Room created successfully');
+}
+public function updateRoom(Request $request, Room $room)
+{
+    // Validate the incoming data
+    $validatedData = $request->validate([
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'capacity' => 'required|integer',
+    ]);
+
+    // Update the room attributes
+    $room->update($validatedData);
+
+    // Redirect back or to a specific page after updating the room
+    return redirect()->back()->with('success', 'Room updated successfully');
+}
+public function Roomdestroy(Room $room)
+{
+    // Delete the room
+    $room->delete();
+
+    // Redirect back or to a specific page after deleting the room
+    return redirect()->back()   ->with('success', 'Room deleted successfully');
+}
 }

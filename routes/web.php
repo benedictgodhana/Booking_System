@@ -102,6 +102,12 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin',
     Route::put('/departments/{department}', [SuperAdminController::class, 'updateDepartment'])->name('departments.update');
     Route::delete('/departments/{department}', [SuperAdminController::class, 'destroy'])->name('departments.destroy');
     Route::get('/rooms', [SuperAdminController::class, 'rooms'])->name('superAdminRooms');
+    Route::post('/rooms', [SuperAdminController::class,'storeRoom'])->name('rooms.store');
+    Route::put('/rooms/{room}/edit', [SuperAdminController::class,'updateRoom'])->name('rooms.update');
+    Route::delete('/rooms/{room}', [SuperAdminController::class,'Roomdestroy'])->name('rooms.destroy');
+
+
+
 
 
 

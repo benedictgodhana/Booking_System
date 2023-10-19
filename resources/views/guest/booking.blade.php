@@ -344,6 +344,7 @@
       .height-100 {
         height: 100vh;
       }
+      
 
       @media screen and (min-width: 768px) {
         body {
@@ -375,6 +376,18 @@
     </style>
   </head>
   <body id="body-pd">
+  @if(Session::has('success'))
+<div class="alert alert-success">
+    {{ Session::get('success') }}
+</div>
+@endif
+
+<script>
+    setTimeout(function() {
+        $(".alert").alert('close');
+    }, 5000); // 5000 milliseconds (5 seconds), adjust as needed
+</script>
+
     <header class="header" id="header">
       <div class="header_toggle">
         <i class="bx bx-menu" id="header-toggle"></i>

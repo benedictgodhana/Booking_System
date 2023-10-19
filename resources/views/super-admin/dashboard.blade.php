@@ -4,7 +4,9 @@
 
 <style>
       @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
-
+.container{
+    max-width: 100%;
+}
 
       .fc button {
             color: black;
@@ -22,7 +24,7 @@
         }
         
         #calendar {
-            max-width: 100%;
+            max-width: 100% ;
             background-color: #ffffff; /* Background color of the calendar */
             border: 1px solid #ccc; /* Border around the calendar */
             border-radius: 5px; /* Rounded corners */
@@ -69,6 +71,7 @@
         #calendar .fc-time {
             color: #333; /* Time text color */
             font-weight: bold;
+            display: none;
         }
         
 
@@ -263,7 +266,6 @@
                 <p>pending Reservations</p>
             </div>
             <div class="icon">
-                <i class="fas fa-shopping-cart"></i>
             </div>
             <a href="#" class="small-box-footer">
                 More info <i class="fas fa-arrow-circle-right"></i>
@@ -281,7 +283,7 @@
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">
+            <a  href="{{ route('superAdminUsers') }}" class="small-box-footer">
                 More info <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
@@ -306,21 +308,54 @@
         <!-- small card -->
         <div class="small-box bg-warning">
             <div class="inner">
-            <h3>{{ $roomsCount }}</h3> <!-- Inject the total rooms count here -->
-                <p>Total rooms</p>
+            <h3 style="color:white">{{ $roomsCount }}</h3> <!-- Inject the total rooms count here -->
+                <p style="color:white">Total rooms</p>
             </div>
             <div class="icon">
-                <i class="fas fa-user-plus"></i>
             </div>
-            <a href="#" class="small-box-footer">
+            <a href="{{ route('superAdminRooms') }}" class="small-box-footer"><span style="color:white">  More info </span>
+              <i style="color:white" class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- ./col -->
+   
+    <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box " style="background:#ec7d30;color:white">
+            <div class="inner">
+            <h3>{{ $itemsCount }}</h3> <!-- Inject the accepted reservations count here -->
+                <p>Items</p>
+            </div>
+            <div class="icon">
+            </div>
+            <a  href="{{ route('superAdminItems') }}" class="small-box-footer">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small card -->
+        <div class="small-box bg-danger ">
+            <div class="inner">
+            <h3>{{$departmentsCount }}</h3> <!-- Inject the total rooms count here -->
+                <p>Departments</p>
+            </div>
+            <div class="icon">
+            </div>
+            <a href="{{ route('superAdminDepartment') }}" class="small-box-footer">
                 More info <i class="fas fa-arrow-circle-right"></i>
             </a>
         </div>
     </div>
 
+ 
+
     <div class="container">
-        <button  style="border-radius:8px;border:1px white;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReservationModal">
-            <i class="fas fa-plus"></i><strong style="margin-left:10px">Create Reservation</strong>
+        <button  style="border-radius:8px;border:1px white;background:darkblue" type="button" class="btn " data-toggle="modal" data-target="#createReservationModal">
+            <i style="color:white" class="fas fa-plus"></i><strong style="margin-left:10px;color:white">Create Reservation</strong>
         </button>
 
 
@@ -381,8 +416,8 @@
     <div class="modal fade" id="createReservationModal" tabindex="-1" role="dialog" aria-labelledby="createReservationModalLabel" aria-hidden="true">
         <div style="border-radius:10px 0px 10px 0px"  class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5  class="modal-title" id="createReservationModalLabel">Create Reservation</h5>
+                <div class="modal-header" style="background: darkblue;">
+                    <h5  class="modal-title" id="createReservationModalLabel" style="color:white">Create Reservation</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -442,7 +477,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="reservationTime"><i class="fas fa-clock"></i> Reservation Time:</label>
-                                    <input type="time" class="form-control" id="booking_time" name="reservationTime" required>
+                                    <input type="time" class="form-control" id="booking_time" name="reservationTime" required >
                                 </div>
                             </div>
                         </div>
@@ -470,7 +505,7 @@
 
                         <!-- Add more form fields as needed -->
                         <div class="col-md-12">
-                            <input type="submit" class="btn btn-info" value="Submit">
+                            <input type="submit" class="btn btn-info" value="Submit" style="background: darkblue;">
                         </div>
                     </form>
                 </div>
@@ -729,4 +764,26 @@ updateCapacityTooltip();
         },
     });
 </script>
+
+<script>
+    // Get a reference to the input element
+    var bookingTimeInput = document.getElementById("booking_time");
+
+    // Add an event listener to check the selected time
+    bookingTimeInput.addEventListener("input", function() {
+        var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
+
+        var startTime = new Date("2000-01-01 08:00:00"); // 8 AM
+        var endTime = new Date("2000-01-01 20:00:00");  // 8 PM
+
+        if (selectedTime < startTime || selectedTime > endTime) {
+            // Invalid time selected
+            alert("Please select a time between 8 AM and 8 PM.");
+            bookingTimeInput.value = "08:00"; // Reset to 8 AM
+        }
+    });
+</script>
+
+
+
     @endsection

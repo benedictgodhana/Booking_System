@@ -94,6 +94,7 @@
         #calendar .fc-time {
             color: #333; /* Time text color */
             font-weight: bold;
+            display: none;
         }
         .legend{
 
