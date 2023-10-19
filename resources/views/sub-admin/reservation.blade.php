@@ -232,7 +232,7 @@
                         {{ $reservation->guest_name }}
                         @endif
                     </td>
-                    <td style="word-wrap: break-word; max-width: 150px;">@if ($reservation->user)
+                    <td class="department-cell">@if ($reservation->user)
                         {{ $reservation->user->department }}
                         @else
                         {{ $reservation->guest_department }}
