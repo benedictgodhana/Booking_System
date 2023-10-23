@@ -458,7 +458,7 @@
             <div class="form-group">
                 <label class="form-label" for="capacity"><i class="bx bx-user"></i><strong>Number of people</strong></label>
                 <input type="hidden" id="roomCapacity" value="">
-                <input type="number" id="capacity" name="capacity" class="form-control" onmouseover="updateCapacityTooltip()">
+                <input type="number" id="capacity" name="capacity" class="form-control" onmouseover="updateCapacityTooltip()" min="1">
 
             </div>
             
@@ -483,25 +483,60 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
-                            <input type="time" class="form-control" id="booking_time" name="booking_time"  min="08:00" max="20:00" >
+                            <input type="time" class="form-control" id="booking_time" name="booking_time" >
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="time_limit"> <i class="bx bx-clock"></i><strong> Duration (in hours)</strong></label>
-                            <input type="number" class="form-control" id="duration" name="duration">
-                        </div>
-                    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="form-label" for="time_limit">
+                <i class="bx bx-clock"></i><strong> Duration</strong>
+            </label>
+            <div class="input-group">
+                <select class="form-control" id="hours" name="duration">
+                    <!-- Generate options for hours -->
+                    <option value="0">0 hours</option>
+                    <option value="1">1 hour</option>
+                    <option value="2">2hours</option>
+                    <option value="3">3 hours</option>
+                    <option value="4">4 hours</option>
+                    <option value="5">5 hours</option>
+                    <option value="6">6 hours</option>
+                    <option value="7">7 hours</option>
+                    <option value="8">8 hours</option>
+                    <option value="9">9 hours</option>
+                    <option value="10">10 hours</option>
+                    
+                    
+
+
+                    <!-- Add more options as needed -->
+                </select>
+                <span style="height:46px" class="input-group-text">Hours</span>
+            </div>
+            <div class="input-group mt-2">
+                <select class="form-control" id="minutes" name="duration">
+                    <!-- Generate options for minutes -->
+                    <option value="0">0 minutes</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <span style="height:46px" class="input-group-text">Minutes</span>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label" for="end_of_reservation">
                             <i class="bx bx-clock"></i><strong> End of Reservation</strong>
                         </label>
-                        <input type="text" class="form-control" id="end_of_reservation" name="timelimit" readonly>
+                        <input type="text" class="form-control" id="endTime" name="timelimit" readonly>
                     </div>
                 </div>
 
@@ -528,14 +563,15 @@
                   </div>
 
 
-                  <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-label" for="comments"><i class="bx bx-comment"></i><strong> Comments (Optional)</strong></label>
-                        <textarea class="form-control" id="comments" name="comment" rows="4" placeholder="Enter any comments or notes" oninput="limitWords(this, 100)"></textarea>
-                    </div>
-                </div>
-            </div>
+                 
+        <div class="row mb-3">
+    <div class="col-md-12">
+        <label for="comment" class="form-label">Comment (Optional):</label>
+        <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
+        <p id="wordCount">Word count: 0/50</p>
+    </div>
+</div>
+
 
 
                     <div id="endOfReservation"></div>
@@ -544,18 +580,19 @@
     <div class="col-md-12">
         <label class="form-label">Optional Requirements:</label>
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="setupAssistance" onchange="toggleTextField()">
-            <label class="form-check-label" for="setupAssistance">IT Setup Assistance</label>
+            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
+            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
         </div>
+    </div>
+</div>
 
-        <div id="itemsList" style="display: none;">
-            <textarea name="" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details"></textarea>
-        </div><br>
-
-                     
-
-                
-
+            <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
+            <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
+                <div class="col-md-12">
+                <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
+                <p>Word Count: <span id="wordCount1">0/50</span></p>
+                </div>
+            </div>
 
                 <input type="hidden" name="guest" value="1">
                 <div class="row">
@@ -570,6 +607,72 @@
         </form>
     </div>
 </div>
+
+<script>
+        function limitWords(textarea) {
+            var maxWords = 50;
+            var text = textarea.value;
+            var words = text.split(/\s+/).filter(Boolean); // Filter to remove empty strings
+
+            if (words.length > maxWords) {
+                // Trim down the text to 50 words
+                var trimmedText = words.slice(0, maxWords).join(" ");
+                textarea.value = trimmedText;
+            }
+
+            // Display the word count
+            var wordCount = words.length;
+            document.getElementById("wordCount1").innerHTML = wordCount + "/" + maxWords;
+        }
+    </script>
+    
+    <script>
+    // Attach the function to the change event of the select element
+document.getElementById('itemRequests').addEventListener('change', limitItemSelection);
+
+</script>
+
+<script>
+    // Get references to the checkbox and the description text field
+var setupAssistanceCheckbox = document.getElementById('setupAssistanceCheckbox');
+var setupAssistanceDescription = document.getElementById('setupAssistanceDescription');
+
+// Add an event listener to the checkbox
+setupAssistanceCheckbox.addEventListener('change', function () {
+    if (setupAssistanceCheckbox.checked) {
+        // Checkbox is checked, show the description field
+        setupAssistanceDescription.style.display = 'block';
+    } else {
+        // Checkbox is unchecked, hide the description field
+        setupAssistanceDescription.style.display = 'none';
+    }
+});
+
+</script>
+
+
+
+
+
+
+<script>
+    function countWords() {
+    var comment = document.getElementById('comment').value;
+    var words = comment.split(/\s+/).filter(function(word) {
+        return word.length > 0;
+    }).length;
+    var wordCountElement = document.getElementById('wordCount');
+    
+    if (words > 50) {
+        // If word count exceeds the limit, truncate the comment and update the count
+        wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
+        document.getElementById('comment').value = comment.split(/\s+/).slice(0, 50).join(' ');
+    } else {
+        wordCountElement.textContent = 'Word count: ' + words + ' / 50';
+    }
+}
+
+</script>
 
 <script>
     // JavaScript validation
@@ -608,16 +711,7 @@
     }
 </script>
 
-<script>
-function limitWords(textarea, wordLimit) {
-    const words = textarea.value.trim().split(/\s+/); // Split text by spaces
-    if (words.length > wordLimit) {
-        // If the word limit is exceeded, truncate the text
-        const truncatedText = words.slice(0, wordLimit).join(' ');
-        textarea.value = truncatedText;
-    }
-}
-</script>
+
 
 <script>
     // JavaScript to handle showing/hiding fields based on checkboxes
@@ -726,34 +820,49 @@ otherDepartmentInput.addEventListener("input", function () {
 
 </script>
 <script>
-    // Get references to the elements
-    var reservationTimeInput = document.getElementById('reservationTime');
-    var durationInput = document.getElementById('duration');
-    var timeLimitInput = document.getElementById('timeLimit');
+  // Get references to the elements
+var hoursInput = document.getElementById('hours');
+var minutesInput = document.getElementById('minutes');
+var bookingTimeInput = document.getElementById('booking_time'); // Use "booking_time" to match the HTML ID
+var endTimeInput = document.getElementById('endTime');
 
-    // Add an event listener to the duration input
-    durationInput.addEventListener('input', function() {
-        // Get the selected reservation time
-        var reservationTime = reservationTimeInput.value;
+// Add event listeners to the duration and booking time inputs
+hoursInput.addEventListener('input', calculateEndTime);
+minutesInput.addEventListener('input', calculateEndTime);
+bookingTimeInput.addEventListener('input', calculateEndTime);
 
-        // Get the entered duration
-        var duration = parseInt(durationInput.value);
+// Function to calculate the end time
+function calculateEndTime() {
+    var selectedHours = parseInt(hoursInput.value);
+    var selectedMinutes = parseInt(minutesInput.value);
+    
+    var bookingTime = bookingTimeInput.value.split(':');
+    var bookingHours = parseInt(bookingTime[0]);
+    var bookingMinutes = parseInt(bookingTime[1]);
 
-        // Calculate the end of reservation
-        if (reservationTime && !isNaN(duration)) {
-            var startTime = new Date('2000-01-01T' + reservationTime);
-            startTime.setHours(startTime.getHours() + duration);
+    if (!isNaN(selectedHours) && !isNaN(selectedMinutes) && !isNaN(bookingHours) && !isNaN(bookingMinutes)) {
+        // Calculate the end time based on booking time
+        var endTime = new Date();
+        endTime.setHours(bookingHours + selectedHours);
+        endTime.setMinutes(bookingMinutes + selectedMinutes);
+        
+        // Format the end time as 'hh:mm AM/PM'
+        var formattedEndTime = endTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // Update the end time input field
+        endTimeInput.value = formattedEndTime;
+    } else {
+        // Handle invalid input
+        endTimeInput.value = 'Invalid input';
+    }
+}
 
-            // Format the end time as 'hh:mm'
-            var endTime = startTime.toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+// Initialize the end time calculation
+calculateEndTime();
 
-            // Update the timeLimit input with the calculated end time
-            timeLimitInput.value = endTime;
-        }
-    });
 </script>
 <script>
     // Attach an event listener to the "Request Items" checkbox
@@ -922,6 +1031,40 @@ document.getElementById('selectRoom').addEventListener('change', updateCapacityT
 updateCapacityTooltip();
 
 </script>
+<script>
+    // Get a reference to the input element
+    var bookingTimeInput = document.getElementById("booking_time");
+
+    // Add an event listener to check the selected time
+    bookingTimeInput.addEventListener("input", function() {
+        var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
+
+        var startTime = new Date("2000-01-01 08:00:00"); // 8 AM
+        var endTime = new Date("2000-01-01 20:00:00");  // 8 PM
+
+        if (selectedTime < startTime || selectedTime > endTime) {
+            // Invalid time selected
+            alert("Please select a time between 8 AM and 8 PM.");
+            bookingTimeInput.value = "08:00"; // Reset to 8 AM
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('capacity').addEventListener('change', function () {
+        var selectRoom = document.getElementById('selectRoom');
+        var roomCapacity = parseInt(selectRoom.options[selectRoom.selectedIndex].getAttribute('data-capacity'));
+        var enteredCapacity = parseInt(this.value);
+
+        if (enteredCapacity > roomCapacity) {
+    var errorMessage = 'Entered capacity of ' + enteredCapacity + ' exceeds room capacity of ' + roomCapacity + '. Please select another room or reduce the capacity.';
+    alert(errorMessage);
+    this.value = ''; // Clear the input
+}
+
+    });
+</script>
+
 
 
      <!-- Calendar initialization -->

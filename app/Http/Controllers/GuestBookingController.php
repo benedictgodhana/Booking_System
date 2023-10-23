@@ -47,7 +47,8 @@ class GuestBookingController extends Controller
         'guest_department' => 'nullable|string|max:255', // Add department validation
         'event' => 'nullable|string', // Add validation for event
         'comment' => 'nullable|string', // Add validation for the comment field
-    ]);
+        'additionalDetails' => 'nullable|string',
+        ]);
 
     $email = $request->input('guest_email');
     $existingUser = User::where('email', $email)->first();
@@ -81,6 +82,7 @@ class GuestBookingController extends Controller
     $reservation->timelimit = $endTime; // Store the calculated end time
     $reservation->event = $request->input('event');
     $reservation->comment = $request->input('comment'); // Save the comment
+    $reservation->additional_details = $validatedData['additionalDetails']; 
 
     // Process checkboxes or fields related to IT services, setup assistance, and item requests
     $reservation->itServices = $request->input('it_services_requested', false);
@@ -88,6 +90,7 @@ class GuestBookingController extends Controller
     $reservation->requestItems = $request->input('item_requests', false);
 
     $reservation->save();
+   
 
 // Include selected items (assuming you have the logic to determine selected items)
 if (isset($validatedData['itemRequests']) && $validatedData['itemRequests']) {
@@ -136,6 +139,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             'timelimit' => date("h:i A", strtotime($request->input('timelimit'))), // Format as AM/PM
             'department' => $guestUser->department,
             'event' => $reservation->event,
+            'additionalDetails'=>$reservation->additional_details,
             'Comments'=>$reservation->comment,
 
 
@@ -201,8 +205,11 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             }
         }
 
-        return redirect()->back()->with('success', 'Your reservation has successfully been submitted');
-    }
+        session()->flash('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
+
+
+
+        return back();    }
 
 
     public function thankYou()

@@ -273,7 +273,7 @@ $currentDate = Carbon::now();
                         $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
                     @endphp
 
-                    @if ($isDatePassed || $isTimeLimitPassed)
+                    @if ($isDatePassed)
         <!-- Display an alert for passed reservations -->
         <div class="alert alert-danger" role="alert">
             This reservation has <strong>already passed</strong>.

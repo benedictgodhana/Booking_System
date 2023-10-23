@@ -7,14 +7,15 @@
 
 <body>
     <!-- Email content -->
-    <p>Hello {{ $userName }},</p>
-    <p>Your reservation request has been submitted for the following room:</p>
-    <p>Room Name: {{ $roomName }}</p>
-    <p>Event:{{$Event}}</p>
-    <p>Reservation Date: {{ $reservationDate }}</p>
-    <p>Reservation Time: {{ $reservationTime }}</p>
-    <p>End of Reservation:{{$EndReservation}}</p>
-    <p>Comments:{{$Comments}}</p>
+    <p><strong>Hello {{ $userName }} , </strong></p>
+    <p><strong>Your reservation request has been submitted for the following room: </strong></p>
+    <p><strong>Room Name: </strong> {{ $roomName }}</p>
+    <p><strong>Event: </strong>{{$Event}}</p>
+    <p><strong>Reservation Date: </strong> {{ $reservationDate }}</p>
+    <p><strong>Reservation Time: {{ $reservationTime }}</p>
+    <p><strong>End of Reservation: </strong>{{$EndReservation}}</p>
+    <p><strong>Comments:</strong>{{$Comments}}</p>
+    <p><strong>IT Assistance Details:</strong>{{$Details}}</p>
     <!-- Other email content -->
 
     <!-- Call to Action Button -->

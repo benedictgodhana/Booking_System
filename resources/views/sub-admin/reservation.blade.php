@@ -374,7 +374,7 @@
                         $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
                     @endphp
 
-                    @if ($isDatePassed && $isTimeLimitPassed)
+                    @if ($isDatePassed)
                         <!-- Display an alert if the reservation date has passed -->
                         <button type="button" class="btn btn-warning" onclick="showAlert('Alert', 'The reservation date has passed.', 'warning')">
                             <i class="fas fa-exclamation-triangle"></i> Reservation Date Passed

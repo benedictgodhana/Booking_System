@@ -108,17 +108,6 @@ Route::group(['prefix' => 'super-admin', 'middleware' => ['web', 'isSuperAdmin',
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     // web.php
 
     Route::patch('/admin/reservation/update/{id}', [SuperAdminController::class, 'updateReservationStatus'])
@@ -174,7 +163,7 @@ Route::group(['middleware' => ['web', 'isUser', 'verified']], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('userdashboard');
     Route::get('/booking', [UserController::class, 'booking'])->name('booking');
     Route::get('/reservation', [UserController::class, 'reservation'])->name('reservation');
-    Route::post('/booking', [ReservationController::class, 'store'])->name('submit.reservation');
+    Route::post('/booking', [ReservationController::class, 'storeReservation'])->name('submit.reservation');
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.profile.show');
     Route::post('/profile/update-password', [UserController::class, 'updatePassword'])->name('updatePassword');
     Route::get('/user-guide-pdf', [UserController::class,'generateUserGuidePdf'])->name('user-guide-pdf');
@@ -233,7 +222,7 @@ Route::get('/activate/{user}/{token}', [AuthController::class, 'activateAccount'
 
 Route::post('/send-reservation-email', [ReservationController::class, 'sendEmail']);
 Route::post('/filter-reservations', [ReservationController::class,'filterReservations'])->name('filter');
-Route::delete('/cancel-reservation/{id}',[ReservationController::class,'cancelReservation'])->name('cancelReservation');
+Route::delete('/reservations/{id}/cancel',[ReservationController::class,'cancelReservation'])->name('cancelReservation');
 Route::get('/user/searchReservations', [UserController::class,'searchReservations'])->name('user.searchReservations');
 
 

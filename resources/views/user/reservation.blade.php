@@ -46,6 +46,18 @@
 </head>
 
 <body>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div style="margin: 4px, 4px; padding: 4px; width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
 
     <div class="card">
@@ -121,7 +133,7 @@
         $isTimeLimitPassed = $currentDateTime->gt($timeLimit);
     @endphp
 
-    @if ($reservation->status === 'Canceled')
+    @if ($reservation->status === 'Cancelled')
     <!-- Reservation is already canceled, disable the button -->
     <button style="width:200px;border-radius:10px" type="button" class="btn btn-warning" disabled>
         <i class="fas fa-times"></i> Cancelled

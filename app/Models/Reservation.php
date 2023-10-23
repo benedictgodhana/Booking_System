@@ -9,8 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Reservation extends Model
 {
     use HasFactory;
-    protected $fillable = ['guest_name', 'user_id', 'room_id', 'reservationDate', 'reservationTime', 'status', 'timelimit', 'item_id', 'guest_email', 'guest_department', 'event'];
-
+    protected $fillable = [
+        'user_id',
+        'room_id',
+        'reservationDate',
+        'reservationTime',
+        'timelimit',
+        'capacity',
+        'event',
+        'itServices',
+        'setupAssistance',
+        'comment',
+        'additional_details',
+    ];
+    
 
 
 

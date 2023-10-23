@@ -2,16 +2,16 @@
 
 @section('space-work')
 <style>
-    .container{
+    .container {
         max-width: 100%;
     }
 </style>
+
 @if(session('error'))
 <div class="alert alert-danger">
     {{ session('error') }}
 </div>
 @endif
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -21,8 +21,8 @@
 
 <div class="container">
     <div class="card">
-        <div class="card-header" style="background:darkblue">
-            <h3 style="text-align: center; color:white" class="word">Reservation Form</h3>
+        <div class="card-header" style="background: darkblue">
+            <h3 style="text-align: center; color: white" class="word">Reservation Form</h3>
         </div>
         <div class="card-body">
             @if(session('success'))
@@ -41,39 +41,27 @@
             <form action="{{ route('submit.reservation') }}" method="post" onsubmit="return validateForm()">
                 @csrf
                 <div class="row mb-3">
-    <div class="col-md-6">
-        <label for="capacity" class="form-label">Select Room</label>
-        <input type="hidden" id="roomCapacity" value="" required>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i class="fas fa-door-open"></i>
-                </span>
-            </div>
-            <select id="selectRoom" name="selectRoom" class="form-control">
-                <option value="">Select Room....</option>
-                @foreach($rooms as $room)
-                    <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <label for="selectRoom" class="form-label">Number of people attending</label>
-        <!-- Add a hidden input field to store room capacity -->
-        <input type="hidden" id="roomCapacity" value="">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i class="fas fa-users"></i>
-                </span>
-            </div>
-            <input type="number" id="capacity" name="capacity" class="form-control" required>
-        </div>
-    </div>
-</div>
-
-
+                    <div class="col-md-6">
+                        <label for="selectRoom" class="form-label">Select Room</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-door-open"></i>
+                                </span>
+                            </div>
+                            <select id="selectRoom" name="selectRoom" class="form-control">
+                                <option value="">Select Room....</option>
+                                @foreach($rooms as $room)
+                                <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="capacity" class="form-label">Number of People Attending</label>
+                        <input type="number" id="capacity" name="capacity" class="form-control" required min="1">
+                    </div>
+                </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -84,10 +72,9 @@
                                     <i class="far fa-calendar-alt"></i>
                                 </span>
                             </div>
-                            <input type="date" id="booking_date" name="reservationDate" class="form-control" placeholder="Enter Your Reservation Date" required>
+                            <input type="date" id="booking_date" name="reservationDate" class="form-control" required>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <label for="booking_time" class="form-label">Reservation Time:</label>
                         <div class="input-group">
@@ -96,25 +83,61 @@
                                     <i class="far fa-clock"></i>
                                 </span>
                             </div>
-                            <input type="time" id="booking_time" name="reservationTime" class="form-control"  required>
+                            <input type="time" id="booking_time" name="reservationTime" class="form-control" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="duration" class="form-label">Duration (in hours):</label>
+                        <label for="durationHours" class="form-label">Duration (in hours):</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <i class="far fa-clock"></i>
                                 </span>
                             </div>
-                            <input type="number" id="duration" name="duration" class="form-control" required>
+                            <select  id="hours" name="duration" class="form-select" required>
+                                <option value="1">1 hour</option>
+                                <option value="2">2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="5">5 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="7">7 hours</option>
+                                <option value="8">8 hours</option>
+                                <option value="9">9 hours</option>
+                                <option value="10">10 hours</option>
+                            </select>
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <label for="durationMinutes" class="form-label">Duration (in minutes):</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-clock"></i>
+                                </span>
+                            </div>
+                            <select id="minutes" name="duration" class="form-select" required>
+                                <option value="5">5 minutes</option>
+                                <option value="10">10 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="20">20 minutes</option>
+                                <option value="25">25 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="35">35 minutes</option>
+                                <option value="40">40 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="50">50 minutes</option>
+                                <option value="55">55 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="event" class="form-label">Event Name:</label>
                         <div class="input-group">
@@ -126,10 +149,7 @@
                             <input type="text" id="event" name="event" class="form-control" placeholder="Enter Event Name" required>
                         </div>
                     </div>
-                </div>
 
-                <!-- Display the calculated end time -->
-                <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="timeLimit" class="form-label">End Reservation Time:</label>
                         <div class="input-group">
@@ -138,56 +158,57 @@
                                     <i class="far fa-clock"></i>
                                 </span>
                             </div>
-                            <input type="text" id="timeLimit" name="timeLimit" class="form-control" readonly>
+                            <input type="text" id="endTime" name="timeLimit" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
 
-                        <div class="row mb-3">
-            <div class="col-md-12">
-                <label for="itemRequests" class="form-label">Select Items(Optional):</label>
-                <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                    @foreach($items as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-    <div class="col-md-12">
-        <label for="comment" class="form-label">Comment (Optional):</label>
-        <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
-        <p id="wordCount">Word count: 0/50</p>
-    </div>
-</div>
-
-
-                <!-- Checkbox for Requirements -->
-                <div class="row mb-3">
-    <div class="col-md-12">
-        <label class="form-label">Optional Requirements:</label>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
-            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
-        </div>
-    </div>
-</div>
-
-            <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
-                <div class="col-md-12">
-                    <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
-                    <input type="text" id="setupAssistanceDetails" name="setupAssistanceDetails" class="form-control" placeholder="please describe the IT setup you will require">
-                </div>
-            </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                    <button type="submit" class="btn" style="background:darkblue;color:white">
-                    <span>
-                        <i class="fas fa-check-circle"></i> Submit
-                    </span>
-                    </button>
-                                        </div>
+                        <label for="itemRequests" class="form-label">Select Items (Optional):</label>
+                        <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                            @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="comment" class="form-label">Comment (Optional):</label>
+                        <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
+                        <p id="wordCount">Word count: 0/50</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Optional Requirements:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
+                            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
+                    <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
+                    <div class="col-md-12">
+                        <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
+                        <p>Word Count: <span id="wordCount1">0 words</span></p>
+                    </div>
+                </div>
+                
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <button type="submit" value="submit" class="btn" style="background: darkblue; color: white">
+                            <span>
+                                <i class="fas fa-check-circle"></i> Submit
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </form>
 
@@ -195,6 +216,77 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+<script>
+  // Get references to the elements
+var hoursInput = document.getElementById('hours');
+var minutesInput = document.getElementById('minutes');
+var bookingTimeInput = document.getElementById('booking_time'); // Use "booking_time" to match the HTML ID
+var endTimeInput = document.getElementById('endTime');
+
+// Add event listeners to the duration and booking time inputs
+hoursInput.addEventListener('input', calculateEndTime);
+minutesInput.addEventListener('input', calculateEndTime);
+bookingTimeInput.addEventListener('input', calculateEndTime);
+
+// Function to calculate the end time
+function calculateEndTime() {
+    var selectedHours = parseInt(hoursInput.value);
+    var selectedMinutes = parseInt(minutesInput.value);
+    
+    var bookingTime = bookingTimeInput.value.split(':');
+    var bookingHours = parseInt(bookingTime[0]);
+    var bookingMinutes = parseInt(bookingTime[1]);
+
+    if (!isNaN(selectedHours) && !isNaN(selectedMinutes) && !isNaN(bookingHours) && !isNaN(bookingMinutes)) {
+        // Calculate the end time based on booking time
+        var endTime = new Date();
+        endTime.setHours(bookingHours + selectedHours);
+        endTime.setMinutes(bookingMinutes + selectedMinutes);
+        
+        // Format the end time as 'hh:mm AM/PM'
+        var formattedEndTime = endTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // Update the end time input field
+        endTimeInput.value = formattedEndTime;
+    } else {
+        // Handle invalid input
+        endTimeInput.value = 'Invalid input';
+    }
+}
+
+// Initialize the end time calculation
+calculateEndTime();
+
+</script>
+
+<script>
+        function limitWords(textarea) {
+            var maxWords = 50;
+            var text = textarea.value;
+            var words = text.split(/\s+/);
+            
+            if (words.length > maxWords) {
+                // Trim down the text to 50 words
+                var trimmedText = words.slice(0, maxWords).join(" ");
+                textarea.value = trimmedText;
+            }
+
+            // Display the word count
+            var wordCount = words.length;
+            document.getElementById("wordCount1").innerHTML = wordCount + " words";
+        }
+    </script>
 
 <script>
     // Initialize date picker

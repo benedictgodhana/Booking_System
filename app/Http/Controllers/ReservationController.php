@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
-    public function store(Request $request)
+    public function storeReservation(Request $request)
     {
         // Validate the incoming request data, including the RoomAvailability rule
         $validatedData = $request->validate([
@@ -52,6 +52,8 @@ class ReservationController extends Controller
             'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
             'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
             'comment' => 'nullable|string', // Comment field is optional
+            'additionalDetails' => 'nullable|string',
+
             'selectRoom' => [
                 'required',
                 'exists:rooms,id',
@@ -82,6 +84,8 @@ class ReservationController extends Controller
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
         $reservation->comment = $validatedData['comment'];
+        $reservation->additional_details = $validatedData['additionalDetails']; 
+
     
         // Save the reservation to the database
         $reservation->save();
@@ -116,6 +120,7 @@ class ReservationController extends Controller
             'EndReservation' => $timelimit,
             'Event' => $reservation->event,
             'Comments'=>$reservation->comment,
+            'Details'=>$reservation->additional_details,
             'viewReservationUrl' => url('/user/reservations'),
 
             // Add other email variables here
@@ -251,21 +256,22 @@ class ReservationController extends Controller
         return response()->json(['reservations' => $filteredReservations]);
     }
 
- public  function cancelReservation($id)
-{
-    // Your cancellation logic here
-    // For example, you can update the reservation status to "Canceled"
-
-    $reservation = Reservation::find($id);
-    if ($reservation) {
-        $reservation->update([
-            'status' => 'Canceled',
-        ]);
-
-        // You can also add any additional logic here, such as sending notifications, etc.
-
-        return redirect()->back()->with('success', 'Reservation has been canceled successfully.');
+    public function cancelReservation($id)
+    {
+        // Find the reservation by its ID
+        $reservation = Reservation::find($id);
+    
+        if (!$reservation) {
+            // Handle the case where the reservation is not found
+            return redirect()->back()->with('error', 'Reservation not found.');
+        }
+    
+        // Additional cancellation logic
+    
+        $reservation->status = 'Cancelled';
+        $reservation->save();
+    
+        return redirect()->back()->with('success', 'Reservation cancelled successfully.');
     }
-
-}
+     
 }
