@@ -166,7 +166,6 @@ Route::group(['middleware' => ['web', 'isUser', 'verified']], function () {
     Route::post('/booking', [ReservationController::class, 'storeReservation'])->name('submit.reservation');
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.profile.show');
     Route::post('/profile/update-password', [UserController::class, 'updatePassword'])->name('updatePassword');
-    Route::get('/user-guide-pdf', [UserController::class,'generateUserGuidePdf'])->name('user-guide-pdf');
 
 });
 Route::get('/get-bookings', [BookingController::class, 'getBookings']);
@@ -232,4 +231,6 @@ Route::get('/user/searchReservations', [UserController::class,'searchReservation
 Route::post('/account/check-activation', [UserController::class, 'checkActivation'])->name('account.check-activation');
 Route::post('/password/change', [UserController::class, 'changePassword'])->name('password.change'); // Implement this method in UserController
 Route::get('/filter/pending-reservations', [ReservationController::class,'filter'])->name('filter.pendingReservations');
+Route::put('/reservations/{id}', [ReservationController::class,'updateReservation'])->name('updateReservation');
 
+Route::get('/user-guide-pdf', [UserController::class, 'generateUserGuidePdf'])->name('user-guide-pdf');

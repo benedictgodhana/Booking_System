@@ -296,29 +296,28 @@ public function updateProfile(Request $request)
 
 public function generateUserGuidePdf()
 {
-    // Create a new Dompdf instance
-    $options = new Options();
-    $options->set('isHtml5ParserEnabled', true);
-    $options->set('isPhpEnabled', true);
-    $dompdf = new Dompdf($options);
+    // Create a new TCPDF instance
+    $pdf = new TCPDF();
 
     // Set document information
-    $dompdf->getOptions()->set('isPhpEnabled', true);
-    $dompdf->setPaper('A4', 'portrait');
+    $pdf->SetCreator('Your Name');
+    $pdf->SetAuthor('Your Name');
+    $pdf->SetTitle('User Guide');
+    $pdf->SetSubject('User Guide');
+    $pdf->SetKeywords('User Guide, Room Booking');
 
-    // HTML content for the user guide
-    $content = '<h1>User Guide</h1><p>This is your user guide content.</p>';
+    // Set page format (e.g., A4)
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->AddPage();
 
-    // Load HTML content
-    $dompdf->loadHtml($content);
+    // Render the HTML content (userguide.blade.php) into a variable
+    $html = view('userguide')->render();
+    // Output the HTML content onto the PDF
+    $pdf->writeHTML($html, true, false, true, false, '');
 
-    // Render the PDF (you can specify the output mode)
-    $dompdf->render();
-
-    // Stream the PDF directly to the browser for download
-    $dompdf->stream('user_guide.pdf');
+    // Output the PDF (you can save or stream it)
+    $pdf->Output('user_guide.pdf', 'I');
 }
-
-
 }
     

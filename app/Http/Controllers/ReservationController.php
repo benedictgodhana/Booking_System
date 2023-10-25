@@ -27,6 +27,7 @@ use App\Notifications\SubAdminReservationNotification;
 use App\Notifications\SuperAdminReservationNotification;
 use App\Notifications\UserReservationNotification;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Exception;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -272,6 +273,40 @@ class ReservationController extends Controller
         $reservation->save();
     
         return redirect()->back()->with('success', 'Reservation cancelled successfully.');
+    }
+
+    public function updateReservation(Request $request, $id)
+    {
+        // Validate the form data
+        $request->validate([
+            'event' => 'required|string',
+            'reservationDate' => 'required|date',
+            'reservationTime' => 'required',
+            'durationHours' => 'required|numeric',
+            'durationMinutes' => 'required|numeric',
+            'remarks' => 'nullable|string',
+        ]);
+
+        // Calculate the end time based on the selected duration
+        $startTime = Carbon::parse($request->reservationDate . ' ' . $request->reservationTime);
+        $duration = CarbonInterval::hours($request->durationHours)->minutes($request->durationMinutes);
+        $endTime = $startTime->add($duration);
+
+        // Find the reservation by ID
+        $reservation = Reservation::findOrFail($id);
+
+        // Update the reservation details
+        $reservation->event = $request->event;
+        $reservation->reservationDate = $request->reservationDate;
+        $reservation->reservationTime = $request->reservationTime;
+        $reservation->timelimit = $endTime;
+        $reservation->remarks = $request->remarks;
+
+        // Save the changes
+        $reservation->save();
+
+        // Redirect to a success page or return a response
+        return redirect()->back()->with('success', 'Reservation updated successfully');
     }
      
 }
