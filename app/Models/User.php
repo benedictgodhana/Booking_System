@@ -26,7 +26,8 @@ class User extends Authenticatable
         'password',
         'department',
         'activation_token',
-        'activated'
+        'activated',
+        'contact'
     ];
 
     /**

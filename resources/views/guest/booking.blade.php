@@ -425,186 +425,195 @@
         <h5 class="card-title">Reservation Form</h5>
     </div>
     <div class="card-body">
-        <form action="{{ route('guest.booking.submit') }}" method="POST">
-            @csrf
-            <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="full_name"><i class="bx bx-user"></i><strong> Full Name</strong></label>
-                            <input type="text" class="form-control" id="full_name" name="guest_name" required placeholder="Enter Your FullName">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="email"> <i class="bx bx-envelope"></i><strong>Email</strong></label>
-                            <input type="email" class="form-control" id="email" name="guest_email" required placeholder="Enter Your Email">
-                        </div>
-                    </div>
-                </div>
+    <form action="{{ route('guest.booking.submit') }}" method="POST">
+    @csrf
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="full_name"><i class="bx bx-user"></i><strong> Full Name</strong></label>
+                <input type="text" class="form-control" id="full_name" name="guest_name" required placeholder="Enter Your FullName">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="email"> <i class="bx bx-envelope"></i><strong>Email</strong></label>
+                <input type="email" class="form-control" id="email" name="guest_email" required placeholder="Enter Your Email">
+            </div>
+        </div>
+    </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="room"> <i class="bx bx-building"></i><strong>Select Room</strong></label>
-                            <select class="form-control" id="selectRoom" name="room" required>
-                            <option class="form-control" value="">Select Room......</option>
-                                @foreach ($rooms as $room)
-                                <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                   <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="room"> <i class="bx bx-building"></i><strong>Select Room</strong></label>
+                <select class="form-control" id="selectRoom" name="room" required>
+                    <option class="form-control" value="">Select Room......</option>
+                    @foreach ($rooms as $room)
+                    <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="form-label" for="capacity"><i class="bx bx-user"></i><strong>Number of people</strong></label>
                 <input type="hidden" id="roomCapacity" value="">
                 <input type="number" id="capacity" name="capacity" class="form-control" onmouseover="updateCapacityTooltip()" min="1">
-
             </div>
-            
         </div>
-                            <div class="row mb-3">
-              <div class="col-md-12">
-                  <label for="itemRequests" class="form-label">Select Items:</label>
-                  <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                      @foreach($items as $item)
-                          <option value="{{ $item->id }}">{{ $item->name }}</option>
-                      @endforeach
-                  </select>
-              </div>
-            </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" required >
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
-                            <input type="time" class="form-control" id="booking_time" name="booking_time" >
-                        </div>
-                    </div>
-                </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+        <label class="form-label" for="contact"><i class="bx bx-phone"></i><strong> Contact</strong></label>
+        <input type="tel" class="form-control" id="contact" name="contact" placeholder="Enter Your Contact" pattern="^\+254\d{9}$" value="+254">
+    </div>
+</div>
 
-                <div class="row">
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label for="itemRequests" class="form-label">Select Items:</label>
+            <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                @foreach($items as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
+                <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
+                <input type="time" class="form-control" id="booking_time" name="booking_time">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
             <label class="form-label" for="time_limit">
                 <i class="bx bx-clock"></i><strong> Duration</strong>
             </label>
-            <div class="input-group">
-                <select class="form-control" id="hours" name="duration">
-                    <!-- Generate options for hours -->
-                    <option value="0">0 hours</option>
-                    <option value="1">1 hour</option>
-                    <option value="2">2hours</option>
-                    <option value="3">3 hours</option>
-                    <option value="4">4 hours</option>
-                    <option value="5">5 hours</option>
-                    <option value="6">6 hours</option>
-                    <option value="7">7 hours</option>
-                    <option value="8">8 hours</option>
-                    <option value="9">9 hours</option>
-                    <option value="10">10 hours</option>
-                    
-                    
-
-
-                    <!-- Add more options as needed -->
-                </select>
-                <span style="height:46px" class="input-group-text">Hours</span>
-            </div>
-            <div class="input-group mt-2">
-                <select class="form-control" id="minutes" name="duration">
-                    <!-- Generate options for minutes -->
-                    <option value="0">0 minutes</option>
-                    <option value="15">15 minutes</option>
-                    <option value="30">30 minutes</option>
-                    <option value="45">45 minutes</option>
-                    <!-- Add more options as needed -->
-                </select>
-                <span style="height:46px" class="input-group-text">Minutes</span>
-            </div>
-        </div>
-    </div>
-</div>
-
+            <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label" for="end_of_reservation">
-                            <i class="bx bx-clock"></i><strong> End of Reservation</strong>
-                        </label>
-                        <input type="text" class="form-control" id="endTime" name="timelimit" readonly>
-                    </div>
+                    <label class="form-label" for="hours">Hours</label>
+                    <select class="form-control" id="hours" name="duration">
+                        <!-- Generate options for hours -->
+                        <option value="0">0 hours</option>
+                        <option value="1">1 hour</option>
+                        <option value="2">2 hours</option>
+                        <option value="3">3 hours</option>
+                        <option value="4">4 hours</option>
+                        <option value="5">5 hours</option>
+                        <option value="6">6 hours</option>
+                        <option value="7">7 hours</option>
+                        <option value="8">8 hours</option>
+                        <option value="9">9 hours</option>
+                        <option value="10">10 hours</option>
+                    </select>
                 </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="minutes">Minutes</label>
+                    <select class="form-control" id="minutes" name="duration">
+                        <!-- Generate options for minutes -->
+                        <option value="0">0 minutes</option>
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="20">20 minutes</option>
+                        <option value="25">25 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="35">35 minutes</option>
+                        <option value="40">40 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="50">50 minutes</option>
+                        <option value="55">55 minutes</option>
+                        
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="event"> <i class="bx bx-calendar-alt"></i> <strong>Event Title</strong></label>
-                            <input type="text" class="form-control" id="event" name="event" placeholder="Enter Event Title">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="form-label" for="department">
-                              <i class="bx bx-building"></i><strong>Department</strong>
-                          </label>
-                          <input type="text" id="department" name="guest_department" class="form-control" list="department-list" placeholder="Select or type your department">
-                          <datalist id="department-list">
-                              @foreach($departments as $department)
-                                  <option value="{{ $department->name }}">
-                              @endforeach
-                          </datalist>
-                      </div>
-                  </div>
-
-
-                 
-        <div class="row mb-3">
-    <div class="col-md-12">
-        <label for="comment" class="form-label">Comment (Optional):</label>
-        <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
-        <p id="wordCount">Word count: 0/50</p>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-
-
-                    <div id="endOfReservation"></div>
-                <!-- Checkbox for Requirements -->
-                <div class="row mb-3">
-    <div class="col-md-12">
-        <label class="form-label">Optional Requirements:</label>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
-            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
+    <div class="col-md-6" style="margin-top:30px">
+        <div class="form-group">
+            <label class="form-label" for="end_of_reservation">
+                <i class="bx bx-clock"></i><strong> End of Reservation</strong>
+            </label>
+            <input type="text" class="form-control" id="endTime" name="timelimit" readonly>
         </div>
     </div>
 </div>
 
-            <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
-            <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
-                <div class="col-md-12">
-                <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
-                <p>Word Count: <span id="wordCount1">0/50</span></p>
-                </div>
+       
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="event"> <i class="bx bx-calendar-alt"></i> <strong>Event Title</strong></label>
+                <input type="text" class="form-control" id="event" name="event" placeholder="Enter Event Title">
             </div>
+        </div>
 
-                <input type="hidden" name="guest" value="1">
-                <div class="row">
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="department">
+                    <i class="bx bx-building"></i><strong>Department</strong>
+                </label>
+                <input type="text" id="department" name="guest_department" class="form-control" list="department-list" placeholder="Select or type your department">
+                <datalist id="department-list">
+                    @foreach($departments as $department)
+                    <option value="{{ $department->name }}">
+                    @endforeach
+                </datalist>
+            </div>
+        </div>
+    </div>
 
-                    </div>
-                </div>
-                <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
-                    @iLabAfrica. All Rights Reserved. &copy; 2023 Strathmore
-                </footer>
-        </form>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label for="comment" class="form-label">Comment (Optional):</label>
+            <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
+            <p id="wordCount">Word count: 0/50</p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label class="form-label">Optional Requirements:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
+                <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
+        <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
+        <div class="col-md-12">
+            <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
+            <p>Word Count: <span id="wordCount1">0/50</span></p>
+        </div>
+    </div>
+
+    <input type="hidden" name="guest" value="1">
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+    <footer style="color:black;font-size:17px;font-weight:800" class="text-center mt-4">
+        @iLabAfrica. All Rights Reserved. &copy; 2023 Strathmore
+    </footer>
+</form>
     </div>
 </div>
 
@@ -769,17 +778,20 @@ setupAssistanceCheckbox.addEventListener('change', function () {
     </script>
 
 <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var bookingDateInput = document.getElementById('booking_date');
+    document.addEventListener('DOMContentLoaded', function() {
+        var bookingDateInput = document.getElementById('booking_date');
 
-                // Get the current date in the format 'YYYY-MM-DD'
-                var currentDate = new Date().toISOString().split('T')[0];
+        // Get the current date in the format 'dd/mm/yyyy'
+        var currentDate = new Date();
+        var day = String(currentDate.getDate()).padStart(2, '0');
+        var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        var year = currentDate.getFullYear();
+        var formattedDate = day + '/' + month + '/' + year;
 
-                // Set the minimum date of the booking_date input to the current date
-                bookingDateInput.min = currentDate;
-            });
-        </script>
-
+        // Set the minimum date of the booking_date input to the current date
+        bookingDateInput.min = formattedDate;
+    });
+</script>
 
 
         <!-- Include your JavaScript scripts or links here -->

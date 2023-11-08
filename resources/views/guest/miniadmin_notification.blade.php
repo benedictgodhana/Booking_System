@@ -22,6 +22,7 @@
         <li><strong>Reservation Time:</strong> {{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</li>
         <li><strong>End of Reservation:</strong> {{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</li>
         <li><strong>Guest's Department:</strong> {{$reservation->guest_department}}</li>
+        <li><strong>Guest's Contact:</strong>{{$reservation->user->contact}}</li>
         <li><strong>Event:</strong> {{$reservation->event}}</li>
         <li><strong>Comments</strong><span style="color:blue"> {{$reservation->comment}}</span></li>
 

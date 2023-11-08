@@ -16,12 +16,12 @@ class RoomSeeder extends Seeder
     {
         $rooms = [
             [
-                'name' => 'Executive BoardRoom',
+                'name' => 'Executive Boardroom',
                 'capacity' => 14,
                 'description' => 'A cozy meeting room with whiteboard and Tv connected to a Mini PC.',
             ],
             [
-                'name' => 'Shark Tank BoardRoom',
+                'name' => 'Shark Tank Boardroom',
                 'capacity' => 14,
                 'description' => 'A cozy meeting room with whiteboard and TV.',
             ],

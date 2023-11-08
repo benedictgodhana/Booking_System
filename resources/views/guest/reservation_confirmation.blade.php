@@ -55,6 +55,7 @@
             <li><strong>Reservation Time:</strong> {{ $data['reservation_time'] }}</li>
             <li><strong>End of Reservation:</strong> {{ $data['timelimit'] }}</li>
             <li><strong>Your Department:</strong> {{$data['department']}}</li>
+            <li><strong>Contact Number:</strong>{{$data['Contact']}}</li>
             <li><strong>Event:</strong> {{$data['event']}}</li>
             <li><strong>Comments</strong>: <span>{{$data['Comments']}}</span></li>
             <li><strong>IT Assistance Details</strong>: <span>{{$data['additionalDetails']}}</span></li>

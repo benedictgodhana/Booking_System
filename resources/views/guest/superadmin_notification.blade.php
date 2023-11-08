@@ -20,6 +20,7 @@
         <li><strong>Reservation Time:</strong> {{ $data['reservation_time'] }}</li>
         <li><strong>End of Reservation:</strong> {{ $data['timelimit'] }}</li>
         <li><strong>Guest's Department:</strong> {{$data['department']}}</li>
+        <li><strong>Guest's Contact:</strong>{{$data['Contact']}}</li>
         <li><strong>Event:</strong> {{$data['event']}}</li>
         <li><strong>Comments</strong>{{$data['Comments']}}</li>
 

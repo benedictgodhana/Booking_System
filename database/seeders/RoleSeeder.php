@@ -17,7 +17,6 @@ class RoleSeeder extends Seeder
     {
         $now = Carbon::now();
         $roles = [
-            ['name' => 'users', 'id' => 0, 'created_at' => $now, 'updated_at' => $now], // Default role for users
             ['name' => 'SuperAdmin', 'id' => 1, 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'SubAdmin', 'id' => 2, 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Admin', 'id' => 3, 'created_at' => $now, 'updated_at' => $now],

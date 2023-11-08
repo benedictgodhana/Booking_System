@@ -249,14 +249,14 @@ form.sign-in-form {
   font-weight: 600;
   line-height: 1;
   font-size: 1.5rem;
-  margin-top: -120px;
-  margin-left: -150px;
+  margin-top: -20px;
+  margin-left: -50px;
 }
 
 .panel p {
   font-size: 0.95rem;
   padding: 0.7rem 0;
-  margin-left: -240px;
+  margin-left: -40px;
 
 }
 

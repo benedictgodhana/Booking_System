@@ -48,7 +48,8 @@ class GuestBookingController extends Controller
         'event' => 'nullable|string', // Add validation for event
         'comment' => 'nullable|string', // Add validation for the comment field
         'additionalDetails' => 'nullable|string',
-        ]);
+        'contact' => 'nullable|regex:/^\+254\d{9}$/',        
+    ]);
 
     $email = $request->input('guest_email');
     $existingUser = User::where('email', $email)->first();
@@ -62,6 +63,7 @@ class GuestBookingController extends Controller
         $guestUser->name = $request->input('guest_name');
         $guestUser->email = $request->input('guest_email');
         $guestUser->password = bcrypt(Str::random(16)); // Generate a random password
+        $guestUser->contact =$request->input('contact');
         $guestUser->is_guest = true; // Set the user as a guest
         $guestUser->department = $request->input('guest_department'); // Capture the guest's department
         $guestUser->save();
@@ -109,6 +111,7 @@ $itServicesRequested = $reservation->itServicesRequested;
 $setupAssistanceRequested = $reservation->setupAssistanceRequested;
 $additionalDetails = $reservation->additionalDetails; // Assuming this is the text field for additional details
 $Comments = $reservation->comment;
+$Contact = $reservation->user->contact;
 
 // Check if at least one checkbox is checked, setup assistance is requested,
 // or additional details field is not empty
@@ -124,7 +127,8 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
         $itServicesRequested,
         $setupAssistanceRequested,
         $additionalDetails,
-        $Comments // Assuming $comments is the variable containing comments
+        $Comments, // Assuming $comments is the variable containing comments
+        $Contact
     ));
 }
 
@@ -141,6 +145,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             'event' => $reservation->event,
             'additionalDetails'=>$reservation->additional_details,
             'Comments'=>$reservation->comment,
+            'Contact'=> $guestUser->contact
 
 
             // Add more reservation details as needed

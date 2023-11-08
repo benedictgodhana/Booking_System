@@ -115,6 +115,7 @@
                <tr>
                    <th>Name</th>
                    <th>Department</th>
+                   <th>Contact</th>
                    <th>Items (Optional)</th>
                    <th>Event</th>
                    <th>Reservation Date</th>
@@ -142,6 +143,7 @@
                        {{ $reservation->guest_department }}
                        @endif
                    </td>
+                   <td>{{$reservation->user->contact}}</td>
                    <td>
                         @if ($reservation->items->count() > 0)
                     <ul>
@@ -172,7 +174,7 @@
                </tr>
                @endforeach
                
-           </table>
+           </table><br>
            <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item {{ $pendingReservations->currentPage() == 1 ? 'disabled' : '' }}">
@@ -204,6 +206,7 @@
                <tr>
                    <th>Name</th>
                    <th>Department</th>
+                   <th>Contact</th>
                    <th>Items (Optional)</th>
                    <th>Event</th>
                    <th>Reservation Date</th>
@@ -231,6 +234,7 @@
                        {{ $reservation->guest_department }}
                        @endif
                    </td>
+                   <td>{{$reservation->user->contact}}</td>
                    <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                    <td>{{ $reservation->event }}</td>
                    <td>{{ $reservation->reservationDate }}</td>
@@ -249,7 +253,7 @@
                    </td>
                </tr>
                @endforeach
-           </table>
+           </table><br>
            <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item {{ $acceptedReservations->currentPage() == 1 ? 'disabled' : '' }}">
@@ -312,6 +316,11 @@
                                        {{ $reservation->guest_department }}
                                        @endif
                                    </p>
+                               </div>
+                               <hr>
+                               <div class="form-group">
+                                   <label><i class="fas fa-phone"></i>Contact:</label>
+                                   <p>{{ $reservation->user->contact }}</p>
                                </div>
                                <hr>
 
