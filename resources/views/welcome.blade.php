@@ -458,19 +458,22 @@
                     }
                 },
                 eventRender: function(event, element) {
-                    // Assign a unique background color to each room's reservation
-                    var roomIndex = roomColors.indexOf(event.room);
-                    if (roomIndex !== -1) {
-                        element.css('background-color', roomColors[roomIndex]);
-                    }
+                // Assign a unique background color to each room's reservation
+                var roomIndex = roomColors.indexOf(event.room);
+                if (roomIndex !== -1) {
+                    element.css('background-color', roomColors[roomIndex]);
+                }
 
-                    // Format the reservation time to include "am" or "pm"
-                    var formattedTime = moment(event.start).format('hh:mm A');
+                // Format the reservation start and end times to include both date and time
+                var formattedStartTime = moment(event.start).format('DD-MM-YYYY hh:mm A');
+                var formattedEndTime = moment(event.end).format('DD-MM-YYYY hh:mm A');
 
-                    // Append the formatted time to the event title
-                    element.find('.fc-title').append('<br>' + formattedTime);
-                    element.find('.fc-title').prepend('Room: ' + event.room + '<br>');
-                },
+                // Append the formatted time to the event title
+                element.find('.fc-title').append('<br>Start: ' + formattedStartTime);
+                element.find('.fc-title').append('<br>End: ' + formattedEndTime);
+                element.find('.fc-title').prepend('Room: ' + event.room + '<br>');
+            },
+
                 eventMouseover: function(event, jsEvent, view) {
                     var tooltip = '<div class="tooltipevent" style="width:auto;height:auto;background:yellow;position:absolute;z-index:10001;padding:10px;border-radius:5px;box-shadow:0 0 5px #333;">' + '<br>Event: ' + event.title + '<br>Room: ' + event.room + '<br>Start: ' + moment(event.start).format('DD-MM-YYYY hh:mm A') + '<br>End: ' + moment(event.end).format('DD-MM-YYYY hh:mm A') + '</div>';
                     $("body").append(tooltip);
