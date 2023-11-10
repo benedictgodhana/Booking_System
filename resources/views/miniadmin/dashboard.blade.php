@@ -333,20 +333,7 @@
             </a>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
-        <!-- small card -->
-        <div class="small-box " style="background:#ec7d30;color:white">
-            <div class="inner">
-            <h3>{{ $itemsCount }}</h3> <!-- Inject the accepted reservations count here -->
-                <p>Items</p>
-            </div>
-            <div class="icon">
-            </div>
-            <a  href="" class="small-box-footer">
-                More info <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
+   
     <!-- ./col -->
     <div class="col-lg-3 col-6">
         <!-- small card -->

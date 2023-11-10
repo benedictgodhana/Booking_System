@@ -182,6 +182,7 @@
                         <th>Email</th>
                         <th>Role</th>
                         <th>Department</th>
+                        <th>Contact</th>
                         <th>User Type</th>
                         <th>Action</th>
                     </tr>
@@ -199,6 +200,7 @@
                             @endif
                         </td>
                         <td style="word-wrap: break-word; max-width: 150px;">{{ $user->department }}</td>
+                        <td>{{$user->contact}}</td>
                         <td>{{ $user->is_guest ? 'Guest' : 'Normal User' }}</td>
 
                         <td class="action-buttons">

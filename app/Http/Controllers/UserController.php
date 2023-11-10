@@ -177,7 +177,7 @@ class UserController extends Controller
 
     if (!$user) {
         // User with the provided email not found
-        return redirect()->back()->with('error', 'User not found.');
+        return redirect()->back()->with('error', 'User not found. Kindly Contact IT Admin at Ilab');
     }
 
     // Check if the user is activated (assuming 'is_active' is a boolean field in the database)

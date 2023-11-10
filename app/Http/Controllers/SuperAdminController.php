@@ -177,8 +177,11 @@ class SuperAdminController extends Controller
         } elseif ($request->status === 'Declined') {
             // Notify the user that the booking has been declined and include a remark
             $reservation->user->notify(new BookingDeclinedNotification($reservation, $request->remark));
+        } elseif ($request->status === 'Cancelled') {
+            // Notify the user that the booking has been canceled
+            $reservation->user->notify(new BookingCanceledNotification($reservation, $request->remark));
         }
-
+        
 
         // Display a success message using SweetAlert
         Alert::success('Success', 'Reservation status updated successfully!')->autoClose(60000);
@@ -292,7 +295,7 @@ class SuperAdminController extends Controller
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->event = $validatedData['event'];
 
-        $reservation->status = 'accepted';
+        $reservation->status = 'Accepted';
 
         // Save the reservation to the database
         $reservation->save();

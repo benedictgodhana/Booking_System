@@ -1051,13 +1051,13 @@ updateCapacityTooltip();
     bookingTimeInput.addEventListener("input", function() {
         var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
 
-        var startTime = new Date("2000-01-01 08:00:00"); // 8 AM
-        var endTime = new Date("2000-01-01 20:00:00");  // 8 PM
+        var startTime = new Date("2000-01-01 07:00:00"); // 8 AM
+        var endTime = new Date("2000-01-01 19:00:00");  // 8 PM
 
         if (selectedTime < startTime || selectedTime > endTime) {
             // Invalid time selected
-            alert("Please select a time between 8 AM and 8 PM.");
-            bookingTimeInput.value = "08:00"; // Reset to 8 AM
+            alert("Please select a time between 7 AM and 7 PM.");
+            bookingTimeInput.value = "07:00"; // Reset to 8 AM
         }
     });
 </script>

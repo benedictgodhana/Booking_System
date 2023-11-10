@@ -125,6 +125,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Department</th>
+                    <th>Contact</th>
                     <th>Items (Optional)</th>
                     <th>Event</th>
                     <th>Reservation Date</th>
@@ -153,6 +154,7 @@
                         {{ $reservation->guest_department }}
                     @endif
                 </td>
+                <td>{{$reservation->user->contact}}</td>
 
                     <td>{{ $reservation->item->name ?? 'N/A' }}</td>
                     <td>{{ $reservation->event }}</td>
@@ -205,6 +207,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Department</th>
+                    <th>Contact</th>
                     <th>Items (Optional)</th>
                     <th>Event</th>
                     <th>Reservation Date</th>
@@ -232,6 +235,7 @@
                         {{ $reservation->guest_department }}
                         @endif
                     </td>
+                    <td>{{$reservation->user->contact}}</td>
                     <td>
                         @if ($reservation->items->count() > 0)
                     <ul>
@@ -321,6 +325,13 @@
                                         {{ $reservation->guest_department }}
                                         @endif
                                     </p>
+                                </div>
+                                <hr>
+
+                                 <!-- Event -->
+                                 <div class="form-group">
+                                    <label><i class="fas fa-phone"></i> Contact:</label>
+                                    <p>{{ $reservation->user->contact }}</p>
                                 </div>
                                 <hr>
 
@@ -416,6 +427,7 @@
                                     <select class="form-control" name="status" id="status">
                                         <option value="Accepted">Accepted</option>
                                         <option value="Declined">Declined</option>
+                                        
                                     </select>
                                 </div>
                             </div>

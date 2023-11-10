@@ -248,8 +248,11 @@
                    <td class="actions">
 
                        <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewModal{{ $reservation->id }}">
-                           <i class="fas fa-eye"></i> View Details
+                           <i class="fas fa-eye"></i> View
                        </button>
+                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal{{ $reservation->id }}">
+            Update
+        </button>
                    </td>
                </tr>
                @endforeach
@@ -419,8 +422,7 @@
                                </label>
                                <div class="col-sm-9">
                                    <select class="form-control" name="status" id="status">
-                                       <option value="Accepted">Accepted</option>
-                                       <option value="Declined">Declined</option>
+                                       <option value="Cancelled">Cancel</option>
                                    </select>
                                </div>
                            </div>
@@ -583,6 +585,7 @@
                        <!-- Additional fields go here -->
                    </div>
                    <div class="modal-footer">
+                   
                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Close
                        </button>
                    </div>
