@@ -36,6 +36,9 @@
     <p>Thank you for using our reservation system.</p>
     <p>For any inquiries, please contact us at <a href="mailto:booking@ilab.com">booking@ilab.com</a></p>
 
+    <p>To access the system, please use this link: <strong><a href="https://shaba.strathmore.edu/">https://shaba.strathmore.edu/</a></strong></p>
+
+
     <!-- Email Footer -->
     <p>Best regards,<br>iLab Room Booking System</p>
 

@@ -24,12 +24,17 @@
 
     <p>Comments: <strong>{{ $reservation->comment }}</strong></p>
 
+    <p>Meal SetUp Details: <strong>{{ $reservation->meal_setup_details }}</strong></p>
+
+
 
     <!-- Call to Action Button -->
     <p>
         To approve this reservation, please log in to the admin panel.
         <!-- Add a link to your admin panel -->
     </p>
+
+    <p>To access the system, please use this link: <strong><a href="https://shaba.strathmore.edu/">https://shaba.strathmore.edu/</a></strong></p>
 
     <!-- Thank You Message -->
     <p>Thank you for using our reservation system.</p>
