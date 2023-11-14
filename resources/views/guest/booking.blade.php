@@ -479,15 +479,15 @@
                 @endforeach
             </select>
         </div>
-    </div>
-
+    
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
-                <input type="date" class="form-control" id="booking_date" name="booking_date" required>
-            </div>
-        </div>
+   <div class="col-md-6">
+    <div class="form-group">
+        <label class="form-label" for="booking_date"><i class="bx bx-calendar"></i><strong>Booking Date</strong></label>
+        <input type="date" class="form-control" id="booking_date" name="booking_date" placeholder="DD/MM/YYYY" pattern="\d{2}/\d{2}/\d{4}" required>
+    </div>
+</div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="form-label" for="booking_time"> <i class="bx bx-clock"></i><strong>Booking Time</strong></label>
@@ -603,8 +603,23 @@
             <p>Word Count: <span id="wordCount1">0/50</span></p>
         </div>
     </div>
+    <div class="col-md-12">
+        <label class="form-label">Do you require a meal set-up?</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
+            <label class="form-check-label" for="mealSetupCheckbox">Yes, I require a meal set-up</label>
+        </div>
+    </div>
+    <div class="row mb-3" id="mealSetupDescription" style="display: none;">
+    <label for="mealSetupDetails" class="form-label">Meal Set-Up Details:</label>
+    <div class="col-md-12">
+        <textarea name="mealSetupDetails" id="mealSetupDetails" cols="50" rows="3" placeholder="  Provide details about your meal set-up requirements" oninput="countMealSetupWords()" maxlength="50"></textarea>
+        <p id="mealSetupWordCount">Word count: 0/50</p>
+    </div>
+</div>
 
-    <input type="hidden" name="guest" value="1">
+
+    <input type="hidden" name="guest" value="1"><br>
     <div class="row">
         <div class="col-md-6">
             <button class="btn btn-primary" type="submit">Submit</button>
@@ -616,6 +631,60 @@
 </form>
     </div>
 </div>
+
+
+
+
+
+<script>
+    function countMealSetupWords() {
+        var mealSetupDetails = document.getElementById('mealSetupDetails').value;
+        var words = mealSetupDetails.split(/\s+/).filter(function (word) {
+            return word.length > 0;
+        }).length;
+        var wordCountElement = document.getElementById('mealSetupWordCount');
+
+        if (words > 50) {
+            // If word count exceeds the limit, truncate the input and update the count
+            wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
+            document.getElementById('mealSetupDetails').value = mealSetupDetails.split(/\s+/).slice(0, 50).join(' ');
+        } else {
+            wordCountElement.textContent = 'Word count: ' + words + ' / 50';
+        }
+    }
+</script>
+<script>
+    // Get references to the checkbox and the description text field
+    var mealSetupCheckbox = document.getElementById('mealSetupCheckbox');
+    var mealSetupDescription = document.getElementById('mealSetupDescription');
+
+    // Add an event listener to the checkbox
+    mealSetupCheckbox.addEventListener('change', function () {
+        if (mealSetupCheckbox.checked) {
+            // Checkbox is checked, show the description field
+            mealSetupDescription.style.display = 'block';
+        } else {
+            // Checkbox is unchecked, hide the description field
+            mealSetupDescription.style.display = 'none';
+        }
+    });
+</script>
+
+
+
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var bookingDateInput = document.getElementById('booking_date');
+
+                // Get the current date in the format 'YYYY-MM-DD'
+                var currentDate = new Date().toISOString().split('T')[0];
+
+                // Set the minimum date of the booking_date input to the current date
+                bookingDateInput.min = currentDate;
+            });
+        </script>
+
+
 
 <script>
         function limitWords(textarea) {
@@ -1051,13 +1120,13 @@ updateCapacityTooltip();
     bookingTimeInput.addEventListener("input", function() {
         var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
 
-        var startTime = new Date("2000-01-01 07:00:00"); // 8 AM
+        var startTime = new Date("2000-01-01 07:30:00"); // 8 AM
         var endTime = new Date("2000-01-01 19:00:00");  // 8 PM
 
         if (selectedTime < startTime || selectedTime > endTime) {
             // Invalid time selected
-            alert("Please select a time between 7 AM and 7 PM.");
-            bookingTimeInput.value = "07:00"; // Reset to 8 AM
+            alert("Please select a time between 7:30 AM and 7 PM.");
+            bookingTimeInput.value = "07:30"; // Reset to 8 AM
         }
     });
 </script>

@@ -48,6 +48,7 @@ class GuestBookingController extends Controller
         'event' => 'nullable|string', // Add validation for event
         'comment' => 'nullable|string', // Add validation for the comment field
         'additionalDetails' => 'nullable|string',
+        'mealSetupDetails' => 'nullable|string',
         'contact' => 'nullable|regex:/^\+254\d{9}$/',        
     ]);
 
@@ -84,7 +85,10 @@ class GuestBookingController extends Controller
     $reservation->timelimit = $endTime; // Store the calculated end time
     $reservation->event = $request->input('event');
     $reservation->comment = $request->input('comment'); // Save the comment
-    $reservation->additional_details = $validatedData['additionalDetails']; 
+    $reservation->additional_details = $validatedData['additionalDetails'];        
+    $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
+
+
 
     // Process checkboxes or fields related to IT services, setup assistance, and item requests
     $reservation->itServices = $request->input('it_services_requested', false);
@@ -110,6 +114,7 @@ $event = $reservation->event;
 $itServicesRequested = $reservation->itServicesRequested;
 $setupAssistanceRequested = $reservation->setupAssistanceRequested;
 $additionalDetails = $reservation->additionalDetails; // Assuming this is the text field for additional details
+$MealDetails=$reservation->mealSetupDetails;
 $Comments = $reservation->comment;
 $Contact = $reservation->user->contact;
 
@@ -127,6 +132,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
         $itServicesRequested,
         $setupAssistanceRequested,
         $additionalDetails,
+        $MealDetails,
         $Comments, // Assuming $comments is the variable containing comments
         $Contact
     ));
@@ -144,6 +150,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             'department' => $guestUser->department,
             'event' => $reservation->event,
             'additionalDetails'=>$reservation->additional_details,
+            'MealDetails'=>$reservation->meal_setup_details,
             'Comments'=>$reservation->comment,
             'Contact'=> $guestUser->contact
 

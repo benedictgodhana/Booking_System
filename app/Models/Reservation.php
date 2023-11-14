@@ -21,6 +21,8 @@ class Reservation extends Model
         'setupAssistance',
         'comment',
         'additional_details',
+        'meal_setup_details',
+
     ];
     
 

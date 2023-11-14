@@ -16,6 +16,9 @@
     <p><strong>End of Reservation: </strong>{{$EndReservation}}</p>
     <p><strong>Comments:</strong>{{$Comments}}</p>
     <p><strong>IT Assistance Details:</strong>{{$Details}}</p>
+    <p><strong>Meal SetUp Details:</strong>{{$MealDetails}}</p>
+
+
     <!-- Other email content -->
 
     <!-- Call to Action Button -->

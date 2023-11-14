@@ -446,13 +446,22 @@
                                     <label for="room"><i class="fas fa-building"></i> Select Room:</label>
                                     <input type="hidden" id="roomCapacity" value="">
                                     <select class="form-control" id="selectRoom" name="selectRoom" required>
-                                        @foreach($rooms as $room)
-                                        <option value="{{ $room->id }}">{{ $room->name }}</option>
-                                        @endforeach
+                                    <option class="form-control" value="">Select Room......</option>
+                                    @foreach ($rooms as $room)
+                                    <option value="{{ $room->id }}" data-capacity="{{ $room->capacity }}">{{ $room->name }}</option>
+                                    @endforeach
+                                </select>
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label" for="capacity"><i class="bx bx-user"></i><strong>Number of people</strong></label>
+                <input type="hidden" id="roomCapacity" value="">
+                <input type="number" id="capacity" name="capacity" class="form-control" onmouseover="updateCapacityTooltip()" min="1">
+            </div>
+        </div>
 
                         <!-- Department selection -->
 
@@ -481,12 +490,46 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
                         <div class="col-md-6">
                         <div class="form-group">
                             <label for="duration"><i class="fas fa-clock"></i> Duration (in hours):</label>
-                            <input type="number" class="form-control" id="duration" name="duration" required>
-                        </div>
+                            <select  id="duration" name="duration" class="form-select" required>
+                                <option value="0">0 hours</option>
+                                <option value="1">1 hour</option>
+                                <option value="2">2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="5">5 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="7">7 hours</option>
+                                <option value="8">8 hours</option>
+                                <option value="9">9 hours</option>
+                                <option value="10">10 hours</option>
+                            </select>                       
+                         </div>
                     </div>
+                    <div class="col-md-6">
+                <label class="form-label" for="minutes">Minutes</label>
+                <select class="form-control" id="minutes" name="duration">
+                    <!-- Generate options for minutes -->
+                        <option value="0">0 minutes</option>
+                        <option value="5">5 minutes</option>
+                        <option value="10">10 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="20">20 minutes</option>
+                        <option value="25">25 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="35">35 minutes</option>
+                        <option value="40">40 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="50">50 minutes</option>
+                        <option value="55">55 minutes</option>
+                        
+                </select>
+            </div>
+
 
 
                         <!-- End Time -->
@@ -519,6 +562,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 
     <!-- Calendar initialization -->
     <script>
@@ -584,11 +629,13 @@
                         element.css('background-color', roomColors[roomIndex]);
                     }
 
-                    // Format the reservation time to include "am" or "pm"
-                    var formattedTime = moment(event.start).format('hh:mm A');
+                    var formattedStartTime = moment(event.start).format('DD-MM-YYYY hh:mm A');
+                var formattedEndTime = moment(event.end).format('DD-MM-YYYY hh:mm A');
 
-                    // Append the formatted time to the event title
-                    element.find('.fc-title').append('<br>' + formattedTime);
+                // Append the formatted time to the event title
+                element.find('.fc-title').append('<br>Start: ' + formattedStartTime);
+                element.find('.fc-title').append('<br>End: ' + formattedEndTime);
+                element.find('.fc-title').prepend('Room: ' + event.room + '<br>');
                 },
                 eventMouseover: function(event, jsEvent, view) {
                     var tooltip = '<div class="tooltipevent" style="width:auto;height:auto;background:yellow;position:absolute;z-index:10001;padding:10px;border-radius:5px;box-shadow:0 0 5px #333;">' + '<br>Event: ' + event.title + '<br>Room: ' + event.room + '<br>Start: ' + moment(event.start).format('YYYY-MM-DD hh:mm A') + '<br>End: ' + moment(event.end).format('YYYY-MM-DD hh:mm A') + '</div>';
@@ -610,6 +657,44 @@
         });
 
     </script>
+
+    <script>
+    // JavaScript validation
+    function validateForm() {
+        var selectRoom = document.getElementById('selectRoom');
+        var roomCapacity = parseInt(selectRoom.options[selectRoom.selectedIndex].getAttribute('data-capacity'));
+        var enteredCapacity = parseInt(document.getElementById('capacity').value);
+
+        if (enteredCapacity > roomCapacity) {
+            showAlert('Error', 'Entered capacity of ' + enteredCapacity + ' exceeds room capacity of ' + roomCapacity + '. Please select another room or reduce the capacity.', 'error');
+            return false;
+        }
+
+        // Continue with other form validations
+        var items = document.getElementById('itemRequests');
+        var reservationDate = document.getElementById('booking_date');
+        var reservationTime = document.getElementById('booking_time');
+        var timeLimit = document.getElementById('timeLimit');
+        var event = document.getElementById('event');
+
+        // Check other fields for validation (e.g., if they are empty or meet specific criteria)
+
+        // If all validations pass, the form submission will proceed
+        return true;
+    }
+
+    // Display SweetAlert
+    function showAlert(title, message, icon) {
+        Swal.fire({
+            title: title,
+            text: message,
+            icon: icon,
+            timer: 5000,
+            showConfirmButton: false
+        });
+    }
+</script>
+
 
     <script>
         // Initialize date picker
@@ -688,37 +773,45 @@
     </script>
 <script>
     var durationInput = document.getElementById('duration');
-var reservationTimeInput = document.getElementById('booking_time');
-var timeLimitInput = document.getElementById('timeLimit');
+    var minutesInput = document.getElementById('minutes');
+    var reservationTimeInput = document.getElementById('booking_time');
+    var timeLimitInput = document.getElementById('timeLimit');
 
-durationInput.addEventListener('input', function() {
-    var duration = parseInt(durationInput.value);
+    function updateEndTime() {
+        var duration = parseInt(durationInput.value);
+        var minutes = parseInt(minutesInput.value);
 
-    // Ensure the duration does not exceed 8 hours
-    if (duration > 10) {
-        durationInput.value = 10 // Set the duration to the maximum (8 hours)
-        duration = 10;
+        // Ensure the duration and minutes are within valid ranges
+        if (duration > 10) {
+            durationInput.value = 10;
+            duration = 10;
+        }
+
+        if (minutes > 55) {
+            minutesInput.value = 55;
+            minutes = 55;
+        }
+
+        var reservationTime = reservationTimeInput.value;
+
+        if (reservationTime) {
+            // Use moment.js for better date and time handling
+            var startTime = moment('2000-01-01 ' + reservationTime, 'YYYY-MM-DD HH:mm');
+            startTime.add(duration, 'hours').add(minutes, 'minutes');
+
+            // Format the end time as 'hh:mm'
+            var endTime = startTime.format('HH:mm');
+
+            timeLimitInput.value = endTime;
+        }
     }
 
-    // Get the selected reservation time
-    var reservationTime = reservationTimeInput.value;
+    // Attach event listeners to the duration, minutes, and reservation time inputs
+    durationInput.addEventListener('input', updateEndTime);
+    minutesInput.addEventListener('input', updateEndTime);
+    reservationTimeInput.addEventListener('input', updateEndTime);
 
-    // Calculate the end of reservation
-    if (reservationTime) {
-        var startTime = new Date('2000-01-01T' + reservationTime);
-        startTime.setHours(startTime.getHours() + duration);
-
-        // Format the end time as 'hh:mm'
-        var endTime = startTime.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
-        // Update the timeLimit input with the calculated end time
-        timeLimitInput.value = endTime;
-    }
-});
-
+    // Trigger initial calculation
 </script>
 <script>
     // Get references to the elements
@@ -777,13 +870,13 @@ updateCapacityTooltip();
     bookingTimeInput.addEventListener("input", function() {
         var selectedTime = new Date("2000-01-01 " + bookingTimeInput.value);
 
-        var startTime = new Date("2000-01-01 08:00:00"); // 8 AM
-        var endTime = new Date("2000-01-01 20:00:00");  // 8 PM
+        var startTime = new Date("2000-01-01 7:30:00"); // 8 AM
+        var endTime = new Date("2000-01-01 19:00:00");  // 8 PM
 
         if (selectedTime < startTime || selectedTime > endTime) {
             // Invalid time selected
-            alert("Please select a time between 8 AM and 8 PM.");
-            bookingTimeInput.value = "08:00"; // Reset to 8 AM
+            alert("Please select a time between 7:30 AM and 7 PM.");
+            bookingTimeInput.value = "07:30"; // Reset to 8 AM
         }
     });
 </script>

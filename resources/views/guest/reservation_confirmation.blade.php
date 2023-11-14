@@ -59,6 +59,8 @@
             <li><strong>Event:</strong> {{$data['event']}}</li>
             <li><strong>Comments</strong>: <span>{{$data['Comments']}}</span></li>
             <li><strong>IT Assistance Details</strong>: <span>{{$data['additionalDetails']}}</span></li>
+            <li><strong>Meal SetUp Details</strong>: <span>{{$data['MealDetails']}}</span></li>
+
         </ul>
         <p>Thank you for using our reservation system.</p>
         <p>For any inquiries, please contact us at <a href="mailto:ilabsupport@strathmore.edu">ilabsupport@strathmore.edu</a></p>

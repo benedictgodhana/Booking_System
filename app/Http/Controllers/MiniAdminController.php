@@ -287,17 +287,16 @@ class MiniAdminController extends Controller
             'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
             'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
             'duration' => 'required|integer',
+            'capacity' => 'required|integer',
             'reservationDate' => 'required|date',
-            'reservationTime' => 'required',
-            'timelimit' => 'required',
+            'reservationTime' => 'required|date_format:H:i',
+            'timelimit' => 'required|date_format:H:i',
             'selectRoom' => 'required|exists:rooms,id',
             'event' => 'nullable|string',
+
         ]);
 
-        $startTime = strtotime($validatedData['reservationTime']);
-        $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
-
-        // Check if the room is available at the selected date and time
+       
         $isRoomAvailable = !DB::table('reservations')
             ->where('room_id', $validatedData['selectRoom'])
             ->where('reservationDate', $validatedData['reservationDate'])
@@ -314,11 +313,11 @@ class MiniAdminController extends Controller
         $reservation->user_id = $validatedData['user_id'];
         $reservation->reservationDate = $validatedData['reservationDate'];
         $reservation->reservationTime = $validatedData['reservationTime'];
-        $reservation->timelimit = $endTime; // Store the calculated end time
+        $reservation->timelimit = $validatedData['timelimit']; // Store the calculated end time
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->event = $validatedData['event'];
 
-        $reservation->status = 'accepted';
+        $reservation->status = 'Accepted';
 
         // Save the reservation to the database
         $reservation->save();

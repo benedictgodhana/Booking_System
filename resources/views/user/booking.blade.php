@@ -98,6 +98,7 @@
                                 </span>
                             </div>
                             <select  id="hours" name="duration" class="form-select" required>
+                                <option value="0">0 hours</option>
                                 <option value="1">1 hour</option>
                                 <option value="2">2 hours</option>
                                 <option value="3">3 hours</option>
@@ -121,6 +122,7 @@
                                 </span>
                             </div>
                             <select id="minutes" name="duration" class="form-select" required>
+                            <option value="0">0 minutes</option>
                                 <option value="5">5 minutes</option>
                                 <option value="10">10 minutes</option>
                                 <option value="15">15 minutes</option>
@@ -158,7 +160,7 @@
                                     <i class="far fa-clock"></i>
                                 </span>
                             </div>
-                            <input type="text" id="endTime" name="timeLimit" class="form-control" readonly>
+                            <input type="text" id="endTime" name="timelimit" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -199,7 +201,20 @@
                         <p>Word Count: <span id="wordCount1">0 words</span></p>
                     </div>
                 </div>
-                
+                <div class="col-md-12">
+        <label class="form-label">Do you require a meal set-up?</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
+            <label class="form-check-label" for="mealSetupCheckbox">Yes, I require a meal set-up</label>
+        </div>
+    </div>
+    <div class="row mb-3" id="mealSetupDescription" style="display: none;">
+    <label for="mealSetupDetails" class="form-label">Meal Set-Up Details:</label>
+    <div class="col-md-12">
+        <textarea name="mealSetupDetails" id="mealSetupDetails" cols="50" rows="3" placeholder="  Provide details about your meal set-up requirements" oninput="countMealSetupWords()" maxlength="50"></textarea>
+        <p id="mealSetupWordCount">Word count: 0/50</p>
+    </div>
+</div><br>
 
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -222,6 +237,40 @@
 
 
 
+
+<script>
+    function countMealSetupWords() {
+        var mealSetupDetails = document.getElementById('mealSetupDetails').value;
+        var words = mealSetupDetails.split(/\s+/).filter(function (word) {
+            return word.length > 0;
+        }).length;
+        var wordCountElement = document.getElementById('mealSetupWordCount');
+
+        if (words > 50) {
+            // If word count exceeds the limit, truncate the input and update the count
+            wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
+            document.getElementById('mealSetupDetails').value = mealSetupDetails.split(/\s+/).slice(0, 50).join(' ');
+        } else {
+            wordCountElement.textContent = 'Word count: ' + words + ' / 50';
+        }
+    }
+</script>
+<script>
+    // Get references to the checkbox and the description text field
+    var mealSetupCheckbox = document.getElementById('mealSetupCheckbox');
+    var mealSetupDescription = document.getElementById('mealSetupDescription');
+
+    // Add an event listener to the checkbox
+    mealSetupCheckbox.addEventListener('change', function () {
+        if (mealSetupCheckbox.checked) {
+            // Checkbox is checked, show the description field
+            mealSetupDescription.style.display = 'block';
+        } else {
+            // Checkbox is unchecked, hide the description field
+            mealSetupDescription.style.display = 'none';
+        }
+    });
+</script>
 
 
 <script>

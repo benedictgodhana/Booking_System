@@ -23,6 +23,9 @@
         <li><strong>Guest's Contact:</strong>{{$data['Contact']}}</li>
         <li><strong>Event:</strong> {{$data['event']}}</li>
         <li><strong>Comments</strong>{{$data['Comments']}}</li>
+        <li><strong>Meal SetUp Details</strong>: <span>{{$data['MealDetails']}}</span></li>
+
+        
 
 
         <!-- Add more reservation details as needed -->

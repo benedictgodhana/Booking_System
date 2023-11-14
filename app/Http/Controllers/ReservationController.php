@@ -50,10 +50,13 @@ class ReservationController extends Controller
             'itServices' => 'boolean',
             'setupAssistance' => 'boolean',
             'requestItems' => 'boolean',
+            'timelimit'=>'required',
             'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
             'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
             'comment' => 'nullable|string', // Comment field is optional
             'additionalDetails' => 'nullable|string',
+            'mealSetupDetails' => 'nullable|string',
+
 
             'selectRoom' => [
                 'required',
@@ -70,8 +73,7 @@ class ReservationController extends Controller
         // The rest of your code remains the same
     
         // Calculate the end time based on reservation time and duration
-        $startTime = strtotime($validatedData['reservationTime']);
-        $endTime = date('H:i', strtotime("+" . $validatedData['duration'] . " hours", $startTime));
+       
     
         // Create a new reservation instance
         $reservation = new Reservation();
@@ -79,13 +81,15 @@ class ReservationController extends Controller
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->reservationDate = $validatedData['reservationDate'];
         $reservation->reservationTime = $validatedData['reservationTime'];
-        $reservation->timelimit = $endTime; // Store the calculated end time
+        $reservation->timelimit = $validatedData['timelimit']; // Store the calculated end time
         $reservation->capacity = $validatedData['capacity'];
         $reservation->event = $validatedData['event'];
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
         $reservation->comment = $validatedData['comment'];
         $reservation->additional_details = $validatedData['additionalDetails']; 
+        $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
+
 
     
         // Save the reservation to the database
@@ -122,6 +126,8 @@ class ReservationController extends Controller
             'Event' => $reservation->event,
             'Comments'=>$reservation->comment,
             'Details'=>$reservation->additional_details,
+            'MealDetails'=>$reservation->meal_setup_details,
+
             'viewReservationUrl' => url('/user/reservations'),
 
             // Add other email variables here

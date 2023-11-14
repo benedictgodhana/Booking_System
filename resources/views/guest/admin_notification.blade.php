@@ -23,6 +23,8 @@
         <li><strong>Guest's Department:</strong> {{$reservation->user->department}}</li>
         <li><strong>Event:</strong> {{$reservation->event}}</li>
         <li><strong>Comments</strong><span style="color:blue"> {{$reservation->comment}}</span></li>
+        <li><strong>Meal SetUp Details</strong>: <span>{{$reservation->meal_setup_details}}</span></li>
+
 
         <!-- Add more reservation details as needed -->
     </ul>

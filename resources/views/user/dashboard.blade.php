@@ -365,11 +365,13 @@
                         element.css('background-color', roomColors[roomIndex]);
                     }
 
-                    // Format the reservation time to include "am" or "pm"
-                    var formattedTime = moment(event.start).format('hh:mm A');
+                    var formattedStartTime = moment(event.start).format('DD-MM-YYYY hh:mm A');
+                var formattedEndTime = moment(event.end).format('DD-MM-YYYY hh:mm A');
 
-                    // Append the formatted time to the event title
-                    element.find('.fc-title').append('<br>' + formattedTime);
+                // Append the formatted time to the event title
+                element.find('.fc-title').append('<br>Start: ' + formattedStartTime);
+                element.find('.fc-title').append('<br>End: ' + formattedEndTime);
+                element.find('.fc-title').prepend('Room: ' + event.room + '<br>');
                 },
                 eventMouseover: function(event, jsEvent, view) {
                     var tooltip = '<div class="tooltipevent" style="width:auto;height:auto;background:yellow;position:absolute;z-index:10001;padding:10px;border-radius:5px;box-shadow:0 0 5px #333;">' + '<br>Event: ' + event.title + '<br>Room: ' + event.room + '<br>Start: ' + moment(event.start).format('YYYY-MM-DD hh:mm A') + '<br>End: ' + moment(event.end).format('YYYY-MM-DD hh:mm A') + '</div>';

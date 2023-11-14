@@ -445,6 +445,7 @@
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                 },
+                
                 dayClick: function(date, jsEvent, view) {
                     var today = new Date();
                     if (date >= today) {
