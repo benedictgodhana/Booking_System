@@ -518,13 +518,15 @@ form.sign-in-form {
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
             
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input id="password" type="password" name="password" placeholder="Password" />
-            </div>
-            @error('password')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                    <div class="input-field">
+    <i class="fas fa-lock"></i>
+    <input id="password" type="password" name="password" placeholder="Password" />
+    <!-- Place the eye icon inside the input field -->
+    <span style="margin-left:340px;margin-top:-38px" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+</div>
+@error('password')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
 
             <button type="submit" value="Submit" class="btn solid">Login</button>
             <div class="social-media">
@@ -632,5 +634,23 @@ sign_in_btn.addEventListener("click", () => {
         return false; // Prevent form submission
     }
 </script> 
+
+<script>
+  // ... Your existing script
+
+document.addEventListener('DOMContentLoaded', function () {
+    const passwordToggle = document.querySelector('.toggle-password');
+    const passwordInput = document.querySelector('#password');
+
+    passwordToggle.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+});
+
+// ... Your existing script
+
+</script>
  </body>
 </html>
