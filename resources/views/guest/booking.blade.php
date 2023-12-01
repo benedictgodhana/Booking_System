@@ -462,24 +462,27 @@
             </div>
         </div>
     </div>
+    <div class="row">
     <div class="col-md-6">
-    <div class="form-group">
-        <label class="form-label" for="contact"><i class="bx bx-phone"></i><strong> Contact</strong></label>
-        <input type="tel" class="form-control" id="contact" name="contact" placeholder="Enter Your Contact" pattern="^\+254\d{9}$" value="+254">
+        <div class="form-group">
+            <label class="form-label" for="contact"><i class="bx bx-phone"></i><strong> Contact</strong></label>
+            <input type="tel" class="form-control" id="contact" name="contact" placeholder="Enter Your Contact" pattern="^\+254\d{9}$" value="+254">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="itemRequests" class="form-label">Select Items (optional):</label>
+            <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+                @foreach($items as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>
 
 
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <label for="itemRequests" class="form-label">Select Items:</label>
-            <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                @foreach($items as $item)
-                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    
     <div class="row">
    <div class="col-md-6">
     <div class="form-group">
@@ -604,10 +607,14 @@
         </div>
     </div>
     <div class="col-md-12">
-        <label class="form-label">Do you require a meal set-up?</label>
+        <label class="form-label">Have you requested a meal set-up for this event?</label>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
-            <label class="form-check-label" for="mealSetupCheckbox">Yes, I require a meal set-up</label>
+            <label class="form-check-label" for="mealSetupCheckbox">Yes, I have requested a meal set-up</label><br>
+            <em>Please note that cafeteria booking should be communicated to the cafeteria department.</em><br>
+            <em>Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+
+
         </div>
     </div>
     <div class="row mb-3" id="mealSetupDescription" style="display: none;">
@@ -634,6 +641,22 @@
 
 
 
+
+
+<!-- Add these links to your HTML head section -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#itemRequests').select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            placeholder: 'Select or type to add items',
+        });
+    });
+</script>
 
 
 <script>

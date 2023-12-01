@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+
 <!-- Include SweetAlert CSS -->
 <link rel="stylesheet" href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}">
 
@@ -34,7 +35,7 @@
                 // Automatically hide the alert after 3 seconds (adjust the duration as needed)
                 setTimeout(function() {
                     document.getElementById("success-alert").style.display = "none";
-                }, 3000);
+                }, 9000);
             </script>
             @endif
 
@@ -164,17 +165,16 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="itemRequests" class="form-label">Select Items (Optional):</label>
+            <div class="row mb-3">
+                <div class="form-group col-md-6">
+                    <label for="itemRequests" class="form-label">Select Items (optional):</label>
                         <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                            @foreach($items as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
+                    @foreach($items as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
                         </select>
-                    </div>
                 </div>
+            </div>
 
                 <div class="row mb-3">
                     <div class="col-md-12">
@@ -202,10 +202,13 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-        <label class="form-label">Do you require a meal set-up?</label>
+        <label class="form-label">Have you requested a meal set-up for this event?</label>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
-            <label class="form-check-label" for="mealSetupCheckbox">Yes, I require a meal set-up</label>
+            <label class="form-check-label" for="mealSetupCheckbox">Yes, I have requested a meal set-up</label><br>
+            <em>Please note that cafeteria booking should be communicated to the cafeteria department.</em><br>
+            <em>Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+
         </div>
     </div>
     <div class="row mb-3" id="mealSetupDescription" style="display: none;">
@@ -233,9 +236,21 @@
 </div>
 
 
+<!-- Add these links to your HTML head section -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
-
+<script>
+    $(document).ready(function() {
+        $('#itemRequests').select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            placeholder: 'Select or type to add items',
+        });
+    });
+</script>
 
 
 <script>

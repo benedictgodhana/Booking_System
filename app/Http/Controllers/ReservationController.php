@@ -73,7 +73,8 @@ class ReservationController extends Controller
         // The rest of your code remains the same
     
         // Calculate the end time based on reservation time and duration
-       
+        $timelimit = Carbon::parse($validatedData['timelimit'])->format('H:i:s');
+   
     
         // Create a new reservation instance
         $reservation = new Reservation();
@@ -81,7 +82,7 @@ class ReservationController extends Controller
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->reservationDate = $validatedData['reservationDate'];
         $reservation->reservationTime = $validatedData['reservationTime'];
-        $reservation->timelimit = $validatedData['timelimit']; // Store the calculated end time
+        $reservation->timelimit = $timelimit;
         $reservation->capacity = $validatedData['capacity'];
         $reservation->event = $validatedData['event'];
         $reservation->itServices = $validatedData['itServices'] ?? false;
