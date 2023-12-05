@@ -197,6 +197,9 @@ class SuperAdminController extends Controller
             'role' => 'required|in:0,1,2,3,4',
             'password' => 'nullable|string|min:6', // Password is optional
             'is_guest' => 'required|in:0,1',
+            'department' => 'required|in:eHealth,IT Outsourcing & BITCU,Digital Learning,Data Science,IoT,IT Security,iBizAfrica,IR & EE,PR,IT Department,Others',
+            'other_department' => 'nullable|string|max:255',
+            'contact' => 'nullable|string|max:255',
         ]);
 
         // Update user information
@@ -209,6 +212,15 @@ class SuperAdminController extends Controller
         if ($request->filled('password')) {
             $user->password = bcrypt($request->input('password'));
         }
+
+        if ($request->input('department') !== 'Others') {
+            $user->department = $request->input('department');
+        } else {
+            // If 'Others' selected, use the value from the 'other_department' field
+            $user->department = $request->input('other_department');
+        }
+
+        $user->contact = $request->input('contact');
 
         $user->save();
 
@@ -225,6 +237,7 @@ class SuperAdminController extends Controller
             'role' => 'required', // Add validation rules for role
             'department' => 'required', // Remove the "not_in:Others" rule
             'other_department' => 'required_if:department,Others', // Make "other_department" required only when "department" is "Others"
+            'contact' => 'required|string|max:20', // Adjust the rules accordingly
         ]);
 
         // If the user selected "Others," validate the custom department
@@ -239,6 +252,7 @@ class SuperAdminController extends Controller
         $user->department = $request->input('department') === 'Others'
             ? $request->input('other_department') // Use "other_department" if "Others" selected
             : $request->input('department'); // Use the selected department
+        $user->contact = $request->input('contact');
         $user->activation_token = $activationToken; // Store activation token
 
         $activationLink = route(
@@ -246,7 +260,6 @@ class SuperAdminController extends Controller
             ['token' => $user->activation_token]
         );
 
-        Mail::to($user->email)->send(new ActivationEmail($user, $activationLink));
 
         $user->save();
 
@@ -326,28 +339,34 @@ class SuperAdminController extends Controller
     public function updatePassword(Request $request)
     {
         $validatedData = $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|min:8',
-            'new_password_confirmation' => 'required|same:new_password',
+            'current_password' => 'nullable',
+            'new_password' => 'nullable|min:8',
+            'new_password_confirmation' => 'nullable|same:new_password',
+            'contact' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
         ]);
 
-        // Check if the current password matches the authenticated user's password
-        if (!Hash::check($request->current_password, Auth::user()->password)) {
-            return redirect()->back()->with('error', 'Incorrect current password');
-        }
+       // Check if the current password is provided and matches the authenticated user's password
+if ($request->current_password && !Hash::check($request->current_password, Auth::user()->password)) {
+    return redirect()->back()->with('error', 'Incorrect current password');
+}
 
-        // Check if the new password is too obvious (e.g., contains "password" or "123456")
-        $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
-        if (in_array($request->new_password, $obviousPasswords)) {
-            return redirect()->back()->with('error', 'Please choose a stronger password');
-        }
+// Check if the new password is provided and is too obvious (e.g., contains "password" or "123456")
+$obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
+if ($request->new_password && in_array($request->new_password, $obviousPasswords)) {
+    return redirect()->back()->with('error', 'Please choose a stronger password');
+}
 
         // Update the user's password
         $user = Auth::user();
         $user->password = Hash::make($request->new_password);
+        $user->department = $request->input('department') === 'Others'
+        ? $request->input('other_department') // Use "other_department" if "Others" selected
+        : $request->input('department'); // Use the selected department
+        $user->contact = $request->input('contact');
         $user->save();
 
-        return redirect()->back()->with('success', 'Password changed successfully');
+        return redirect()->back()->with('success', 'User Profile updated Successfully');
     }
     public function searchReservations(Request $request)
     {

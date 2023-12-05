@@ -165,17 +165,16 @@
                         </div>
                     </div>
                 </div>
-            <div class="row mb-3">
-                <div class="form-group col-md-6">
-                    <label for="itemRequests" class="form-label">Select Items (optional):</label>
-                        <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
-                    @foreach($items as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                        </select>
-                </div>
-            </div>
-
+                <div class="row mb-3">
+    <div class="col-md-12">
+        <label for="itemRequests" class="form-label">Select Items (Optional):</label>
+        <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+            @foreach($items as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="comment" class="form-label">Comment (Optional):</label>
@@ -242,7 +241,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
+
 <script>
+    // Apply Select2 to the itemRequests field
     $(document).ready(function() {
         $('#itemRequests').select2({
             tags: true,
@@ -251,6 +252,7 @@
         });
     });
 </script>
+
 
 
 <script>

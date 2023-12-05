@@ -350,6 +350,35 @@
                                 <option value="0">User</option>
                             </select>
                         </div>
+                        <div class="form-group">
+    <!-- Department Field -->
+                        <label for="department"><i class="fas fa-building"></i> Department</label>
+                        <select name="department" id="department" class="form-control">
+                        <option value="eHealth" {{ $user->department === 'eHealth' ? 'selected' : '' }}>eHealth</option>
+                            <option value="IT Outsourcing & BITCU" {{ $user->department === 'IT Outsourcing & BITCU' ? 'selected' : '' }}>IT Outsourcing & BITCU</option>
+                            <option value="Digital Learning" {{ $user->department === 'Digital Learning' ? 'selected' : '' }}>Digital Learning</option>
+                            <option value="Data Science" {{ $user->department === 'Data Science' ? 'selected' : '' }}>Data Science</option>
+                            <option value="IoT" {{ $user->department === 'IoT' ? 'selected' : '' }}>IoT</option>
+                            <option value="IT Security" {{ $user->department === 'IT Security' ? 'selected' : '' }}>IT Security</option>
+                            <option value="iBizAfrica" {{ $user->department === 'iBizAfrica' ? 'selected' : '' }}>iBizAfrica</option>
+                            <option value="IR & EE" {{ $user->department === 'IR & EE' ? 'selected' : '' }}>IR & EE</option>
+                            <option value="PR" {{ $user->department === 'PR' ? 'selected' : '' }}>PR</option>
+                            <option value="IT Department" {{ $user->department === 'IT Department' ? 'selected' : '' }}>IT Department</option>
+                            <option value="Others" {{ $user->department === 'Others' ? 'selected' : '' }}>Others</option>
+                        </select>
+
+                        <!-- Other Department Field (Initially Hidden) -->
+                        <div class="form-group col-md-6" id="otherDepartmentField" style="{{ $user->initial_department === 'Others' ? '' : 'display: none;' }}">
+                            <label for="other_department"><i class="fas fa-building"></i> Other Department</label>
+                            <input type="text" class="form-control" id="other_department" name="other_department" value="{{ $user->initial_department }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <!-- Contact Field -->
+                    <label for="contact"><i class="fas fa-phone"></i> Contact</label>
+                    <input type="text" class="form-control" id="contact" name="contact" value="{{ $user->contact }}">
+                </div>
+
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
@@ -425,6 +454,7 @@
                                     <option value="iBizAfrica">iBizAfrica</option>
                                     <option value="IR & EE">IR & EE</option>
                                     <option value="PR">PR</option>
+                                    <option value="IT Department">IT Department</option>
                                     <option value="Others">Others</option>
                                 </select>
                             </div>
@@ -434,7 +464,14 @@
                                 <label for="other_department"><i class="fas fa-building"></i> Other Department</label>
                                 <input type="text" class="form-control" id="other_department" name="other_department">
                             </div>
+
+                            <div class="form-group col-md-6">
+        <label for="contact"><i class="fas fa-phone"></i> Contact</label>
+        <input type="text" class="form-control" id="contact" name="contact" required>
+    </div>
                         </div>
+
+                        
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add User</button>

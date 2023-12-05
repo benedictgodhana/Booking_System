@@ -298,29 +298,35 @@ class AdminController extends Controller
     public function updatePassword(Request $request)
     {
         $validatedData = $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|min:8',
-            'new_password_confirmation' => 'required|same:new_password',
+            'current_password' => 'nullable',
+            'new_password' => 'nullable|min:8',
+            'new_password_confirmation' => 'nullable|same:new_password',
+            'contact' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
         ]);
 
-        // Check if the current password matches the authenticated user's password
-        if (!Hash::check($request->current_password, Auth::user()->password)) {
-            return redirect()->back()->with('error', 'Incorrect current password');
-        }
+       // Check if the current password is provided and matches the authenticated user's password
+if ($request->current_password && !Hash::check($request->current_password, Auth::user()->password)) {
+    return redirect()->back()->with('error', 'Incorrect current password');
+}
 
-        // Check if the new password is too obvious (e.g., contains "password" or "123456")
-        $obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
-        if (in_array($request->new_password, $obviousPasswords)) {
-            return redirect()->back()->with('error', 'Please choose a stronger password');
-        }
+// Check if the new password is provided and is too obvious (e.g., contains "password" or "123456")
+$obviousPasswords = ['password', '123456']; // Add more obvious passwords if needed
+if ($request->new_password && in_array($request->new_password, $obviousPasswords)) {
+    return redirect()->back()->with('error', 'Please choose a stronger password');
+}
 
         // Update the user's password
         $user = Auth::user();
         $user->password = Hash::make($request->new_password);
+        $user->department = $request->input('department') === 'Others'
+        ? $request->input('other_department') // Use "other_department" if "Others" selected
+        : $request->input('department'); // Use the selected department
+        $user->contact = $request->input('contact');
         $user->save();
 
-        return redirect()->back()->with('success', 'Password changed successfully');
-    }
+        return redirect()->back()->with('success', 'User Profile updated Successfully');
+      }
 
 
 }

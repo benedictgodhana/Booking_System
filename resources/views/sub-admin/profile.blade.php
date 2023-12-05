@@ -62,10 +62,20 @@
                         <div class="row gx-3 mb-3">
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputOrgName">Department/Unit</label>
-                                <input class="form-control" id="inputOrgName" type="text"
-                                   name="department" placeholder="Enter your department" value="{{ Auth::user()->department}}">
-                            </div>
+                        <label class="small mb-1" for="inputOrgName">Department/Unit</label>
+                        <select class="form-control" id="inputOrgName" name="department">
+                        <option value="eHealth" {{ Auth::user()->department === 'eHealth' ? 'selected' : '' }}>eHealth</option>
+                        <option value="IT Outsourcing & BITCU" {{ Auth::user()->department === 'IT Outsourcing & BITCU' ? 'selected' : '' }}>IT Outsourcing & BITCU</option>
+                        <option value="Digital Learning" {{ Auth::user()->department === 'Digital Learning' ? 'selected' : '' }}>Digital Learning</option>
+                        <option value="Data Science" {{ Auth::user()->department === 'Data Science' ? 'selected' : '' }}>Data Science</option>
+                        <option value="IoT" {{ Auth::user()->department === 'IoT' ? 'selected' : '' }}>IoT</option>
+                        <option value="IT Security" {{ Auth::user()->department === 'IT Security' ? 'selected' : '' }}>IT Security</option>
+                        <option value="iBizAfrica" {{ Auth::user()->department === 'iBizAfrica' ? 'selected' : '' }}>iBizAfrica</option>
+                        <option value="IR & EE" {{ Auth::user()->department === 'IR & EE' ? 'selected' : '' }}>IR & EE</option>
+                        <option value="PR" {{ Auth::user()->department === 'PR' ? 'selected' : '' }}>PR</option>
+                        <option value="IT Department" {{ Auth::user()->department === 'IT Department' ? 'selected' : '' }}>IT Department</option>
+                        </select>
+                    </div>
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Role</label>
@@ -81,9 +91,14 @@
                         </div>
 
                         <div class="mb-3">
+                        <label class="small mb-1" for="inputContact">Contact</label>
+                        <input class="form-control" id="inputContact" type="text" name="contact" placeholder="Enter your contact" value="{{ Auth::user()->contact }}">
+                    </div>
+
+                        <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Current Password</label>
                             <div class="input-group">
-                                <input type="password" name="current_password" class="form-control" id="current_password" required placeholder="Enter your current Password">
+                                <input type="password" name="current_password" class="form-control" id="current_password"  placeholder="Enter your current Password">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary" id="hide_current_password">
                                         Show
@@ -95,7 +110,7 @@
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">New Password</label>
                             <div class="input-group">
-                                <input type="password" name="new_password" id="new_password" class="form-control" required placeholder="Enter your New Password">
+                                <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter your New Password">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary" id="show_new_password">
                                         Show
@@ -107,7 +122,7 @@
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Confirm Password</label>
                             <div class="input-group">
-                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" required placeholder="Confirm your current Password">
+                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control" placeholder="Confirm your current Password">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary" id="show_confirmation_password">
                                         Show
@@ -139,7 +154,7 @@
         const confirmPassword = document.querySelector('input[name="new_password_confirmation"]').value;
 
         // Define your validation logic here
-        if (newPassword.length < 8) {
+        if (newPassword && newPassword.length < 8) {
             Swal.fire({
                 icon: 'error',
                 title: 'Password Error',
@@ -148,7 +163,7 @@
             return false; // Prevent form submission
         }
 
-        if (newPassword === currentPassword) {
+        if (newPassword && newPassword === currentPassword) {
             Swal.fire({
                 icon: 'error',
                 title: 'Password Error',
@@ -157,7 +172,7 @@
             return false; // Prevent form submission
         }
 
-        if (newPassword !== confirmPassword) {
+        if (newPassword && confirmPassword && newPassword !== confirmPassword) {
             Swal.fire({
                 icon: 'error',
                 title: 'Password Error',
