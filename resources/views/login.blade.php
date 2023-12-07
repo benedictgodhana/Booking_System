@@ -22,6 +22,7 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
+
 .home-btn{
     margin-left:1680px;
     text-decoration: none;
@@ -501,10 +502,16 @@ form.sign-in-form {
     <title>Login</title>
   </head>
   <body>
+  @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
     <div class="container">
+    
       <div class="forms-container">
-
+     
         <div class="signin-signup">
             
         <form action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">

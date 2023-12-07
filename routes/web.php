@@ -15,7 +15,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\GuestBookingController;
 use App\Http\Controllers\MiniAdminController;
-
+use App\Http\Controllers\ResetController;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
@@ -74,6 +74,9 @@ Route::get('/login', [AuthController::class, 'loadLogin'])->name('LoginPage');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/login/validate', [AuthController::class, 'validateLogin'])->name('login.validate');
+
+
+
 
 
 // ********** Super Admin Routes *********
@@ -234,3 +237,5 @@ Route::get('/filter/pending-reservations', [ReservationController::class,'filter
 Route::put('/reservations/{id}', [ReservationController::class,'updateReservation'])->name('updateReservation');
 
 Route::get('/user-guide-pdf', [UserController::class, 'generateUserGuidePdf'])->name('user-guide-pdf');
+Route::get('custom-reset', [ResetController::class, 'showResetForm'])->name('custom-reset');
+Route::post('/update-password', [ResetController::class, 'updatePassword'])->name('update-password');

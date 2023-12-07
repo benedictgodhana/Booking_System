@@ -145,12 +145,12 @@
         </button>
         @else
         <!-- Reservation date is in the future, enable cancellation and editing -->
-        <button style="width:200px;border-radius:10px" type="button" class="btn btn-success"
+        <button style="width:100px;border-radius:10px" type="button" class="btn btn-success"
             data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
-            <i class="fas fa-times"></i> Cancel Reservation
+            <i class="fas fa-times"></i> Cancel
         </button>
 
-        <button style="width:150px;border-radius:10px" type="button" class="btn btn-primary"
+        <button style="width:100px;border-radius:10px" type="button" class="btn btn-primary"
             data-toggle="modal" data-target="#editModal{{ $reservation->id }}">
             <i class="fas fa-pencil-alt"></i> Edit
         </button>

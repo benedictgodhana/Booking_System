@@ -90,12 +90,12 @@ class AuthController extends Controller
             // User is activated, proceed with login
 
             // Check if it's the user's first login or if password is 'Kenya@2030'
-            if ($user->first_login || Hash::check('Kenya@2030', $user->password)) {
+            if (Hash::check('Kenya@2030', $user->password)) {
                 // Redirect to the password reset page
-                Auth::logout(); // Log the user out
-                return response()->json(['success' => true, 'redirectTo' => route('password.request'), 'resetPassword' => true]);
+                return response()->json(['success' => true, 'redirectTo' => route('custom-reset'), 'resetPassword' => true]);
             } else {
                 // Redirect to the regular dashboard
+                Auth::login($user); // Log the user in before redirecting
                 $dashboardRoute = $this->redirectDash();
                 return response()->json(['success' => true, 'redirectTo' => $dashboardRoute]);
             }
