@@ -73,38 +73,49 @@ class AuthController extends Controller
         return redirect('/');
     }
     public function validateLogin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-    
-        $userCredential = $request->only('email', 'password');
-    
-        // Attempt to authenticate the user
-        if (Auth::attempt($userCredential)) {
-            // Check if the user is activated
-            $user = Auth::user();
-    
-            if ($user->activated) {
-                // User is activated, proceed with login
-    
-                // Check if it's the user's first login
-         {
-                    // Redirect to the regular dashboard
-                    $route = $this->redirectDash();
-                    return response()->json(['success' => true, 'redirectTo' => $route]);
-                }
-            } else {
-                // User is not activated, log them out and return an error message
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $userCredential = $request->only('email', 'password');
+
+    // Attempt to authenticate the user
+    if (Auth::attempt($userCredential)) {
+        // Check if the user is activated
+        $user = Auth::user();
+
+        if ($user->activated) {
+            // User is activated, proceed with login
+
+            // Check if it's the user's first login
+            if ($user->first_login) {
+                // Log the user out and return an error message
                 Auth::logout();
-                return response()->json(['success' => false, 'message' => 'Your account is not activated.']);
+                return response()->json(['success' => false, 'message' => 'You need to reset your password before logging in.']);
+            } else {
+                // Check if the password needs to be reset
+                if (Hash::needsRehash($user->password)) {
+                    // Log the user out and return an error message
+                    Auth::logout();
+                    return response()->json(['success' => false, 'message' => 'You need to reset your password before logging in.']);
+                }
+
+                // Redirect to the regular dashboard
+                $dashboardRoute = $this->redirectDash();
+                return response()->json(['success' => true, 'redirectTo' => $dashboardRoute]);
             }
         } else {
-            // Authentication failed
-            return response()->json(['success' => false, 'message' => 'Username & Password is incorrect']);
+            // User is not activated, log them out and return an error message
+            Auth::logout();
+            return response()->json(['success' => false, 'message' => 'Your account is not activated.']);
         }
+    } else {
+        // Authentication failed
+        return response()->json(['success' => false, 'message' => 'Username & Password is incorrect']);
     }
+}
 
     
     public function loadLogin()

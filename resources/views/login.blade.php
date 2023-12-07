@@ -590,8 +590,8 @@ sign_in_btn.addEventListener("click", () => {
             title: title,
             text: message,
             icon: icon,
-            timer: timer, // Adjust the time you want the alert to be visible (in milliseconds),
-            showConfirmButton: false // Hide the "OK" button
+            timer: timer,
+            showConfirmButton: false
         });
     }
 
@@ -621,8 +621,26 @@ sign_in_btn.addEventListener("click", () => {
                     showAlert('Success', 'Log in successfully!', 'success');
                     window.location.href = response.redirectTo;
                 } else {
-                    // If login fails, display an error message
-                    showAlert('Error', 'Incorrect email or password', 'error');
+                    // If login fails, display an error message using SweetAlert
+                    showAlert('Error', response.message, 'error');
+
+                    // Check if password reset is required
+                    if (response.resetPassword) {
+                        // Trigger a SweetAlert to notify the user to reset the password
+                        Swal.fire({
+                            title: 'Password Reset Required',
+                            text: response.message,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Reset Password',
+                            cancelButtonText: 'Cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to the password reset page
+                                window.location.href = "{{ route('password.request') }}";
+                            }
+                        });
+                    }
                 }
             },
             error: function () {
@@ -633,7 +651,7 @@ sign_in_btn.addEventListener("click", () => {
 
         return false; // Prevent form submission
     }
-</script> 
+</script>
 
 <script>
   // ... Your existing script

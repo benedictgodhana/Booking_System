@@ -17,7 +17,7 @@
 }
 
 /* Style the current/active page link */
-.pagination .page-item.active .page-link {
+.pagination .page-item.active .page-link {  
     background-color: #007bff; /* Change to your preferred color */
     border-color: #007bff; /* Change to your preferred color */
     color: #fff; /* Text color for active page */

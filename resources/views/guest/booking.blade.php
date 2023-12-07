@@ -472,7 +472,8 @@
 
     <div class="col-md-6">
         <div class="form-group">
-            <label for="itemRequests" class="form-label">Select Items (optional):</label>
+            <label for="itemRequests" class="form-label">Select Items (optional):<em style="font-size:14px"> *You can select more than one item</em><br>
+</label>
             <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
                 @foreach($items as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -611,8 +612,8 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
             <label class="form-check-label" for="mealSetupCheckbox">Yes, I have requested a meal set-up</label><br>
-            <em>Please note that cafeteria booking should be communicated to the cafeteria department.</em><br>
-            <em>Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+            <em style="font-size:14px">*Please note that all cafeteria bookings should be communicated to the cafeteria department.</em><br>
+            <em style="font-size:14px">*Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
 
 
         </div>

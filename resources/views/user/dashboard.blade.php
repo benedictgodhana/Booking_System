@@ -291,7 +291,37 @@
     
 
 
+    <div class="modal" tabindex="-1" role="dialog" id="changePasswordModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Password change form -->
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <!-- Add any additional form fields as needed -->
 
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- Add your modal footer content here -->
+            </div>
+        </div>
+    </div>
+</div>
 
     
     <!-- JavaScript dependencies -->
@@ -300,6 +330,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+    <script>
+    // Your existing dashboard JavaScript code
+
+    // Add the code for displaying the password change modal
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if it's the user's first login
+        if (response.success && response.firstLogin) {
+            // Show the change password modal
+            $('#changePasswordModal').modal('show');
+        }
+    });
+</script>
 
     <!-- Calendar initialization -->
     <script>

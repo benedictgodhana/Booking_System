@@ -167,7 +167,8 @@
                 </div>
                 <div class="row mb-3">
     <div class="col-md-12">
-        <label for="itemRequests" class="form-label">Select Items (Optional):</label>
+        <label for="itemRequests" class="form-label">Select Items (Optional):<em style="font-size:14px">*Please press shift + ctrl for multiple selection.</em><br>
+</label>
         <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
             @foreach($items as $item)
                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -205,8 +206,9 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
             <label class="form-check-label" for="mealSetupCheckbox">Yes, I have requested a meal set-up</label><br>
-            <em>Please note that cafeteria booking should be communicated to the cafeteria department.</em><br>
-            <em>Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+            <em style="font-size:14px">*Please note that all cafeteria bookings should be communicated to the cafeteria department.</em><br>
+            <em style="font-size:14px">*Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+
 
         </div>
     </div>
