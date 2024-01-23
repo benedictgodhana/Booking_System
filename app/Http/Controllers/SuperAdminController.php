@@ -283,6 +283,12 @@ class SuperAdminController extends Controller
             'timelimit' => 'required|date_format:H:i',
             'selectRoom' => 'required|exists:rooms,id',
             'event' => 'nullable|string',
+            'itServices' => 'boolean',
+            'setupAssistance' => 'boolean',
+            'timelimit'=>'required',        
+            'comment' => 'nullable|string', // Comment field is optional
+            'additionalDetails' => 'nullable|string',
+            'mealSetupDetails' => 'nullable|string',
 
         ]);
 
@@ -306,8 +312,18 @@ class SuperAdminController extends Controller
         $reservation->timelimit = $validatedData['timelimit']; // Store the calculated end time
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->event = $validatedData['event'];
-
         $reservation->status = 'Accepted';
+        $reservation->event = $validatedData['event'];
+        $reservation->itServices = $validatedData['itServices'] ?? false;
+        $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
+        $reservation->comment = $validatedData['comment'];
+        $reservation->additional_details = $validatedData['additionalDetails']; 
+        $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
+
+
+    
+        // Save the reservation to the database
+        
 
         // Save the reservation to the database
         $reservation->save();

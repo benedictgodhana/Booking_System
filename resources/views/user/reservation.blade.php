@@ -145,12 +145,12 @@
         </button>
         @else
         <!-- Reservation date is in the future, enable cancellation and editing -->
-        <button style="width:100px;border-radius:10px" type="button" class="btn btn-success"
+        <button style="width:100px;border-radius:10px;margin-top:1px" type="button" class="btn btn-success"
             data-toggle="modal" data-target="#cancelModal{{ $reservation->id }}">
             <i class="fas fa-times"></i> Cancel
         </button>
 
-        <button style="width:100px;border-radius:10px" type="button" class="btn btn-primary"
+        <button style="width:100px;border-radius:10px;margin-top:1px" type="button" class="btn btn-primary"
             data-toggle="modal" data-target="#editModal{{ $reservation->id }}">
             <i class="fas fa-pencil-alt"></i> Edit
         </button>
@@ -202,7 +202,6 @@
         </ul>
     </nav>
 
-
                 <!-- Modal for Canceling Reservation -->
                 @foreach($reservations as $reservation)
                 <div class="modal fade" id="cancelModal{{ $reservation->id }}" tabindex="-1" role="dialog"
@@ -232,20 +231,6 @@
                 @endforeach
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         @foreach($reservations as $reservation)
     <div class="modal fade" id="editModal{{ $reservation->id }}" tabindex="-1" role="dialog"

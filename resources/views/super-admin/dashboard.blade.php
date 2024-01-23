@@ -1,6 +1,10 @@
 @extends('layout/layout')
 
 @section('space-work')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
 
 <style>
       @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
@@ -546,6 +550,65 @@
                             <input type="text" class="form-control" id="event" name="event" required>
                         </div>
 
+                        <div class="row mb-3">
+    <div class="col-md-12">
+        <label for="itemRequests" class="form-label">Select Items (Optional):<em style="font-size:14px">*Please press shift + ctrl for multiple selection.</em><br>
+</label>
+        <select id="itemRequests" name="itemRequests[]" class="form-control" multiple>
+            @foreach($items as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="comment" class="form-label">Comment (Optional):</label>
+                        <textarea id="comment" name="comment" class="form-control" placeholder="Enter any comments or notes" oninput="countWords()"></textarea>
+                        <p id="wordCount">Word count: 0/50</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Optional Requirements:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="setupAssistanceCheckbox">
+                            <label class="form-check-label" for="setupAssistanceCheckbox">IT Setup Assistance</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3" id="setupAssistanceDescription" style="display: none;">
+                    <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
+                    <div class="col-md-12">
+                        <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
+                        <p>Word Count: <span id="wordCount1">0 words</span></p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+        <label class="form-label">Have you requested a meal set-up for this event?</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="mealSetupCheckbox" name="mealSetupCheckbox">
+            <label class="form-check-label" for="mealSetupCheckbox">Yes, I have requested a meal set-up</label><br>
+            <em style="font-size:14px">*Please note that all cafeteria bookings should be communicated to the cafeteria department.</em><br>
+            <em style="font-size:14px">*Please Inform cafeteria team to clear the setup as soon as the meeting is done.</em>
+
+
+        </div>
+    </div>
+    <div class="row mb-3" id="mealSetupDescription" style="display: none;">
+    <label for="mealSetupDetails" class="form-label">Meal Set-Up Details:</label>
+    <div class="col-md-12">
+        <textarea name="mealSetupDetails" id="mealSetupDetails" cols="50" rows="3" placeholder="  Provide details about your meal set-up requirements" oninput="countMealSetupWords()" maxlength="50"></textarea>
+        <p id="mealSetupWordCount">Word count: 0/50</p>
+    </div>
+</div>
+<br>
+
+               
+
+
                         <!-- Add more form fields as needed -->
                         <div class="col-md-12">
                             <input type="submit" class="btn btn-info" value="Submit" style="background: darkblue;">
@@ -564,6 +627,43 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+    <script>
+    // Get references to the checkbox and the description text field
+var setupAssistanceCheckbox = document.getElementById('setupAssistanceCheckbox');
+var setupAssistanceDescription = document.getElementById('setupAssistanceDescription');
+
+// Add an event listener to the checkbox
+setupAssistanceCheckbox.addEventListener('change', function () {
+    if (setupAssistanceCheckbox.checked) {
+        // Checkbox is checked, show the description field
+        setupAssistanceDescription.style.display = 'block';
+    } else {
+        // Checkbox is unchecked, hide the description field
+        setupAssistanceDescription.style.display = 'none';
+    }
+});
+
+</script>
+
+
+    <script>
+    function countWords() {
+    var comment = document.getElementById('comment').value;
+    var words = comment.split(/\s+/).filter(function(word) {
+        return word.length > 0;
+    }).length;
+    var wordCountElement = document.getElementById('wordCount');
+    
+    if (words > 50) {
+        // If word count exceeds the limit, truncate the comment and update the count
+        wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
+        document.getElementById('comment').value = comment.split(/\s+/).slice(0, 50).join(' ');
+    } else {
+        wordCountElement.textContent = 'Word count: ' + words + ' / 50';
+    }
+}
+
+</script>
 
     <!-- Calendar initialization -->
     <script>
@@ -880,6 +980,144 @@ updateCapacityTooltip();
         }
     });
 </script>
+
+<script>
+    // Apply Select2 to the itemRequests field
+    $(document).ready(function() {
+        $('#itemRequests').select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            placeholder: 'Select or type to add items',
+        });
+    });
+</script>
+
+
+
+<script>
+    function countMealSetupWords() {
+        var mealSetupDetails = document.getElementById('mealSetupDetails').value;
+        var words = mealSetupDetails.split(/\s+/).filter(function (word) {
+            return word.length > 0;
+        }).length;
+        var wordCountElement = document.getElementById('mealSetupWordCount');
+
+        if (words > 50) {
+            // If word count exceeds the limit, truncate the input and update the count
+            wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
+            document.getElementById('mealSetupDetails').value = mealSetupDetails.split(/\s+/).slice(0, 50).join(' ');
+        } else {
+            wordCountElement.textContent = 'Word count: ' + words + ' / 50';
+        }
+    }
+</script>
+<script>
+    // Get references to the checkbox and the description text field
+    var mealSetupCheckbox = document.getElementById('mealSetupCheckbox');
+    var mealSetupDescription = document.getElementById('mealSetupDescription');
+
+    // Add an event listener to the checkbox
+    mealSetupCheckbox.addEventListener('change', function () {
+        if (mealSetupCheckbox.checked) {
+            // Checkbox is checked, show the description field
+            mealSetupDescription.style.display = 'block';
+        } else {
+            // Checkbox is unchecked, hide the description field
+            mealSetupDescription.style.display = 'none';
+        }
+    });
+</script>
+<script>
+        function limitWords(textarea) {
+            var maxWords = 50;
+            var text = textarea.value;
+            var words = text.split(/\s+/);
+            
+            if (words.length > maxWords) {
+                // Trim down the text to 50 words
+                var trimmedText = words.slice(0, maxWords).join(" ");
+                textarea.value = trimmedText;
+            }
+
+            // Display the word count
+            var wordCount = words.length;
+            document.getElementById("wordCount1").innerHTML = wordCount + " words";
+        }
+    </script>
+<script>
+    // Function to toggle the visibility of the item request field
+    function toggleItemRequestField() {
+        var itemRequestField = document.getElementById('itemRequestField');
+        var requestItemsCheckbox = document.getElementById('requestItems');
+
+        if (requestItemsCheckbox.checked) {
+            itemRequestField.style.display = 'block'; // Show the field
+        } else {
+            itemRequestField.style.display = 'none'; // Hide the field
+        }
+    }
+
+    // Attach an event listener to the "Request Items" checkbox
+    document.getElementById('requestItems').addEventListener('change', toggleItemRequestField);
+</script>
+
+<script>
+    function limitItemSelection() {
+        // Get the select element and the selected options
+        var itemSelect = document.getElementById('itemRequests');
+        var selectedOptions = itemSelect.selectedOptions;
+
+        // Check if the number of selected options exceeds the limit (5)
+        if (selectedOptions.length > 5) {
+            // Display an alert message or take any other action
+            alert('You can select a maximum of 5 items.');
+
+            // Deselect the last selected item
+            selectedOptions[selectedOptions.length - 1].selected = false;
+        }
+    }
+
+    // Attach the function to the change event of the select element
+    document.getElementById('itemRequests').addEventListener('change', limitItemSelection);
+</script>
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var bookingDateInput = document.getElementById('booking_date');
+
+                // Get the current date in the format 'YYYY-MM-DD'
+                var currentDate = new Date().toISOString().split('T')[0];
+
+                // Set the minimum date of the booking_date input to the current date
+                bookingDateInput.min = currentDate;
+            });
+        </script>
+
+
+<script>
+    // Attach an event listener to the "Request Items" checkbox
+    document.getElementById('requestItems').addEventListener('change', function() {
+        if (this.checked) {
+            // Get the user's name from the form
+            var userName = document.getElementById('userName').value; // Replace 'userName' with the actual input field ID
+
+            // Send an AJAX request to send an email
+            $.ajax({
+                type: 'POST',
+                url: '/send-reservation-email', // Replace with the actual route for sending the email
+                data: {
+                    userName: userName
+                },
+                success: function(response) {
+                    // Handle the response (e.g., show a success message)
+                },
+                error: function(error) {
+                    // Handle errors if the email sending fails
+                }
+            });
+        }
+    });
+</script>
+
 
 
 

@@ -198,7 +198,7 @@
                     <label for="setupAssistanceDetails" class="form-label">Description of Services/Setup Needed:</label>
                     <div class="col-md-12">
                         <textarea name="additionalDetails" id="additionalDetails" cols="50" rows="3" placeholder="Kindly provide more details" oninput="limitWords(this)"></textarea>
-                        <p>Word Count: <span id="wordCount1">0 words</span></p>
+                        <p>Word Count: <span id="wordCount1">Word count: 0/50</span></p>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -555,6 +555,23 @@ document.getElementById('itemRequests').addEventListener('change', limitItemSele
 
 </script>
 
+<script>
+    // Get references to the checkbox and the description text field
+var setupAssistanceCheckbox = document.getElementById('setupAssistanceCheckbox');
+var setupAssistanceDescription = document.getElementById('setupAssistanceDescription');
+
+// Add an event listener to the checkbox
+setupAssistanceCheckbox.addEventListener('change', function () {
+    if (setupAssistanceCheckbox.checked) {
+        // Checkbox is checked, show the description field
+        setupAssistanceDescription.style.display = 'block';
+    } else {
+        // Checkbox is unchecked, hide the description field
+        setupAssistanceDescription.style.display = 'none';
+    }
+});
+
+</script>
 <script>
     // Get references to the checkbox and the description text field
 var setupAssistanceCheckbox = document.getElementById('setupAssistanceCheckbox');

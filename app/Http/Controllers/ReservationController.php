@@ -283,7 +283,8 @@ class ReservationController extends Controller
     }
 
     public function updateReservation(Request $request, $id)
-    {
+{
+    try {
         // Validate the form data
         $request->validate([
             'event' => 'required|string',
@@ -299,6 +300,9 @@ class ReservationController extends Controller
         $duration = CarbonInterval::hours($request->durationHours)->minutes($request->durationMinutes);
         $endTime = $startTime->add($duration);
 
+        // Use a database transaction to ensure data integrity
+        DB::beginTransaction();
+
         // Find the reservation by ID
         $reservation = Reservation::findOrFail($id);
 
@@ -312,8 +316,21 @@ class ReservationController extends Controller
         // Save the changes
         $reservation->save();
 
+        // Commit the transaction
+        DB::commit();
+
         // Redirect to a success page or return a response
         return redirect()->back()->with('success', 'Reservation updated successfully');
+    } catch (ModelNotFoundException $e) {
+        // Handle the case where the reservation with the given ID is not found
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Reservation not found');
+    } catch (\Exception $e) {
+        // Handle other exceptions
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Error updating reservation');
     }
+}
+
      
 }
