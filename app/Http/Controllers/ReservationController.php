@@ -96,13 +96,10 @@ class ReservationController extends Controller
         // Save the reservation to the database
         $reservation->save();
 
-
-
         if (isset($validatedData['itemRequests'])) {
             $reservation->items()->attach($validatedData['itemRequests']);
         }
         
-
     
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
@@ -113,8 +110,7 @@ class ReservationController extends Controller
             'description' => 'New reservation created by ' . auth()->user()->name, // Include relevant information
         ]);
 
-        // Send an email notification to user upon re        return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
-servation
+        // Send an email notification to user upon reservation
         $roomName = $reservation->room->name;
         $reservationDate = Carbon::parse($reservation->reservationDate); // Use the date from the reservation object
         $reservationTime = Carbon::parse($reservation->reservationTime)->format('h:i A'); // Format time as "h:i A"
@@ -189,8 +185,8 @@ servation
                     }
 
 
-                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
+                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
 
                 }
