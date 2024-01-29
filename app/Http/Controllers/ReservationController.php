@@ -170,6 +170,7 @@ class ReservationController extends Controller
                 }
 
                 //for Admin Notification
+                            //for Admin Notification
                 $reservations = Reservation::whereIn('room_id', [4, 5, 6, 7, 8])->get();
 
                 if ($reservations->count() > 0) {
@@ -177,23 +178,16 @@ class ReservationController extends Controller
                     $miniadmins = User::where('role', 4)->get();
 
                     // Loop through admin users and send emails
-                    foreach ($miniadmins as $miniadmin) {                    // Customize the email subject and content as needed
+                    foreach ($miniadmins as $miniadmin) {
+                        // Customize the email subject and content as needed
                         $subject = 'New Reservation Created';
-                        $content = 'A new reservation has been created for rooms 2 and 3.';
+                        $content = 'A new reservation has been created for rooms 4, 5, 6, 7, and 8.';
                         // Send the email
                         Mail::to($miniadmin->email)->send(new MiniAdminReservationCreated($reservations, $miniadmin->name));
                     }
 
-
-
-                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
-
-
-                }
-
-                return 'No reservations found for rooms 2 and 3.';
-            }
-        }
+    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
+}
     
 
     public function updateReservationStatus(Request $request, $id)
