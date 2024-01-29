@@ -185,11 +185,10 @@ class ReservationController extends Controller
                     }
 
 
-                    session()->flash('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
+
+                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
 
-
-                    return back();
                 }
 
                 return 'No reservations found for rooms 2 and 3.';
