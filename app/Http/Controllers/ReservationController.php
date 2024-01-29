@@ -96,10 +96,14 @@ class ReservationController extends Controller
         // Save the reservation to the database
         $reservation->save();
 
+
+
         if (isset($validatedData['itemRequests'])) {
             $reservation->items()->attach($validatedData['itemRequests']);
         }
         
+        return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
+
     
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
@@ -186,7 +190,6 @@ class ReservationController extends Controller
 
 
 
-                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
 
                 }
