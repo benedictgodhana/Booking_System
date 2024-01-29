@@ -102,7 +102,6 @@ class ReservationController extends Controller
             $reservation->items()->attach($validatedData['itemRequests']);
         }
         
-        return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
     
         // If items were requested, attach them to the reservation
@@ -114,7 +113,8 @@ class ReservationController extends Controller
             'description' => 'New reservation created by ' . auth()->user()->name, // Include relevant information
         ]);
 
-        // Send an email notification to user upon reservation
+        // Send an email notification to user upon re        return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
+servation
         $roomName = $reservation->room->name;
         $reservationDate = Carbon::parse($reservation->reservationDate); // Use the date from the reservation object
         $reservationTime = Carbon::parse($reservation->reservationTime)->format('h:i A'); // Format time as "h:i A"
@@ -189,6 +189,7 @@ class ReservationController extends Controller
                     }
 
 
+                    return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
 
 
 
