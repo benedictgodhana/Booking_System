@@ -42,14 +42,14 @@ class GuestBookingController extends Controller
         'booking_time' => 'required|date_format:H:i',
         'duration' => 'required|integer',
         'requestItems' => 'boolean',
-        'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
-        'itemRequests.*' => 'exists:items,id', // Validate each item in the array     
+        'itemRequests' => 'nullable|array', // Make the itemRequests field optional
+        'itemRequests.*' => 'exists:items,id', // Validate each item in the array
         'guest_department' => 'nullable|string|max:255', // Add department validation
         'event' => 'nullable|string', // Add validation for event
         'comment' => 'nullable|string', // Add validation for the comment field
         'additionalDetails' => 'nullable|string',
         'mealSetupDetails' => 'nullable|string',
-        'contact' => 'nullable|regex:/^\+254\d{9}$/',        
+        'contact' => 'nullable|regex:/^\+254\d{9}$/',
     ]);
 
     $email = $request->input('guest_email');
@@ -85,7 +85,7 @@ class GuestBookingController extends Controller
     $reservation->timelimit = $endTime; // Store the calculated end time
     $reservation->event = $request->input('event');
     $reservation->comment = $request->input('comment'); // Save the comment
-    $reservation->additional_details = $validatedData['additionalDetails'];        
+    $reservation->additional_details = $validatedData['additionalDetails'];
     $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
 
 
@@ -96,7 +96,7 @@ class GuestBookingController extends Controller
     $reservation->requestItems = $request->input('item_requests', false);
 
     $reservation->save();
-   
+
 
 // Include selected items (assuming you have the logic to determine selected items)
 if (isset($validatedData['itemRequests']) && $validatedData['itemRequests']) {
@@ -169,7 +169,7 @@ if ($itServicesRequested || $setupAssistanceRequested || !empty($itemRequests) |
             $superadminEmail = $superadmin->email;
             $superadminName = $superadmin->name; // Replace with your logic to retrieve the Superadmin's name.
 
-            
+
 
             //Notification to SubAdmin
             if ($request->input('room') == 1) {

@@ -70,7 +70,7 @@
 
    <!-- Table for pending reservations -->
 
-   
+
 
    <div class="user-table">
        <div>
@@ -107,7 +107,7 @@
     </div>
 </form>
 
-       
+
 
        <div id="pendingReservations" style="display: block;">
            <h2>Pending Reservations</h2>
@@ -119,6 +119,7 @@
                    <th>Items (Optional)</th>
                    <th>Event</th>
                    <th>Reservation Date</th>
+                   <th>End Reservation Date</th>
                    <th>Reservation Time</th>
                    <th>End Time</th> <!-- Add this column -->
                    <th>Rooms</th>
@@ -157,6 +158,7 @@
                         </td>
                    <td>{{ $reservation->event }}</td>
                    <td>{{ $reservation->reservationDate }}</td>
+                   <td>{{ $reservation->booking_end_date }}</td>
                    <td>{{ Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
                    <td>{{ Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                    <td>{{ $reservation->room->name }}</td>
@@ -166,14 +168,14 @@
 
 
                    <td class="actions">
-                       
+
                        <button style="margin-left:10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#viewModal{{ $reservation->id }}">
                            <i class="fas fa-eye"></i> View Details
                        </button>
                    </td>
                </tr>
                @endforeach
-               
+
            </table><br>
            <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
@@ -283,7 +285,7 @@
 
        @foreach($pendingReservations as $reservation)
        <!-- Modal for Viewing Reservation Details -->
-     
+
        <div class="modal fade" id="viewModal{{ $reservation->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel{{ $reservation->id }}" aria-hidden="true">
            <div class="modal-dialog modal-lg" role="document">
                <div class="modal-content">
@@ -585,7 +587,7 @@
                        <!-- Additional fields go here -->
                    </div>
                    <div class="modal-footer">
-                   
+
                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Close
                        </button>
                    </div>
@@ -594,7 +596,7 @@
        </div>
        @endforeach
 
-       
+
 
 
        <script>
@@ -693,7 +695,7 @@
                     console.error(error);
                 }
             });
-        }); 
+        });
     });
 </script>
 

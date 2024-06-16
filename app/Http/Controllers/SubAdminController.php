@@ -35,11 +35,11 @@ class SubAdminController extends Controller
 
         $reservationsAcceptedCount = Reservation::whereIn('room_id', $roomID)
         ->where('status', 'Accepted')
-        ->count();        
+        ->count();
         $pendingReservationsCount = Reservation::whereIn('room_id', $roomID)
         ->where('status', 'Pending')
         ->count();
-    
+
 
         $totalUsersCount = User::count();
         $users=User::All();
@@ -89,17 +89,17 @@ class SubAdminController extends Controller
             'Samsung Lab' => 'Black'
             // Add more rooms and colors as needed
         ];
-        
+
         foreach ($rooms as $room) {
             // Query to get daily reservation counts for a specific room on the current date
             $dailyCount = DB::table('reservations')
                 ->where('room_id', $room->id)
                 ->whereDate('created_at', $currentDate)
                 ->count();
-        
+
             // Get the background color for the room
             $backgroundColor = $roomColors[$room->name];
-        
+
             // Format the data for the room
             $roomData = [
                 'label' => $room->name,
@@ -108,10 +108,10 @@ class SubAdminController extends Controller
                 'borderColor' => 'rgba(255, 255, 255, 0.8)',
                 'borderWidth' => 1,
             ];
-        
+
             $dailyReservations[] = $roomData;
         }
-        
+
 
         foreach ($acceptedReservations as $reservation) {
             $roomName = $reservation->room->name;
@@ -119,7 +119,7 @@ class SubAdminController extends Controller
             $events[] = [
                 'title' => $reservation->event,
                 'start' => $reservation->reservationDate . 'T' . $reservation->reservationTime,
-                'end' => $reservation->reservationDate . 'T' . $reservation->timelimit,
+                'end' => $reservation->booking_end_date . 'T' . $reservation->timelimit,
                 'room' => $reservation->room->name,
                 'color' => $color, // Assign the color based on the room
 
@@ -198,11 +198,11 @@ class SubAdminController extends Controller
         $subAdminRoomID = 1;
 
         $query =Reservation::where('room_id', $subAdminRoomID);
-    
+
         if (!empty($status)) {
             $query->where('status', $status);
         }
-    
+
         if (!empty($searchQuery)) {
             $query->where(function ($subquery) use ($searchQuery) {
                 $subquery->whereHas('user', function ($query) use ($searchQuery) {
@@ -214,13 +214,13 @@ class SubAdminController extends Controller
                 ->orWhere('event', 'like', '%' . $searchQuery . '%');
             });
         }
-    
+
         if (!empty($startDate) && !empty($endDate)) {
             $query->whereBetween('ReservationDate', [$startDate, $endDate]);
         }
-    
+
         $Results = $query->paginate(10);
-    
+
         return view('sub-admin.search-results', compact('Results'));
     }
     public function createReservation(Request $request)
@@ -229,8 +229,8 @@ class SubAdminController extends Controller
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'requestItems' => 'boolean',
-            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
-            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array
             'duration' => 'required|integer',
             'capacity' => 'required|integer',
             'reservationDate' => 'required|date',
@@ -241,7 +241,7 @@ class SubAdminController extends Controller
 
         ]);
 
-       
+
         $isRoomAvailable = !DB::table('reservations')
             ->where('room_id', $validatedData['selectRoom'])
             ->where('reservationDate', $validatedData['reservationDate'])
@@ -251,7 +251,7 @@ class SubAdminController extends Controller
         if (!$isRoomAvailable) {
             throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
         }
-        
+
 
         // Create a new reservation instance and populate it with the form data
         $reservation = new Reservation();
@@ -271,8 +271,8 @@ class SubAdminController extends Controller
             $itemRequests = $request->input('itemRequests');
             // Now, you can work with $itemRequests
         }
-        
-    
+
+
 
         // Attach selected items (if any) to the reservation
         Session::flash('success', 'Reservation made successfully!');
@@ -311,6 +311,6 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         $user->save();
 
         return redirect()->back()->with('success', 'User Profile updated Successfully');
- 
+
     }
 }

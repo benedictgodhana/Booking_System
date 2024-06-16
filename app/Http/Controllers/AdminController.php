@@ -39,11 +39,11 @@ class AdminController extends Controller
         $departmentsCount=Department::count();
         $reservationsAcceptedCount = Reservation::whereIn('room_id', $roomID)
         ->where('status', 'Accepted')
-        ->count();        
+        ->count();
         $pendingReservationsCount = Reservation::whereIn('room_id', $roomID)
         ->where('status', 'Pending')
         ->count();
-    
+
 
         $dateToCount = Carbon::today(); // You can replace this with your desired date
 
@@ -96,17 +96,17 @@ class AdminController extends Controller
             'Samsung Lab' => 'Black'
             // Add more rooms and colors as needed
         ];
-        
+
         foreach ($rooms as $room) {
             // Query to get daily reservation counts for a specific room on the current date
             $dailyCount = DB::table('reservations')
                 ->where('room_id', $room->id)
                 ->whereDate('created_at', $currentDate)
                 ->count();
-        
+
             // Get the background color for the room
             $backgroundColor = $roomColors[$room->name];
-        
+
             // Format the data for the room
             $roomData = [
                 'label' => $room->name,
@@ -115,10 +115,10 @@ class AdminController extends Controller
                 'borderColor' => 'rgba(255, 255, 255, 0.8)',
                 'borderWidth' => 1,
             ];
-        
+
             $dailyReservations[] = $roomData;
         }
-        
+
 
 
         foreach ($acceptedReservations as $reservation) {
@@ -127,7 +127,7 @@ class AdminController extends Controller
             $events[] = [
                 'title' => $reservation->event,
                 'start' => $reservation->reservationDate . 'T' . $reservation->reservationTime,
-                'end' => $reservation->reservationDate . 'T' . $reservation->timelimit,
+                'end' => $reservation->booking_end_date . 'T' . $reservation->timelimit,
                 'room' => $reservation->room->name,
                 'color' => $color, // Assign the color based on the room
 
@@ -139,7 +139,7 @@ class AdminController extends Controller
 
     public function reservation()
     {
-        $adminRoomIDs = [2, 3]; // Array containing room IDs you want to fetch       
+        $adminRoomIDs = [2, 3]; // Array containing room IDs you want to fetch
         $adminName = User::where('role', 3)->first()->name;
 
         // Fetch admin reservations for all statuses (including "Pending")
@@ -210,14 +210,14 @@ class AdminController extends Controller
         $status = $request->input('status');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-        $adminRoomIDs = [2, 3]; // Array containing room IDs you want to fetch       
+        $adminRoomIDs = [2, 3]; // Array containing room IDs you want to fetch
 
         $query =Reservation::where('room_id', $adminRoomIDs);
-    
+
         if (!empty($status)) {
             $query->where('status', $status);
         }
-    
+
         if (!empty($searchQuery)) {
             $query->where(function ($subquery) use ($searchQuery) {
                 $subquery->whereHas('user', function ($query) use ($searchQuery) {
@@ -229,13 +229,13 @@ class AdminController extends Controller
                 ->orWhere('event', 'like', '%' . $searchQuery . '%');
             });
         }
-    
+
         if (!empty($startDate) && !empty($endDate)) {
             $query->whereBetween('ReservationDate', [$startDate, $endDate]);
         }
-    
+
         $Results = $query->paginate(10);
-    
+
         return view('admin.search-results', compact('Results'));
     }
     public function createReservation(Request $request)
@@ -244,8 +244,8 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'requestItems' => 'boolean',
-            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
-            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array
             'duration' => 'required|integer',
             'capacity' => 'required|integer',
             'reservationDate' => 'required|date',
@@ -256,7 +256,7 @@ class AdminController extends Controller
 
         ]);
 
-       
+
         $isRoomAvailable = !DB::table('reservations')
             ->where('room_id', $validatedData['selectRoom'])
             ->where('reservationDate', $validatedData['reservationDate'])
@@ -266,7 +266,7 @@ class AdminController extends Controller
         if (!$isRoomAvailable) {
             throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
         }
-        
+
 
         // Create a new reservation instance and populate it with the form data
         $reservation = new Reservation();
@@ -286,8 +286,8 @@ class AdminController extends Controller
             $itemRequests = $request->input('itemRequests');
             // Now, you can work with $itemRequests
         }
-        
-    
+
+
 
         // Attach selected items (if any) to the reservation
         Session::flash('success', 'Reservation made successfully!');

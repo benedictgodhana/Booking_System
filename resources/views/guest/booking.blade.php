@@ -203,7 +203,7 @@
               width:200px
         }
         .legend-color{
-            margin-right: 5px; 
+            margin-right: 5px;
             height: 20px; width: 20px;
             display: inline-block;
 
@@ -344,7 +344,7 @@
       .height-100 {
         height: 100vh;
       }
-      
+
 
       @media screen and (min-width: 768px) {
         body {
@@ -370,8 +370,8 @@
           left: 0;
           padding: 1rem 1rem 0 0;
         }
-        
-        
+
+
       }
     </style>
   </head>
@@ -392,7 +392,7 @@
       <div class="header_toggle">
         <i class="bx bx-menu" id="header-toggle"></i>
       </div>
-     
+
     </header>
     <div class="l-navbar" id="nav-bar">
       <nav class="nav">
@@ -401,7 +401,7 @@
             <span><img style="max-width:240px;margin-left:-40px;" src="/logo/iLab white Logo-01.png" alt=""/></span>
           </a><hr style="border:2px solid #ccc">
           <div class="nav_list" style="margin-left:0px;padding-left:10px">
-                
+
                 <a href="{{ route('guest.booking.form') }}" class="nav_link" data-toggle="tooltip" data-placement="right" title="Guest Reservation">
                 <i class="bx bx-user-plus nav_icon"></i>
                 <span class="nav_name"><strong>Guest Reservation</strong></span>
@@ -540,7 +540,7 @@
                         <option value="45">45 minutes</option>
                         <option value="50">50 minutes</option>
                         <option value="55">55 minutes</option>
-                        
+
 
                     </select>
                 </div>
@@ -557,7 +557,7 @@
     </div>
 </div>
 
-       
+
 
     <div class="row">
         <div class="col-md-6">
@@ -727,7 +727,7 @@
             document.getElementById("wordCount1").innerHTML = wordCount + "/" + maxWords;
         }
     </script>
-    
+
     <script>
     // Attach the function to the change event of the select element
 document.getElementById('itemRequests').addEventListener('change', limitItemSelection);
@@ -764,7 +764,7 @@ setupAssistanceCheckbox.addEventListener('change', function () {
         return word.length > 0;
     }).length;
     var wordCountElement = document.getElementById('wordCount');
-    
+
     if (words > 50) {
         // If word count exceeds the limit, truncate the comment and update the count
         wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
@@ -940,7 +940,7 @@ bookingTimeInput.addEventListener('input', calculateEndTime);
 function calculateEndTime() {
     var selectedHours = parseInt(hoursInput.value);
     var selectedMinutes = parseInt(minutesInput.value);
-    
+
     var bookingTime = bookingTimeInput.value.split(':');
     var bookingHours = parseInt(bookingTime[0]);
     var bookingMinutes = parseInt(bookingTime[1]);
@@ -950,13 +950,13 @@ function calculateEndTime() {
         var endTime = new Date();
         endTime.setHours(bookingHours + selectedHours);
         endTime.setMinutes(bookingMinutes + selectedMinutes);
-        
+
         // Format the end time as 'hh:mm AM/PM'
         var formattedEndTime = endTime.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
         });
-        
+
         // Update the end time input field
         endTimeInput.value = formattedEndTime;
     } else {
@@ -1084,11 +1084,11 @@ departmentSelect.addEventListener("change", function () {
 // Add an event listener to the input field for searching departments
 otherDepartmentInput.addEventListener("input", function () {
     const searchValue = otherDepartmentInput.value.trim().toUpperCase();
-    
+
     // Loop through the options in the select element
     for (let i = 0; i < departmentSelect.options.length; i++) {
         const option = departmentSelect.options[i];
-        
+
         // Check if the option text contains the search value
         if (option.text.toUpperCase().includes(searchValue)) {
             // Show the matching option
@@ -1120,11 +1120,11 @@ otherDepartmentInput.addEventListener("input", function () {
 function updateCapacityTooltip() {
     var selectRoom = document.getElementById('selectRoom');
     var capacityInput = document.getElementById('capacity');
-    
+
     // Get the selected room's capacity
     var selectedRoom = selectRoom.options[selectRoom.selectedIndex];
     var roomCapacity = selectedRoom.getAttribute('data-capacity');
-    
+
     // Set the tooltip (title) to display the room's capacity
     capacityInput.setAttribute('title', 'Room Capacity: ' + roomCapacity + ' people');
 }

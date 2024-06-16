@@ -76,6 +76,18 @@
                             <input type="date" id="booking_date" name="reservationDate" class="form-control" required>
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <label for="booking_date" class="form-label">End of Reservation Date:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="date" id="booking_date" name="booking_end_date" class="form-control" required>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label for="booking_time" class="form-label">Reservation Time:</label>
                         <div class="input-group">
@@ -308,7 +320,7 @@ bookingTimeInput.addEventListener('input', calculateEndTime);
 function calculateEndTime() {
     var selectedHours = parseInt(hoursInput.value);
     var selectedMinutes = parseInt(minutesInput.value);
-    
+
     var bookingTime = bookingTimeInput.value.split(':');
     var bookingHours = parseInt(bookingTime[0]);
     var bookingMinutes = parseInt(bookingTime[1]);
@@ -318,13 +330,13 @@ function calculateEndTime() {
         var endTime = new Date();
         endTime.setHours(bookingHours + selectedHours);
         endTime.setMinutes(bookingMinutes + selectedMinutes);
-        
+
         // Format the end time as 'hh:mm AM/PM'
         var formattedEndTime = endTime.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
         });
-        
+
         // Update the end time input field
         endTimeInput.value = formattedEndTime;
     } else {
@@ -343,7 +355,7 @@ calculateEndTime();
             var maxWords = 50;
             var text = textarea.value;
             var words = text.split(/\s+/);
-            
+
             if (words.length > maxWords) {
                 // Trim down the text to 50 words
                 var trimmedText = words.slice(0, maxWords).join(" ");
@@ -498,11 +510,11 @@ function validateForm() {
 function updateCapacityTooltip() {
     var selectRoom = document.getElementById('selectRoom');
     var capacityInput = document.getElementById('capacity');
-    
+
     // Get the selected room's capacity
     var selectedRoom = selectRoom.options[selectRoom.selectedIndex];
     var roomCapacity = selectedRoom.getAttribute('data-capacity');
-    
+
     // Set the tooltip (title) to display the room's capacity
     capacityInput.setAttribute('title', 'Room Capacity: ' + roomCapacity + ' people');
 }
@@ -615,7 +627,7 @@ setupAssistanceCheckbox.addEventListener('change', function () {
         return word.length > 0;
     }).length;
     var wordCountElement = document.getElementById('wordCount');
-    
+
     if (words > 50) {
         // If word count exceeds the limit, truncate the comment and update the count
         wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';

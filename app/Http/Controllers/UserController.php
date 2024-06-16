@@ -55,7 +55,7 @@ class UserController extends Controller
             $events[] = [
                 'title' => $reservation->event,
                 'start' => $reservation->reservationDate . 'T' . $reservation->reservationTime,
-                'end' => $reservation->reservationDate . 'T' . $reservation->timelimit,
+                'end' => $reservation->booking_end_date . 'T' . $reservation->timelimit,
                 'room' => $reservation->room->name,
                 'color' => $color, // Assign the color based on the room
 
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function reservation()
     {
         $user = auth()->user();
-        $reservations = $user->reservations()->paginate(7); // Assuming you have defined a relationship in the User model      
+        $reservations = $user->reservations()->paginate(7); // Assuming you have defined a relationship in the User model
         return view('user.reservation', compact('reservations'));
     }
     public function getAcceptedRooms()
@@ -119,7 +119,7 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         $user->save();
 
         return redirect()->back()->with('success', 'User Profile updated Successfully');
-  
+
     }
 
     public function reservationEnded($reservationId)
@@ -147,7 +147,7 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         return redirect()->route('welcome')->with('error', 'You are not authorized to provide feedback for this reservation.');
     }
 
-    
+
     public function activateUser(User $user)
     {
         // Check if the user is not already activated
@@ -266,7 +266,7 @@ public function searchReservations(Request $request)
         $currentDateTime = \Carbon\Carbon::now();
         $reservationDate = \Carbon\Carbon::parse($reservation->reservationDate);
         $timeLimit = \Carbon\Carbon::parse($reservation->timelimit);
-        
+
         // Compare the current date with the reservation date
         $isDatePassed = $currentDate->gt($reservationDate);
         $isTimeLimitPassed[$reservation->id] = $currentDateTime->gt($timeLimit);
@@ -327,4 +327,3 @@ public function generateUserGuidePdf()
     $pdf->Output('user_guide.pdf', 'I');
 }
 }
-    

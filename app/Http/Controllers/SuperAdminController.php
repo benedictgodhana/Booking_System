@@ -66,17 +66,17 @@ class SuperAdminController extends Controller
             'Samsung Lab' => 'Black'
             // Add more rooms and colors as needed
         ];
-        
+
         foreach ($rooms as $room) {
             // Query to get daily reservation counts for a specific room on the current date
             $dailyCount = DB::table('reservations')
                 ->where('room_id', $room->id)
                 ->whereDate('created_at', $currentDate)
                 ->count();
-        
+
             // Get the background color for the room
             $backgroundColor = $roomColors[$room->name];
-        
+
             // Format the data for the room
             $roomData = [
                 'label' => $room->name,
@@ -85,10 +85,10 @@ class SuperAdminController extends Controller
                 'borderColor' => 'rgba(255, 255, 255, 0.8)',
                 'borderWidth' => 1,
             ];
-        
+
             $dailyReservations[] = $roomData;
         }
-        
+
     // Create a separate array for dates as labels
 
 
@@ -112,7 +112,7 @@ class SuperAdminController extends Controller
             $events[] = [
                 'title' => $reservation->event, // Use the event details
                 'start' => $reservation->reservationDate . 'T' . $reservation->reservationTime,
-                'end' => $reservation->reservationDate . 'T' . $reservation->timelimit,
+                'end' => $reservation->booking_end_date . 'T' . $reservation->timelimit,
                 'room' => $reservation->room->name,
                 'color' => $color, // Assign the color based on the room
 
@@ -181,7 +181,7 @@ class SuperAdminController extends Controller
             // Notify the user that the booking has been canceled
             $reservation->user->notify(new BookingCanceledNotification($reservation, $request->remark));
         }
-        
+
 
         // Display a success message using SweetAlert
         Alert::success('Success', 'Reservation status updated successfully!')->autoClose(60000);
@@ -274,8 +274,8 @@ class SuperAdminController extends Controller
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'requestItems' => 'boolean',
-            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
-            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array
             'duration' => 'required|integer',
             'capacity' => 'required|integer',
             'reservationDate' => 'required|date',
@@ -285,14 +285,14 @@ class SuperAdminController extends Controller
             'event' => 'nullable|string',
             'itServices' => 'boolean',
             'setupAssistance' => 'boolean',
-            'timelimit'=>'required',        
+            'timelimit'=>'required',
             'comment' => 'nullable|string', // Comment field is optional
             'additionalDetails' => 'nullable|string',
             'mealSetupDetails' => 'nullable|string',
 
         ]);
 
-       
+
         $isRoomAvailable = !DB::table('reservations')
             ->where('room_id', $validatedData['selectRoom'])
             ->where('reservationDate', $validatedData['reservationDate'])
@@ -302,7 +302,7 @@ class SuperAdminController extends Controller
         if (!$isRoomAvailable) {
             throw ValidationException::withMessages(['selectRoom' => 'This room is not available at the selected date and time.']);
         }
-        
+
 
         // Create a new reservation instance and populate it with the form data
         $reservation = new Reservation();
@@ -317,13 +317,13 @@ class SuperAdminController extends Controller
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
         $reservation->comment = $validatedData['comment'];
-        $reservation->additional_details = $validatedData['additionalDetails']; 
+        $reservation->additional_details = $validatedData['additionalDetails'];
         $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
 
 
-    
+
         // Save the reservation to the database
-        
+
 
         // Save the reservation to the database
         $reservation->save();
@@ -332,8 +332,8 @@ class SuperAdminController extends Controller
             $itemRequests = $request->input('itemRequests');
             // Now, you can work with $itemRequests
         }
-        
-    
+
+
 
         // Attach selected items (if any) to the reservation
         Session::flash('success', 'Reservation made successfully!');
@@ -344,7 +344,7 @@ class SuperAdminController extends Controller
 
     public function showActivities()
     {
-        $activities = Activity::simplepaginate(10); // Paginate the latest 10 activities        
+        $activities = Activity::simplepaginate(10); // Paginate the latest 10 activities
 
         return view('super-admin.activities', ['activities' => $activities]);
     }
@@ -390,13 +390,13 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         $status = $request->input('status');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-    
+
         $query = Reservation::query();
-    
+
         if (!empty($status)) {
             $query->where('status', $status);
         }
-    
+
         if (!empty($searchQuery)) {
             $query->where(function ($subquery) use ($searchQuery) {
                 $subquery->whereHas('user', function ($query) use ($searchQuery) {
@@ -408,13 +408,13 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
                 ->orWhere('event', 'like', '%' . $searchQuery . '%');
             });
         }
-    
+
         if (!empty($startDate) && !empty($endDate)) {
             $query->whereBetween('ReservationDate', [$startDate, $endDate]);
         }
-    
+
         $Results = $query->paginate(10);
-    
+
         return view('super-admin.search-results', compact('Results'));
     }
 
@@ -423,10 +423,10 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         // Get the search and filter criteria from the request
         $search = $request->input('search');
         $filter = $request->input('filter');
-    
+
         // Query the activities based on the filter and search criteria
         $query = Activity::query();
-        
+
         if ($filter === 'action') {
             $query->where('action', 'like', '%' . $search . '%');
         } elseif ($filter === 'user') {
@@ -434,12 +434,12 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
                 $userQuery->where('name', 'like', '%' . $search . '%');
             });
         }
-    
+
         $filteredActivities = $query->get();
-    
+
         // Create a new TCPDF instance
         $pdf = new TCPDF();
-    
+
         // Set document information
         $pdf->SetCreator('iLab Booking System');
         $pdf->SetAuthor('Your Name');
@@ -447,24 +447,24 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
         $pdf->SetSubject('System Activities Report');
         $pdf->SetKeywords('system activities, report, PDF');
         $pdf->SetMargins(20, 20, 20);
-    
+
         // Add a page
         $pdf->AddPage();
-    
+
         // Set font
         $pdf->SetFont('times', '', 12);
-    
+
         // Extend the PDF template and pass the $filteredActivities variable
         $pdf->writeHTML(view('pdf.template', ['activities' => $filteredActivities])->render());
-    
+
         $pdf->SetY(-15); // Move to the bottom of the page
         $pdf->SetFont('helvetica', 'I', 8);
         $pdf->Cell(0, 10, 'Page ' . $pdf->getAliasNumPage() . ' of ' . $pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-    
+
         // Output the PDF (inline or as a download)
         return $pdf->Output('system_activities.pdf', 'D');
     }
-    
+
     public function items(){
         $items=Item::all();
         $items = Item::simplePaginate(10); // You can specify the number of items per page (e.g., 10 per page) // You can change the number of items per page (e.g., 10) as needed
@@ -478,15 +478,15 @@ if ($request->new_password && in_array($request->new_password, $obviousPasswords
             'name' => 'required|string|max:255',
             'asset_tag' => 'required|string|max:50',
         ]);
-    
+
         // Create and save the asset
         $item = new Item([
             'name' => $validatedData['name'],
             'asset_tag' => $validatedData['asset_tag'],
         ]);
-    
+
         $item->save();
-    
+
         $items=Item::all();
         return redirect()->back()->with('success', 'Asset added successfully');
     }

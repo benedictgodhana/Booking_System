@@ -44,6 +44,7 @@ class ReservationController extends Controller
             'capacity' => 'required|integer',
             'selectRoom' => 'required|exists:rooms,id',
             'reservationDate' => 'required|date',
+            'booking_end_date' => 'required|date',
             'reservationTime' => 'required',
             'duration' => 'required|integer',
             'event' => 'nullable|string',
@@ -51,8 +52,8 @@ class ReservationController extends Controller
             'setupAssistance' => 'boolean',
             'requestItems' => 'boolean',
             'timelimit'=>'required',
-            'itemRequests' => 'nullable|array', // Make the itemRequests field optional            
-            'itemRequests.*' => 'exists:items,id', // Validate each item in the array           
+            'itemRequests' => 'nullable|array', // Make the itemRequests field optional
+            'itemRequests.*' => 'exists:items,id', // Validate each item in the array
             'comment' => 'nullable|string', // Comment field is optional
             'additionalDetails' => 'nullable|string',
             'mealSetupDetails' => 'nullable|string',
@@ -69,18 +70,19 @@ class ReservationController extends Controller
                 ),
             ],
         ]);
-    
+
         // The rest of your code remains the same
-    
+
         // Calculate the end time based on reservation time and duration
         $timelimit = Carbon::parse($validatedData['timelimit'])->format('H:i:s');
-   
-    
+
+
         // Create a new reservation instance
         $reservation = new Reservation();
         $reservation->user_id = auth()->user()->id; // Assuming you're using authentication
         $reservation->room_id = $validatedData['selectRoom'];
         $reservation->reservationDate = $validatedData['reservationDate'];
+        $reservation->booking_end_date = $validatedData['booking_end_date'];
         $reservation->reservationTime = $validatedData['reservationTime'];
         $reservation->timelimit = $timelimit;
         $reservation->capacity = $validatedData['capacity'];
@@ -88,19 +90,19 @@ class ReservationController extends Controller
         $reservation->itServices = $validatedData['itServices'] ?? false;
         $reservation->setupAssistance = $validatedData['setupAssistance'] ?? false;
         $reservation->comment = $validatedData['comment'];
-        $reservation->additional_details = $validatedData['additionalDetails']; 
+        $reservation->additional_details = $validatedData['additionalDetails'];
         $reservation->meal_setup_details = $validatedData['mealSetupDetails']; // Add meal setup details
 
 
-    
+
         // Save the reservation to the database
         $reservation->save();
 
         if (isset($validatedData['itemRequests'])) {
             $reservation->items()->attach($validatedData['itemRequests']);
         }
-        
-    
+
+
         // If items were requested, attach them to the reservation
             // Send notifications to different user roles (SuperAdmin, Admin, MiniAdmin, User)
 
@@ -145,7 +147,7 @@ class ReservationController extends Controller
         //         Mail::to($superAdmin->email)->send(new ReservationCreated($reservation, $superAdminName));
         //     }
 
-            //for subadmin Notification 
+            //for subadmin Notification
             $subAdmins = User::where('role', 2)->get();
 
             foreach ($subAdmins as $subAdmin) {
@@ -189,7 +191,7 @@ class ReservationController extends Controller
                 return redirect()->back()->with('success', 'Reservation request has been sent successfully. Please wait for confirmation.');
             }
         }
-    
+
 
     public function updateReservationStatus(Request $request, $id)
     {
@@ -229,7 +231,7 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::all();
         $events = [];
-    
+
         foreach ($reservations as $reservation) {
             $events[] = [
                 'title' => $reservation->event, // Use the event details
@@ -238,10 +240,10 @@ class ReservationController extends Controller
                 'room' => $reservation->room->name,
             ];
         }
-    
+
         return view('events.index', compact('events'));
     }
-    
+
 
         public function filterPendingReservations(Request $request)
     {
@@ -262,17 +264,17 @@ class ReservationController extends Controller
     {
         // Find the reservation by its ID
         $reservation = Reservation::find($id);
-    
+
         if (!$reservation) {
             // Handle the case where the reservation is not found
             return redirect()->back()->with('error', 'Reservation not found.');
         }
-    
+
         // Additional cancellation logic
-    
+
         $reservation->status = 'Cancelled';
         $reservation->save();
-    
+
         return redirect()->back()->with('success', 'Reservation cancelled successfully.');
     }
 
@@ -326,5 +328,5 @@ class ReservationController extends Controller
     }
 }
 
-     
+
 }

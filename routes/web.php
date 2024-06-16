@@ -56,7 +56,7 @@ Route::get('/', function () {
         $events[] = [
             'title' => $reservation->event, // Use the event details
             'start' => $reservation->reservationDate . 'T' . $reservation->reservationTime,
-            'end' => $reservation->reservationDate . 'T' . $reservation->timelimit,
+            'end' => $reservation->booking_end_date . 'T' . $reservation->timelimit,
             'room' => $reservation->room->name,
             'color' => $color, // Assign the color based on the room
         ];
@@ -138,7 +138,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin','no.cache']
     Route::get('/profile', [AdminController::class, 'showProfile'])->name('admin.profile.show');
     Route::get('/search-reservations', [AdminController::class,'searchReservations'])->name('admin.searchReservations');
     Route::post('/profile/update-password', [AdminController::class, 'updatePassword'])->name('Adminprofile');
-    Route::post('/admin/create-reservation', [AdminController::class, 'createReservation'])->name('create.reservation'); 
+    Route::post('/admin/create-reservation', [AdminController::class, 'createReservation'])->name('create.reservation');
 
 
 });
@@ -149,7 +149,7 @@ Route::middleware(['auth', 'miniadmin','no.cache'])->group(function () {
     Route::get('/miniadmin/profile', [MiniAdminController::class, 'showProfile'])->name('miniadmin.profile.show');
     Route::post('/miniadmin/profile/update-password', [MiniAdminController::class, 'updatePassword'])->name('Edit.Password');
     Route::get('/search-reservations', [MiniAdminController::class,'searchReservations'])->name('miniadmin.searchReservations');
-    Route::post('/miniadmin/create-reservation', [AdminController::class, 'createReservation'])->name('minicreate.reservation'); 
+    Route::post('/miniadmin/create-reservation', [AdminController::class, 'createReservation'])->name('minicreate.reservation');
 
 
 

@@ -92,6 +92,7 @@
                         <tr>
                             <th>Room Requested</th>
                             <th>Reservation Date</th>
+                            <th>End Reservation Date</th>
                             <th>Reservation Time</th>
                             <th>End of Reservation</th>
                             <th>Event</th>
@@ -106,6 +107,7 @@
                         <tr>
                             <td>{{ $reservation->room->name }}</td>
                             <td>{{ $reservation->reservationDate }}</td>
+                            <td>{{ $reservation->booking_end_date }}</td>
                             <td>{{ Carbon\Carbon::parse($reservation->reservationTime)->format('h:i A') }}</td>
                             <td>{{ Carbon\Carbon::parse($reservation->timelimit)->format('h:i A') }}</td>
                             <td>{{ $reservation->event }}</td>
@@ -245,7 +247,7 @@
                 </div>
                 <div class="modal-body" >
                     <!-- Add a form here to edit reservation details -->
-                    <form action="{{ route('updateReservation', $reservation->id) }}" method="POST">                     
+                    <form action="{{ route('updateReservation', $reservation->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <!-- Include fields to edit reservation information (e.g., date, time, event, etc.) -->
@@ -394,7 +396,7 @@ bookingTimeInput.addEventListener('input', calculateEndTime);
 function calculateEndTime() {
     var selectedHours = parseInt(hoursInput.value);
     var selectedMinutes = parseInt(minutesInput.value);
-    
+
     var bookingTime = bookingTimeInput.value.split(':');
     var bookingHours = parseInt(bookingTime[0]);
     var bookingMinutes = parseInt(bookingTime[1]);
@@ -404,13 +406,13 @@ function calculateEndTime() {
         var endTime = new Date();
         endTime.setHours(bookingHours + selectedHours);
         endTime.setMinutes(bookingMinutes + selectedMinutes);
-        
+
         // Format the end time as 'hh:mm AM/PM'
         var formattedEndTime = endTime.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
         });
-        
+
         // Update the end time input field
         endTimeInput.value = formattedEndTime;
     } else {

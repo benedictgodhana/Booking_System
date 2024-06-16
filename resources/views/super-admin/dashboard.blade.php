@@ -26,7 +26,7 @@
         .fc button:hover {
             background-color: yellow;
         }
-        
+
         #calendar {
             max-width: 100% ;
             background-color: #ffffff; /* Background color of the calendar */
@@ -77,7 +77,7 @@
             font-weight: bold;
             display: none;
         }
-        
+
 
       *,
       ::before,
@@ -240,7 +240,7 @@
           padding: 1rem 1rem 0 0;
         }
 
-        
+
 
         .body-pd {
           padding-left: calc(var(--nav-width) + 188px);
@@ -262,7 +262,7 @@
 <div class="row" style="width: auto; height: 86vh; overflow-x: hidden; overflow-y: scroll;">
 
     <div class="col-lg-3 col-6">
-        
+
         <!-- small card -->
         <div class="small-box bg-info">
             <div class="inner">
@@ -322,9 +322,9 @@
             </a>
         </div>
     </div>
-    
+
     <!-- ./col -->
-   
+
     <div class="col-lg-3 col-6">
         <!-- small card -->
         <div class="small-box " style="background:#ec7d30;color:white">
@@ -355,7 +355,7 @@
         </div>
     </div>
 
- 
+
 
     <div class="container">
         <button  style="border-radius:8px;border:1px white;background:darkblue" type="button" class="btn " data-toggle="modal" data-target="#createReservationModal">
@@ -364,7 +364,7 @@
 
 
         <div class="container">
-            
+
         <h1>Booking Calendar</h1> <!-- Add your page title here -->
         <div class="calendar-container">
             <!-- Current Time Display -->
@@ -375,7 +375,7 @@
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Box shadow for the glass effect */
                     color: #333; /* Text color */
                     padding: 10px;
-                    transition: background 0.3s ease;font-weight:900" class="btn btn-success glass-effect"><strong>Current Time:</strong> <span id="current-time"></span></button>  
+                    transition: background 0.3s ease;font-weight:900" class="btn btn-success glass-effect"><strong>Current Time:</strong> <span id="current-time"></span></button>
             </div><br>
 
             <!-- Calendar -->
@@ -398,7 +398,7 @@
                   <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 650px; max-width: 100%;"></canvas>
                 </div>
               </div>
-            
+
 
             <!-- Legend -->
 
@@ -411,7 +411,7 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    
+
 
 
 
@@ -511,7 +511,7 @@
                                 <option value="8">8 hours</option>
                                 <option value="9">9 hours</option>
                                 <option value="10">10 hours</option>
-                            </select>                       
+                            </select>
                          </div>
                     </div>
                     <div class="col-md-6">
@@ -530,7 +530,7 @@
                         <option value="45">45 minutes</option>
                         <option value="50">50 minutes</option>
                         <option value="55">55 minutes</option>
-                        
+
                 </select>
             </div>
 
@@ -606,7 +606,7 @@
 </div>
 <br>
 
-               
+
 
 
                         <!-- Add more form fields as needed -->
@@ -653,7 +653,7 @@ setupAssistanceCheckbox.addEventListener('change', function () {
         return word.length > 0;
     }).length;
     var wordCountElement = document.getElementById('wordCount');
-    
+
     if (words > 50) {
         // If word count exceeds the limit, truncate the comment and update the count
         wordCountElement.textContent = 'Word count: 50 / 50 (Maximum limit reached)';
@@ -710,7 +710,7 @@ setupAssistanceCheckbox.addEventListener('change', function () {
                     var today = new Date();
                     if (date >= today) {
                         var selectedDate = date.format('MM-DD-YYY');
-        
+
         // Fill the reservationDate input field with the selected date
                      $('#reservationDate').val(selectedDate);
                         $('#createReservationModal').modal('show');
@@ -919,11 +919,11 @@ setupAssistanceCheckbox.addEventListener('change', function () {
 function updateCapacityTooltip() {
     var selectRoom = document.getElementById('selectRoom');
     var capacityInput = document.getElementById('capacity');
-    
+
     // Get the selected room's capacity
     var selectedRoom = selectRoom.options[selectRoom.selectedIndex];
     var roomCapacity = selectedRoom.getAttribute('data-capacity');
-    
+
     // Set the tooltip (title) to display the room's capacity
     capacityInput.setAttribute('title', 'Room Capacity: ' + roomCapacity + ' people');
 }
@@ -1032,7 +1032,7 @@ updateCapacityTooltip();
             var maxWords = 50;
             var text = textarea.value;
             var words = text.split(/\s+/);
-            
+
             if (words.length > maxWords) {
                 // Trim down the text to 50 words
                 var trimmedText = words.slice(0, maxWords).join(" ");
